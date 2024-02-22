@@ -21,22 +21,12 @@ class UserController extends Controller
     }
 
     public function dashboard_count(){
-    	$total_rim = DB::table('rims')->count();
-	    //$total_vehicle = DB::table('wheel_modifications')->count();
-        // $missing_fitment = DB::table('wheel_modifications as wm')
-		//     ->join('modifications as modi', 'modi.id', '=', 'wm.modification_id')
-		//     ->selectRaw('SUM(CASE
-		//         WHEN (wm.custom_rim_diameter IS  NULL AND wm.custom_rim_diameter != "" AND wm.custom_rim_diameter != "-")
-		//         AND (wm.custom_rim_width IS  NULL AND wm.custom_rim_width != "" AND wm.custom_rim_width != "-")
-		//         AND (wm.custom_rim_offset IS  NULL AND wm.custom_rim_offset != "" AND wm.custom_rim_offset != "-")
-		//         AND (modi.custom_technical_pcd IS  NULL AND modi.custom_technical_pcd != "" AND modi.custom_technical_pcd != "-")
-		//         AND (modi.custom_technical_centre_bore IS  NULL AND modi.custom_technical_centre_bore != "" AND modi.custom_technical_centre_bore != "-")
-		//         THEN 1 ELSE 0 END ) as no_of_empty_rim_diameter')
-		//     ->first();
+    	$total_users = DB::table('users')->count();
+        $total_admins = DB::table('users')->where('role', 'Admin')->count();
+        $total_controller = DB::table('users')->where('role', 'Controller')->count();
+        $total_viewer = DB::table('users')->where('role', 'Viewer')->count();
 
-
-        //$total_missing_fitment = $missing_fitment->no_of_empty_rim_diameter;
-	    return view('dashboard',compact('total_rim'));
+	    return view('dashboard',compact('total_users', 'total_admins', 'total_controller', 'total_viewer'));
     }
 
     public function add_user(Request $request){
@@ -68,7 +58,7 @@ class UserController extends Controller
     		// dd($request->all());
     		$request->validate([
 	            'name' => 'required',
-                'user_role' => 'required|in:Admin,Contributors,Viewers',
+                'role' => 'required',
 	            'email' => [
 	                'required',
 	                'email',

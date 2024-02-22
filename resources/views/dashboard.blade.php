@@ -30,7 +30,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    15
+                  {{ $total_users }}
                   </p>
                 </div>
               </div>
@@ -56,7 +56,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    10
+                  {{ $total_admins }}
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    5
+                  {{$total_controller}}
                   </p>
                 </div>
               </div>
@@ -108,7 +108,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    3
+                  {{$total_viewer}}
                   </p>
                 </div>
               </div>

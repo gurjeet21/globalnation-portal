@@ -48,13 +48,11 @@
                                         name="user_role"
                                         class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                                     >
-                                        <?php $oldUserRole = trim(strtolower(old('user_role', $user_detail->role))); ?>
-
                                         @foreach(['Admin', 'Contributors', 'Viewers'] as $role)
-                                            <?php $trimmedRole = trim(strtolower($role)); ?>
-                                            <option value="{{ $role }}" <?php echo ($oldUserRole === $trimmedRole) ? 'selected' : ''; ?>>
-                                                {{ ucfirst($role) }}
-                                            </option>
+                                            <option value="{{ $role }}" {{ old('role',$user_detail->role) ===  $role  ? 'selected' : ''}}>
+                                            {{ ucfirst($role) }}
+                                        </option>
+
                                         @endforeach
                                     </select>
                                     </div>
