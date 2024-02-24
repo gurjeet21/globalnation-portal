@@ -82,7 +82,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                  {{$total_controller}}
+                  {{$total_Creators}}
                   </p>
                 </div>
               </div>

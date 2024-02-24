@@ -23,10 +23,10 @@ class UserController extends Controller
     public function dashboard_count(){
     	$total_users = DB::table('users')->count();
         $total_admins = DB::table('users')->where('role', 'Admin')->count();
-        $total_controller = DB::table('users')->where('role', 'Controller')->count();
+        $total_Creators = DB::table('users')->where('role', 'Creators')->count();
         $total_viewer = DB::table('users')->where('role', 'Viewer')->count();
 
-	    return view('dashboard',compact('total_users', 'total_admins', 'total_controller', 'total_viewer'));
+	    return view('dashboard',compact('total_users', 'total_admins', 'total_Creators', 'total_viewer'));
     }
 
     public function add_user(Request $request){
@@ -72,12 +72,13 @@ class UserController extends Controller
 	                Rule::unique('users')->ignore($user_id,'id'),
 	            ],
 	        ]);
-
 	       	$update['name'] = $request->name;
 	        $update['first_name'] = $request->first_name;
 	        $update['last_name'] = $request->last_name;
 	        $update['email'] = $request->email;
-	        $update['phone'] = $request->phone;
+			$update['phone'] = $request->phone;
+			$update['role'] = $request->user_role;
+	        $update['dial_code'] = $request->dial_code;
 	        $update['designation'] = $request->designation;
 
 	        if ($request->filled('password')) {

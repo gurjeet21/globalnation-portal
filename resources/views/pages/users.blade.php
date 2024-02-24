@@ -75,11 +75,17 @@
                         {{$user->created_at ? $user->created_at : '-'}}
                       </td>
                       <td class="px-4 py-3 text-xs">
-                        <span
-                          class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
+                        <select
+                            name="user_role"
+                            class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         >
-                        {{$user->status ? $user->status : '-'}}
-                        </span>
+
+                            @foreach(config('constants.roles') as $role => $permission)
+                                <option value="{{ $role }}" {{ old('role',$user->role) ===  $role  ? 'selected' : ''}}>
+                                {{ ucfirst($role) }}
+                            </option>
+                            @endforeach
+                        </select>
                       </td>
                         @if(\Auth::user()->role == 'Super Admin')
                         <td class="whitespace-nowrap px-3 py-2.5 text-sm text-center text-black">

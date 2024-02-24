@@ -7,9 +7,9 @@
                           <span class="font-semibold">Success: </span> {{session('success')}}
                     </div>
                 @endif
-                <form method="post" action="{{route('user.update',['user_id'=>$user_detail->id])}}" class="flex grow flex-col bg-white w-full p-[1.875rem] mt-[1.875rem] gap-y-10 gap-x-10" id="user_update_form" enctype="multipart/form-data">
+                <form method="post" action="{{route('user.update',['user_id'=>$user_detail->id])}}" class="flex grow flex-col bg-white w-full p-[1.875rem] mt-[1.875rem] gap-y-10 gap-x-10" enctype="multipart/form-data">
                     @csrf
-                    <div class="space-y-10 w-full">
+                    <div class="space-y-10 w-full overflow-x-auto">
                         <div class="edit-profile-sec">
                             <div class="changeprofilesec flex gap-5">
                                 <div class="profile-pic">
@@ -100,7 +100,8 @@
                                     <label for="phone" class="text-base font-bold text-black">Phone</label>
                                     <div class="mt-[10px]">
                                         <input type="text" id="phone" name="phone" value="{{old('phone',$user_detail->phone)}}" id="phone"
-                                            class="intl-tel-input outline-0 rounded-md border-0 py-[8.5px] text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-[#9CA3AF] px-2.5 text-sm w-full">
+                                            class="outline-0 rounded-md border-0 py-[8.5px] text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-[#9CA3AF] px-2.5 text-sm w-full">
+                                            <input type="hidden" id="dial_code" name="dial_code" value="{{ old('dial_code', $user_detail->dial_code) ? old('dial_code', $user_detail->dial_code) : 91 }}">
                                     </div>
                                     @if($errors->has('phone'))
                                         <div class="text-red-600">{{ $errors->first('phone') }}</div>
@@ -122,9 +123,12 @@
                     </div>
 
                     <div class="mt-auto bg-white px-4 py-3 text-sm tracking-wide text-black border-t dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800 justify-end flex gap-2.5">
+
+                        <a href="{{ route('dashboard') }}">
                         <button type="button" class="text-black p-2.5 rounded border border-[#D1D5DB] hover:bg-[#EEEEEE] text-sm flex gap-1.5 items- focus:outline-none">Back</button>
+                        </a>
                         <button type="submit"
-                            class="text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" id="update_user">Save Changes</button>
+                            class="text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]">Save Changes</button>
                     </div>
                 </form>
             </main>
@@ -136,6 +140,11 @@
         $("#filePreviewImage").attr('src',URL.createObjectURL(event.target.files[0]));
     });
 
+    $(document).on('click', '.iti__country', function () {
+        var dial_code = $(this).attr('data-dial-code');
+        $('#dial_code').val(dial_code);
+    });
+
 
     $("#remove_photo").click(function(event){
         $("#filePreviewImage").attr('src','');
@@ -145,24 +154,10 @@
 <script>
   const input = document.querySelector("#phone");
   window.intlTelInput(input, {
-    separateDialCode: true,
     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/utils.js",
+    separateDialCode: true,
+    initialCountry: "IN",
+
   });
-</script>
-<script>
- jQuery(document).ready(function () {
-        jQuery("#update_user").click(function (e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            // Extract and set the formatted phone number
-            var phoneCode = jQuery(".iti__dial-code").html();
-            var phoneNumber = jQuery("#phone").val();
-            var phoneNumberWithCode = phoneCode + " " + phoneNumber;
-            jQuery("#phone").val(phoneNumberWithCode);
-
-            // Now you can manually trigger the form submission
-            jQuery("#user_update_form").submit();
-        });
-    });
 </script>
 @endsection

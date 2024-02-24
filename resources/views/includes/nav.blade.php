@@ -42,7 +42,7 @@
 								</ul>
 							</li>
 
-							<li class="mt-auto">
+							<!-- <li class="mt-auto">
 								<a href="{{route('twoFa')}}"
 									class="group -mx-2 flex gap-x-3 item-center rounded-md p-2 text-sm leading-6 text-[#297a99] hover:bg-[#297a99] hover:text-white">
 									<svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -54,7 +54,7 @@
 									</svg>
 									Settings
 								</a>
-							</li>
+							</li> -->
 						</ul>
 					</nav>
 				</div>
