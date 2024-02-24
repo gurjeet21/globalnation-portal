@@ -12,9 +12,9 @@ class UserController extends Controller
     	$auth_user = \Auth::user()->role;
     	$auth_user_id = \Auth::user()->id;
     	if($auth_user == 'Super Admin'){
-    		$users = User::where('role','!=','Super Admin')->get();
+    		$users = User::get();
     	}else{
-    		$users = User::where('id',$auth_user_id)->get();
+    		$users = User::where('role','!=','Super Admin')->get();
     	}
 
     	return view('pages.users',compact('users'));
@@ -41,7 +41,7 @@ class UserController extends Controller
 	        $user = new User([
 	            'email' => $request->input('email')
 	        ]);
-
+			$user->role = 'Creators';
 	        $user->save();
 	        $user_id = $user->id;
 	        return redirect()->route('user.update',['user_id'=>$user_id])->with('success', 'User created successfully!');
@@ -52,13 +52,16 @@ class UserController extends Controller
 
     	if($request->isMethod('get')){
     		$user_detail = User::where('id',$user_id)->first();
+			if(\Auth::user()->role == 'Admin' && $user_detail->role == 'Admin' || \Auth::user()->role == 'Creators'){
+				abort(404);
+			}
     		return view('pages.update-user',compact('user_detail'));
     	}else{
 
     		// dd($request->all());
     		$request->validate([
 	            'name' => 'required',
-                'role' => 'required',
+                'user_role' => 'required',
 	            'email' => [
 	                'required',
 	                'email',
@@ -66,11 +69,9 @@ class UserController extends Controller
 	            ],
 	            'phone' => [
 	                'required',
-	                'regex:/^[0-9]{10,15}$/',
 	                Rule::unique('users')->ignore($user_id,'id'),
 	            ],
 	        ]);
-
 
 	       	$update['name'] = $request->name;
 	        $update['first_name'] = $request->first_name;

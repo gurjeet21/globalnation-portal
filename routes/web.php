@@ -36,7 +36,8 @@ Route::match(['GET','POST'],'/generate_qr', [TwoFactorController::class, 'genera
 //Route::get('/dashboard', [UserController::class, 'dashboard_count'])->middleware(['auth', 'verified','2FA_auth'])->name('dashboard');
 Route::get('/dashboard', [UserController::class, 'dashboard_count'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+
+Route::middleware(['auth', 'permission'])->group(function () {
     Route::get('/two-fa', [TwoFactorController::class, 'two_fa'])->name('twoFa');
     Route::post('/complete-registration', [TwoFactorController::class, 'complete_registration'])->name('complete_registration');
 

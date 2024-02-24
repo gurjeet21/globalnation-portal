@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         '2FA_auth' => \App\Http\Middleware\TwoFactorMiddleware::class,
         'check2fa_Vaild' => \App\Http\Middleware\Check2FAVaild::class,
+        'permission' => \App\Http\Middleware\PermissionMiddleware::class,
     ];
 }

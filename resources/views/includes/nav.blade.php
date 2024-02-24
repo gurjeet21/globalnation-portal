@@ -30,7 +30,7 @@
 										</a>
 									</li>
 
-									<?php if(\Auth::user()->role == 'Super Admin'){?>
+									<?php if(\Auth::user()->role == 'Super Admin' || \Auth::user()->role == 'Admin'){?>
 									<li class="users">
 										<a href="{{route('user')}}"
 											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
