@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     <main class="overflow-y-auto px-6 flex flex-1 flex-col grow">
                 <h2 class="text-black font-semibold text-xl mt-8">Edit Profile</h2>
@@ -32,7 +31,7 @@
 
                             <div class="mt-10 flex gap-x-6 gap-y-6 flex-col lg:flex-row">
                                 <div class="3xl:min-w-[300px]">
-                                    <label for="full-name" class="text-base font-bold text-black">Your Full Name</label>
+                                    <label for="full-name" class="text-base font-bold text-black">User Name</label>
                                     <div class="mt-[10px]">
                                         <input type="text" name="name" value="{{ old('name', $user_detail->name) }}" id="full-name"  class="outline-0 rounded-md border-0 py-[8.5px] text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-[#9CA3AF] px-2.5 text-sm w-full">
                                     </div>
@@ -52,7 +51,6 @@
                                             <option value="{{ $role }}" {{ old('role',$user_detail->role) ===  $role  ? 'selected' : ''}}>
                                             {{ ucfirst($role) }}
                                         </option>
-
                                         @endforeach
                                     </select>
                                     </div>
@@ -97,7 +95,7 @@
                                 <div class="3xl:min-w-[300px]">
                                     <label for="phone" class="text-base font-bold text-black">Phone</label>
                                     <div class="mt-[10px]">
-                                        <input type="text" name="phone" value="{{old('phone',$user_detail->phone)}}" id="phone"
+                                        <input type="text" id="phone" name="phone" value="{{old('phone',$user_detail->phone)}}" id="phone"
                                             class="outline-0 rounded-md border-0 py-[8.5px] text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-[#9CA3AF] px-2.5 text-sm w-full">
                                     </div>
                                     @if($errors->has('phone'))
@@ -139,9 +137,11 @@
         $("#filePreviewImage").attr('src','');
         $('#is_remove').val(1);
     });
-
-
-
 </script>
-
+<script>
+  const input = document.querySelector("#phone");
+  window.intlTelInput(input, {
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/utils.js",
+  });
+</script>
 @endsection

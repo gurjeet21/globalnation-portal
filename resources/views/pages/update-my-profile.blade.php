@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <main class="overflow-y-auto px-6 flex flex-1 flex-col grow">
                 <h2 class="text-black font-semibold text-xl mt-8">Edit Profile</h2>
                 @if(Session::has('success'))

@@ -31,20 +31,21 @@
                     <tr
                       class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                     >
-                      <th class="px-4 py-3">Users</th>
-                      <th class="px-4 py-3">Email Id</th>
-                      <th class="px-4 py-3">Phone Number</th>
+                      <th class="px-4 py-3">Member ID</th>
+                      <th class="px-4 py-3">Email</th>
                       <th class="px-4 py-3">Date</th>
-                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Role</th>
                       <th class="px-4 py-3">Action</th>
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800" >
                     @forelse($users as $key=>$user)
                     <tr class="text-gray-700 dark:text-gray-400">
-                      <td class="px-4 py-3">
+                        <td class="px-4 py-3 text-sm">
+                            -
+                        </td>
+                        <!-- <td class="px-4 py-3">
                         <div class="flex items-center text-sm">
-                          <!-- Avatar with inset shadow -->
                           <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
 						  	<?php  if($user->img != ''){  ?>
 								<img  id="filePreviewImage" class="object-cover w-full h-full rounded-full" src="{{asset('user_image')}}/{{$user->img}}" alt="">
@@ -66,12 +67,9 @@
                             </p>
                           </div>
                         </div>
-                      </td>
+                      </td> -->
                       <td class="px-4 py-3 text-sm">
                       {{$user->email ? $user->email : '-'}}
-                      </td>
-                      <td class="px-4 py-3 text-sm">
-                      {{$user->phone ? $user->phone : '-'}}
                       </td>
                       <td class="px-4 py-3 text-sm">
                         {{$user->created_at ? $user->created_at : '-'}}

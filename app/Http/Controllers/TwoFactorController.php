@@ -34,14 +34,14 @@ class TwoFactorController extends Controller
     public function complete_registration(Request $request){
         $email = \Auth::user()->email;
         $secret = \Auth::user()->google2fa_secret;
-       
+
         if(isset($request->is_disble) && $request->is_disble == 1){
             $request->validate([
                 'password' => 'required',
             ]);
 
             if (\Hash::check($request->password, \Auth::user()->password)) {
-            
+
             }else{
                return redirect()->back()->with('error','Password do not matched');
             }
@@ -69,12 +69,15 @@ class TwoFactorController extends Controller
         $email = \Auth::user()->email;
         $secret = \Auth::user()->google2fa_secret;
         if($request->isMethod('get')){
-            if(\DB::table('users')->where('email',$email)->where('is_2fa_enable',1)->exists()){
-                return view('pages.login_2f');
-            }else{
+            // if(\DB::table('users')->where('email',$email)->where('is_2fa_enable',1)->exists()){
+            //     return view('pages.login_2f');
+            // }else{
+            //     return redirect()->route('dashboard');
+            // }
+            if(\DB::table('users')->where('email',$email)->exists()){
                 return redirect()->route('dashboard');
             }
-            
+
         }else{
             try {
                 $g = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
@@ -89,7 +92,7 @@ class TwoFactorController extends Controller
                 // Log the exception or handle it appropriately
                 return redirect()->back()->with('error', $e->getMessage());
             }
-            
+
         }
 
     }

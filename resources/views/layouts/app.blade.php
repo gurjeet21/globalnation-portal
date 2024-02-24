@@ -16,12 +16,14 @@
     <link rel="stylesheet" href="{{asset('assets/css/tailwind.output.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/css/custom_style.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/css/intlTelInput.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://tailwindcss.com/docs/installation"></script>
     <script src="{{asset('assets/js/init-alpine.js')}}"></script>
     <script src="{{asset('assets/js/alpine.min.js')}}"></script>
     <script src="{{asset('assets/js/focus-trap.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/intlTelInput.min.js"></script>
     <script type="text/javascript">
         // window.addEventListener("pageshow", function (event) {
         //   var historyTraversal = event.persisted,
@@ -40,6 +42,8 @@
         //   }
         // });
     </script>
+
+
 
     <script>
         tailwind.config = {
@@ -70,6 +74,8 @@
                         '#959595': '#959595',
                         '#297a99': '#297a99',
                         '#61d5d8': '#61d5d8',
+                        '#f0f0f0': '#f0f0f0',
+                        '#e1e6e6': '#e1e6e6',
                     },
                     fontSize: {
                         '13px': '13px',
