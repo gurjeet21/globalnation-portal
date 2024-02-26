@@ -21,14 +21,16 @@ class PermissionMiddleware
             return $next($request);
         }else{
             $user_role =  $user->role;
-            $user_permission = config('constants.roles')[$user->role];
+            $user_cleaned_role = trim($user_role, "'");
+
+            $user_permission = config('constants.roles')[$user_cleaned_role];
             $route = \Request::route()->getName();
             if (in_array($route, $user_permission)){
                 return $next($request);
             }else{
                 abort(404);
-            }          
+            }
         }
-       
+
     }
 }
