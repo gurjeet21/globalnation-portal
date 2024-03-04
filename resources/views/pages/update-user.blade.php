@@ -41,7 +41,7 @@
                                 </div>
 
                                 <div class="3xl:min-w-[300px]">
-                                    <label for="user_role" class="text-base font-bold text-black">User Role</label>
+                                    <label for="user_role" class="text-base font-bold text-black">Super Admins | Admin | Creators</label>
                                     <div class="mt-[10px]">
                                     <select
                                         name="user_role"

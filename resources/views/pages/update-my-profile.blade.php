@@ -43,16 +43,22 @@
                                 </div>
 
                                 <div class="profile-fields">
-                                    <label for="user_role" class="text-base font-bold text-black">Your Designation</label>
+                                    <label for="user_role" class="text-base font-bold text-black">Super Admins | Admins | Creators</label>
                                     <div class="mt-[10px]">
-                                    <select
-    name="user_role"
-    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
->
-    <option value="Admins" {{ $user_detail->role === 'Admins' ? 'selected' : '' }}>Admins</option>
-    <option value="Contributors" {{ $user_detail->role === 'Contributors' ? 'selected' : '' }}>Contributors</option>
-    <option value="Viewers" {{ $user_detail->role === 'Viewers' ? 'selected' : '' }}>Viewers</option>
-</select>
+                                  <select
+                                        name="user_role"
+                                        class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                    >
+                                        @if(\Auth::user()->role == 'Super Admin')
+                                        @foreach(config('constants.roles') as $role => $permission)
+                                            <option value="{{ $role }}" {{ old('role',$user_detail->role) ===  $role  ? 'selected' : ''}}>
+                                            {{ ucfirst($role) }}
+                                        </option>
+                                        @endforeach
+                                        @else
+                                         <option value="Creators">Creators </option>
+                                        @endif
+                                    </select>
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +113,7 @@
                                     <div class="mt-[10px]">
                                         <input type="text" name="phone" value="{{old('phone',$user_detail->phone)}}" id="phone"
                                             class="outline-0 rounded-md border-0 py-[8.5px] text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-[#9CA3AF] px-2.5 text-sm w-full">
+										 <input type="hidden" id="dial_code" name="dial_code" value="{{ old('dial_code', $user_detail->dial_code) ? old('dial_code', $user_detail->dial_code) : 91 }}">
                                     </div>
                                     @if($errors->has('phone'))
                                         <div class="text-red-600">{{ $errors->first('phone') }}</div>
@@ -117,7 +124,7 @@
                     </div>
 
                     <div class="mt-auto bg-white px-4 py-3 text-sm tracking-wide text-black border-t dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800 justify-end flex gap-2.5">
-                        <button type="button" class="text-black p-2.5 rounded border border-[#D1D5DB] hover:bg-[#EEEEEE] text-sm flex gap-1.5 items- focus:outline-none">Back</button>
+                        <button type="button" class="text-black p-2.5 rounded border border-[#D1D5DB] dark:bg-white hover:bg-[#EEEEEE] text-sm flex gap-1.5 items- focus:outline-none">Back</button>
                         <button type="submit"
                             class="text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]">Save Changes</button>
                     </div>
@@ -130,11 +137,24 @@
 $("#fileUploadInput").change(function(event){
     $("#filePreviewImage").attr('src',URL.createObjectURL(event.target.files[0]));
 });
-
+	
+$(document).on('click', '.iti__country', function () {
+    var dial_code = $(this).attr('data-dial-code');
+    $('#dial_code').val(dial_code);
+});
 
 $("#remove_photo").click(function(event){
     $("#filePreviewImage").attr('src','');
     $('#is_remove').val(1);
 });
+</script>
+<script>
+  const input = document.querySelector("#phone");
+  window.intlTelInput(input, {
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/utils.js",
+    separateDialCode: true,
+    initialCountry: "IN",
+
+  });
 </script>
 @endsection

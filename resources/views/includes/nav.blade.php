@@ -3,7 +3,7 @@
 				<!-- Sidebar component, swap this element with another sidebar if you like -->
 				<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-menu-bg-color px-6 pb-4">
 					<div class="flex items-center m-auto pt-3 pb-3">
-						<img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV.svg')}}" alt="Your Company">
+						<img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV.svg')}}" alt="GlobalNation">
 					</div>
 					<nav class="flex flex-1 flex-col mt-3">
 						<ul role="list" class="flex flex-1 flex-col gap-y-7 menu-list">
@@ -36,6 +36,13 @@
 											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
 											<i class="fa-solid fa-user text-lg"></i>
 											Users
+										</a>
+									</li>
+									<li class="downloads">
+										<a href="{{route('downloads')}}"
+											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
+											<i class="fa-solid fa-download text-lg"></i>
+											Downloads
 										</a>
 									</li>
 								<?php } ?>
@@ -76,14 +83,46 @@
 			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-menu-bg-color px-6 pb-4" style="
 			">
 				<div class="flex items-center m-auto pt-8 pb-3">
-					<img class="h-27 w-179" src="{{asset('assets/img/Logo_PDW.png')}}" alt="Your Company">
+                <img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV.svg')}}" alt="GlobalNation">
 				</div>
 				<nav class="flex flex-1 flex-col">
 					<ul role="list" class="flex flex-1 flex-col gap-y-7">
 						<li>
 							<ul role="list" class="flex flex-1 flex-col gap-y-7">
 								<li>
-									<ul role="list" class="-mx-2 space-y-1">
+                                <ul role="list" class="-mx-2 space-y-1">
+									<li>
+										<a href="/"
+											class="<?php echo request()->routeIs('dashboard') ? 'bg-[#297a99] text-white' : 'text-[#808080]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 rounded-md p-2 text-sm leading-6">
+											<svg
+											class="w-5 h-5"
+											aria-hidden="true"
+											fill="none"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											>
+											<path
+												d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+											></path>
+											</svg>
+											Dashboard
+										</a>
+									</li>
+
+									<?php if(\Auth::user()->role == 'Super Admin' || \Auth::user()->role == 'Admin'){?>
+									<li class="users">
+										<a href="{{route('user')}}"
+											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
+											<i class="fa-solid fa-user text-lg"></i>
+											Users
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+									<!-- <ul role="list" class="-mx-2 space-y-1">
 										<li>
 											<a href="#" class="bg-[#297a99] text-white group flex gap-x-3 rounded-md p-2 text-sm leading-6">
 												<svg xmlns="http://www.w3.org/2000/svg" width="19" height="21" viewBox="0 0 19 21">
@@ -150,7 +189,7 @@
 												Cron Jobs
 											</a>
 										</li>
-										<?php if(\Auth::user()->role == 'Super Admin'){?>
+										<?php //if(\Auth::user()->role == 'Super Admin'){?>
 										<li>
 											<a href="{{route('user')}}"
 												class="text-[#808080] hover:text-white hover:bg-[#297a99] group flex gap-x-3 rounded-md p-2 text-sm leading-6">
@@ -158,8 +197,8 @@
 												Users
 											</a>
 										</li>
-										<?php } ?>
-									</ul>
+										<?php //} ?>
+									</ul> -->
 								</li>
 
 								<li class="mt-auto">

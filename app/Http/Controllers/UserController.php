@@ -156,4 +156,10 @@ class UserController extends Controller
     	return redirect()->back()->with(['succ_msg'=>'User sucessfully deleted']);
     }
 
+    /* Download Page function */
+    public function downloads()
+    {
+        return view('pages.downloads');
+    }
+
 }

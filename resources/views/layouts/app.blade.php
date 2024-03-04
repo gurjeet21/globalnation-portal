@@ -23,6 +23,8 @@
     <script src="{{asset('assets/js/init-alpine.js')}}"></script>
     <script src="{{asset('assets/js/alpine.min.js')}}"></script>
     <script src="{{asset('assets/js/focus-trap.js')}}"></script>
+    <script src="{{asset('assets/js/ckeditor.js')}}"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/intlTelInput.min.js"></script>
     <script type="text/javascript">
         // window.addEventListener("pageshow", function (event) {
@@ -76,6 +78,7 @@
                         '#61d5d8': '#61d5d8',
                         '#f0f0f0': '#f0f0f0',
                         '#e1e6e6': '#e1e6e6',
+                        '#eeeeee': '#eeeeee'
                     },
                     fontSize: {
                         '13px': '13px',

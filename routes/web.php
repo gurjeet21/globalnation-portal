@@ -59,6 +59,8 @@ Route::middleware(['auth', 'permission'])->group(function () {
     //});
 });
 
+Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+
 /* clear-cache */
 Route::get('/c', function() {
     \Artisan::call('cache:clear');
