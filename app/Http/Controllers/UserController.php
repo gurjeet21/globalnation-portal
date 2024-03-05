@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use App\Models\ManagePages;
 use DB;
 class UserController extends Controller
 {
@@ -159,7 +160,11 @@ class UserController extends Controller
     /* Download Page function */
     public function downloads()
     {
-        return view('pages.downloads');
+		$download = ManagePages::first();	
+		$download->plateform_name = isset($download->plateform_name) ? json_decode($download->plateform_name, true) : [];
+		$download->plateform_file = isset($download->plateform_file) ? json_decode($download->plateform_file, true) : [];
+		$download->plateform_status = isset($download->plateform_status) ? json_decode($download->plateform_status, true) : [];
+        return view('pages.downloads',compact('download'));
     }
 
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DownloadController;
 //use App\Http\Controllers\CronJobController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ManagePagesController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\TwoFactorController;
@@ -58,8 +59,12 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::get('/settings', [SettingController::class, 'index'])->name('setting');
     //});
 });
-
-Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+Route::group(['prefix' => 'pages'], function(){
+    Route::get('/', [ManagePagesController::class, 'index'])->name('page.list');
+    Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
+    Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
+});
 
 /* clear-cache */
 Route::get('/c', function() {
