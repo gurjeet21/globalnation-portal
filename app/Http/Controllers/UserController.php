@@ -160,7 +160,7 @@ class UserController extends Controller
     /* Download Page function */
     public function downloads()
     {
-		$download = ManagePages::first();	
+		$download = ManagePages::first();
 		$download->plateform_name = isset($download->plateform_name) ? json_decode($download->plateform_name, true) : [];
 		$download->plateform_file = isset($download->plateform_file) ? json_decode($download->plateform_file, true) : [];
 		$download->plateform_status = isset($download->plateform_status) ? json_decode($download->plateform_status, true) : [];

@@ -26,17 +26,17 @@ class ManagePagesController extends Controller
         //      return response()->json(['status' => 'error','message' => $validator->messages()], 200);
         // }
         $data = $request->all();
-     
+
         $plateform_file = [];
         if ($request->file('plateform_file')) {
-            foreach($request->file('plateform_file') as $key => $file){                 
+            foreach($request->file('plateform_file') as $key => $file){
                     $imageName = time().'_'. $key . '.' . $file->getClientOriginalExtension();
-                    $file->move(public_path('download'), $imageName);              
-                    $plateform_file[] = $imageName;                   
+                    $file->move(public_path('download'), $imageName);
+                    $plateform_file[] = $imageName;
              }
-        }        
+        }
         ManagePages::updateOrCreate(
-            ['slug' => Str::slug($data['page_title'], '-')],
+            ['id' => 1],
             [
             'title' => $data['page_title'],
             'slug' => Str::slug($data['page_title'], '-'),
@@ -47,6 +47,6 @@ class ManagePagesController extends Controller
         ]);
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
-       
+
     }
 }

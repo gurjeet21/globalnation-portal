@@ -117,6 +117,9 @@
                         '300px': '300px',
                         '200px': '200px',
                     },
+                    maxWidth: {
+                        '45.5%': '45.5%',
+                    },
                     gridAutoColumns: {
                         '2fr': 'minmax(0, 300px)',
                     },

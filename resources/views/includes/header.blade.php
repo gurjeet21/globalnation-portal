@@ -11,7 +11,7 @@
 								clip-rule="evenodd"></path>
 						</svg>
 					</button>
-
+                    @if(!Str::contains(request()->path(), 'pages'))
 					<form class="flex justify-center flex-1 lg:mr-32">
 						<div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
 							<div class="absolute inset-y-0 flex items-center pl-2">
@@ -38,8 +38,9 @@
 							/>
 						</div>
 					</form>
-					
-
+                    @endif
+                    <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
+                    </div>
 					<div class="flex items-center gap-x-4 lg:gap-x-6">
 						{{--<div class="relative">
 							<button class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 focus:outline-none"
@@ -94,7 +95,7 @@
 										    <svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
 										</div>
 									<?php } ?>
-									
+
 										<span class="hidden lg:flex lg:items-center">
 											<span class="ml-4 text-sm font-normal leading-6 text-black dark:text-[#61d5d8]" aria-hidden="true">{{\Auth::user()->name}}</span>
 											<svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -117,7 +118,7 @@
 										</a>
 									</li>
 
-									
+
 									<li class="flex">
 										<a class="inline-flex items-center w-full px-2 py-1 text-sm transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
 											href="">
@@ -125,7 +126,7 @@
 					                            @csrf
 					                            <span onclick="event.preventDefault(); this.closest('form').submit();">Sign Out</span>
 					                        </form>
-											
+
 										</a>
 									</li>
 								</ul>
@@ -161,7 +162,7 @@
 						</div>
 
 						<div id="all_search" class="mt-2" style="height: 35vh;overflow: auto;">
-							No search 
+							No search
 						</div>
 					</div>
 			</div>
@@ -169,8 +170,7 @@
 
 	</header>
 
-			
 
 
 
-							
+

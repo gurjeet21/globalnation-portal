@@ -1,15 +1,20 @@
 @extends('layouts.app')
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
+    @if(Session::has('success'))
+        <div class="p-4 mb-2 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                <span class="font-semibold">Success: </span> {{session('success')}}
+        </div>
+    @endif
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
         <form method="post" id="download-form" action="{{route('save-page')}}" enctype="multipart/form-data">
              @csrf
             <div class="flex gap-4">
-                <div class="flex-1">
+                <div class="flex-1 max-w-[45.5%]">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Page Title</span>
                         <input
-                            class="block mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee]  focus:outline-none dark:focus:shadow-outline-gray form-input"
+                            class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee]  focus:outline-none dark:focus:shadow-outline-gray form-input"
                             placeholder="Downloads" type="text" name="page_title"
                             value="{{isset($download->title) ? $download->title : ''}}"
                         />
@@ -94,7 +99,7 @@
             </div>
 
             <div class="form-group">
-                <label for="editor">Disclaimers</label>          
+                <label for="editor">Disclaimers</label>
                 <textarea class="mt-1"  name="content" id="editor">
                     {{isset($download->disclaimers) ? $download->disclaimers : ''}}
                 </textarea>
@@ -134,10 +139,10 @@
         disableButtonRemove();
     });
 
-    $('#download-btn').on('click', function(e) { 
+    $('#download-btn').on('click', function(e) {
             e.preventDefault();
             let myform = document.getElementById("download-form");
-            let fd = new FormData(myform);                
+            let fd = new FormData(myform);
                 $.ajax({
                     url: "{{ route('save-page') }}",
                     type: "POST",
@@ -150,7 +155,7 @@
                         console.log(data);
                     }
                 });
-           
+
 
         })
 
@@ -190,7 +195,7 @@
         $(this).parent().parent().parent().find('.plate_form_hide').show();
     });
 
-    $('.plate_form_hide').on('click', function () {       
+    $('.plate_form_hide').on('click', function () {
         $(this).parent().parent().parent().find('.plateform_status').val('1');
         $(this).hide();
         $(this).parent().parent().parent().find('.plate_form_show').show();
@@ -206,7 +211,7 @@
     .catch(error => {
         console.error(error);
     });
-  
+
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
 
 });

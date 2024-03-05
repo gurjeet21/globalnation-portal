@@ -11,7 +11,7 @@
 								<ul role="list" class="-mx-2 space-y-1">
 									<li>
 										<a href="/"
-											class="<?php echo request()->routeIs('dashboard') ? 'bg-[#297a99] text-white' : 'text-[#808080]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 rounded-md p-2 text-sm leading-6">
+											class="<?php echo request()->routeIs('dashboard') ? 'bg-[#297a99] text-white' : 'text-[#808080]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 p-2 text-sm leading-6">
 											<svg
 											class="w-5 h-5"
 											aria-hidden="true"
@@ -33,22 +33,56 @@
 									<?php if(\Auth::user()->role == 'Super Admin' || \Auth::user()->role == 'Admin'){?>
 									<li class="users">
 										<a href="{{route('user')}}"
-											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
+											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
 											<i class="fa-solid fa-user text-lg"></i>
 											Users
 										</a>
 									</li>
 									<li class="downloads">
 										<a href="{{route('downloads')}}"
-											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
-											<i class="fa-solid fa-download text-lg"></i>
-											Downloads
+											class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
+											<i class="fa-solid fa-file text-lg"></i>
+											Pages
 										</a>
+
+                                        <ul class="space-y-2 overflow-hidden text-sm font-medium">
+                                            <li class="downloads">
+                                                <a href="{{route('downloads')}}"
+                                                    class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> pl-6 hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
+                                                    <i class="fa-solid fa-download text-lg"></i>
+                                                    Downloads
+                                                </a>
+                                            </li>
+                                        </ul>
 									</li>
+<!--
+									<li class="downloads">
+										<a @click="togglePagesMenu"
+											class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
+											<i class="fa-solid fa-file text-lg" aria-hidden="true"></i>
+											Pages
+                                            <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" >
+                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" ></path>
+                                            </svg>
+										</a>
+
+                                        <template x-if="isPagesMenuOpen">
+                                            <ul class="space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-[#297a99] dark:text-gray-400 dark:bg-[#297a99]"
+                                                aria-label="submenu"
+                                                >
+                                                <li class="downloads">
+                                                    <a href="{{route('downloads')}}"
+                                                        class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> text-white hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center rounded-md p-2 text-sm leading-6">
+                                                        <i class="fa-solid fa-download text-lg"></i>
+                                                        Downloads
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </template>
+									</li> -->
 								<?php } ?>
 								</ul>
 							</li>
-
 							<!-- <li class="mt-auto">
 								<a href="{{route('twoFa')}}"
 									class="group -mx-2 flex gap-x-3 item-center rounded-md p-2 text-sm leading-6 text-[#297a99] hover:bg-[#297a99] hover:text-white">
