@@ -44,6 +44,7 @@
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                                 <input class="hidden file-input" name="plateform_file_{{$key}}" type="file">
+                                {{isset($download->plateform_file[$key]) ? $download->plateform_file[$key] : ''}}
                             </div>
                         </label>
                     </div>
@@ -167,7 +168,13 @@
                     processData: false,
                     dataType: "json",
                     success: function(data) {
-                        console.log(data);
+                        Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Record updated successfully",
+                        showConfirmButton: false,
+                        timer: 2500
+                        });
                     }
                 });
 

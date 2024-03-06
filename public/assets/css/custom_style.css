@@ -82,6 +82,15 @@ height: 37px!important;
     min-height: 200px;
 }
 
+.swal2-popup {
+    width: 400px !important; /* Set desired width */
+    height: auto !important; /* Set desired height */
+    max-height: 80vh !important; /* Set max height if needed */
+  }
+  h2#swal2-title {
+    font-size: 22px;
+}
+
 
 @media(min-width: 1025px){
 .select2-container{
