@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
-    <div class="breandcrumb-top">Pages | Download</div>
+    <div class="breandcrumb-top">Pages | “Downloads</div>
     @if(Session::has('success'))
         <div class="p-4 mb-2 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span class="font-semibold">Success: </span> {{session('success')}}
@@ -29,7 +29,7 @@
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
                     <div class="flex-1">
                         <label class="block text-sm">
-                            <span class="text-black">Plateform</span>
+                            <span class="text-black">Platform</span>
                             <input
                                 class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                                 placeholder="Downloads" type="text"
