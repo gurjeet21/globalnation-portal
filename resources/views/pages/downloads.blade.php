@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
-    <div class="breandcrumb-top">Pages | Downloads</div>
     @if(Session::has('success'))
         <div class="p-4 mb-2 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span class="font-semibold">Success: </span> {{session('success')}}
@@ -106,7 +105,7 @@
                     {{isset($download->disclaimers) ? $download->disclaimers : ''}}
                 </textarea>
             </div>
-            <input type="button" id="download-btn" class="mt-4 float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
+            <input type="button" id="download-btn" class="mt-4 cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
         </form>
     </div>
 </main>
@@ -157,7 +156,7 @@
             e.preventDefault();
             let myform = document.getElementById("download-form");
             let fd = new FormData(myform);
-            var textContent = editorInstance.getData();           
+            var textContent = editorInstance.getData();
             fd.append("disclaimers", textContent);
                 $.ajax({
                     url: "{{ route('save-page') }}",
@@ -221,7 +220,7 @@
         $(this).parent().parent().parent().find('.plateform_status').val('1');
         $(this).hide();
         $(this).parent().parent().parent().find('.plate_form_show').show();
-    });  
+    });
 
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
 

@@ -39,8 +39,59 @@
 						</div>
 					</form>
                     @endif
-                    <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
-                    </div>
+
+                    @php
+                        // Get the current route name
+                        $currentRouteName = \Illuminate\Support\Facades\Route::currentRouteName();
+
+                        // Extract segments from the route name
+                        $segments = explode('.', $currentRouteName);
+
+                        // Display "pages" as the first segment
+                        $breadcrumbs = [['url' => '/', 'name' => 'pages']];
+
+                        // Add the remaining segments
+                        $currentUrl = '/pages';
+                        $totalSegments = count($segments);
+
+                        foreach ($segments as $key => $segment) {
+                            $currentUrl .= '/' . $segment;
+
+                            // Skip anchor tag for the last segment if it's the current route
+                            if ($key === $totalSegments - 1) {
+                                $breadcrumbs[] = ['url' => null, 'name' => $segment];
+                            } else {
+                                $breadcrumbs[] = ['url' => $currentUrl, 'name' => $segment];
+                            }
+                        }
+                    @endphp
+
+                    @if(Str::contains(request()->path(), 'pages'))
+
+                        <div class="relative w-full max-w-xl mr-6" >
+                        <ol class="breadcrumb">
+                            @if (!empty($breadcrumbs))
+                            <ol class="breadcrumb flex gap-2 items-center">
+
+                            @foreach ($breadcrumbs as $breadcrumb)
+                                <li class="breadcrumb-item">
+                                    @if ($breadcrumb['url'])
+                                    <i class="fa-solid fa-file text-[#797d7f]"></i> <a href="{{ $breadcrumb['url'] }}" class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb['name'] }}</a>
+                                    @else
+                                        <span class="text-[#61d5d8] text-lg dark:text-[#61d5d8] capitalize">{{ $breadcrumb['name'] }}</span>
+                                    @endif
+                                </li>
+                                @if (!$loop->last)
+                                    <span class="breadcrumb-separator">|</span>
+                                @endif
+                            @endforeach
+                            </ol>
+                            @endif
+                        </ol>
+                        </div>
+
+                    @endif
+
 					<div class="flex items-center gap-x-4 lg:gap-x-6">
 						{{--<div class="relative">
 							<button class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 focus:outline-none"

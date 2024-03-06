@@ -25,7 +25,7 @@ class ManagePagesController extends Controller
         // if ($validator->fails()) {
         //      return response()->json(['status' => 'error','message' => $validator->messages()], 200);
         // }
-        $data = $request->all();    
+        $data = $request->all();
         $plateform_file = [];
         $total_plateform = count($data['plateform_name']);
         if($total_plateform > 0){
@@ -34,13 +34,13 @@ class ManagePagesController extends Controller
                 if ($request->hasFile($key_name)) {
                         $file = $request->file($key_name);
                         $imageName = time().'_'. $x . '.' . $file->getClientOriginalExtension();
-                        $file->move(public_path('download'), $imageName);
+                        $file->move(public_path('_uploads/builds'), $imageName);
                         $plateform_file[] = $imageName;
                 }else{
-                    $plateform_file[] = $data['plateform_file_hidden'][$x]; 
+                    $plateform_file[] = $data['plateform_file_hidden'][$x];
                 }
             }
-        }   
+        }
 
         ManagePages::updateOrCreate(
             ['id' => 1],

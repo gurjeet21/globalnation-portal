@@ -48,8 +48,8 @@
                                         <ul class="space-y-2 overflow-hidden text-sm font-medium">
                                             <li class="downloads">
                                                 <a href="{{route('downloads')}}"
-                                                    class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> pl-6 hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
-                                                    <i class="fa-solid fa-download text-lg"></i>
+                                                    class="<?php echo request()->routeIs('downloads') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> pl-6 hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                    <i class="fa-solid fa-circle text-[5px]"></i>
                                                     Downloads
                                                 </a>
                                             </li>

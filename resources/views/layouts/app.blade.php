@@ -79,10 +79,12 @@
                         '#61d5d8': '#61d5d8',
                         '#f0f0f0': '#f0f0f0',
                         '#e1e6e6': '#e1e6e6',
-                        '#eeeeee': '#eeeeee'
+                        '#eeeeee': '#eeeeee',
+                        '#797d7f': '#797d7f',
                     },
                     fontSize: {
                         '13px': '13px',
+                        '5px': '5px',
                     },
                     fontFamily: {
                         poppins: ['Poppins'],
@@ -228,13 +230,16 @@
         var overlay = document.getElementById('overlay');
 
         // show the overlay and the dialog
-        openButton.addEventListener('click', function () {
-            dialog.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-            $('#search-field').val('');
-            $('#all_search').html('No Search');
-            $('#search-field').focus();
-        });
+        if(openButton){
+            openButton.addEventListener('click', function () {
+                dialog.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                $('#search-field').val('');
+                $('#all_search').html('No Search');
+                $('#search-field').focus();
+            });
+        }
+
 
         // hide the overlay and the dialog
         closeButton.addEventListener('click', function () {
