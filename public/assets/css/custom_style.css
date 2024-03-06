@@ -77,9 +77,8 @@ height: 37px!important;
 
     font-size: 16px!important;
 }
-.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
-    background: #eeeeee;
-    min-height: 200px;
+.ck.ck-content.ck-editor__editable {
+    min-height: 220px;
 }
 
 .swal2-popup {
