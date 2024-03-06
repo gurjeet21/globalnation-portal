@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
+    <div class="breandcrumb-top">Pages | Download</div>
     @if(Session::has('success'))
         <div class="p-4 mb-2 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
                 <span class="font-semibold">Success: </span> {{session('success')}}
@@ -42,7 +43,7 @@
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                <input class="hidden file-input" name="plateform_file[]" type="file">
+                                <input class="hidden file-input" name="plateform_file_{{$key}}" type="file">
                             </div>
                         </label>
                     </div>
@@ -139,10 +140,24 @@
         disableButtonRemove();
     });
 
+    // Initialize CKEditor on the specified textarea
+    let editorInstance ;
+    ClassicEditor
+    .create(document.querySelector('#editor'))
+    .then( newEditor => {
+        console.log('Editor was initialized', editor);
+        editorInstance  = newEditor; // Store the editor instance in the variable
+    } )
+    .catch(error => {
+        console.error(error);
+    });
+
     $('#download-btn').on('click', function(e) {
             e.preventDefault();
             let myform = document.getElementById("download-form");
             let fd = new FormData(myform);
+            var textContent = editorInstance.getData();           
+            fd.append("disclaimers", textContent);
                 $.ajax({
                     url: "{{ route('save-page') }}",
                     type: "POST",
@@ -199,18 +214,7 @@
         $(this).parent().parent().parent().find('.plateform_status').val('1');
         $(this).hide();
         $(this).parent().parent().parent().find('.plate_form_show').show();
-    });
-
-    // Initialize CKEditor on the specified textarea
-    let newEditor;
-    ClassicEditor
-    .create(document.querySelector('#editor'))
-    .then( newEditor => {
-        editor = newEditor;
-    } )
-    .catch(error => {
-        console.error(error);
-    });
+    });  
 
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
 
