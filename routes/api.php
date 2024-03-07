@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\{
 |
 */
 Route::get('/download-content',  [ManageApiController::class, 'downloadContent']);
+Route::get('/download-test-content',  [ManageApiController::class, 'downloadTestContent']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

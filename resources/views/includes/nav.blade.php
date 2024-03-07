@@ -53,6 +53,14 @@
                                                     Downloads
                                                 </a>
                                             </li>
+
+											<li class="downloads">
+                                                <a href="{{route('downloads-test')}}"
+                                                    class="<?php echo request()->routeIs('downloads-test') ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> pl-6 hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                    <i class="fa-solid fa-circle text-[5px]"></i>
+                                                    Downloads Test
+                                                </a>
+                                            </li>
                                         </ul>
 									</li>
 <!--

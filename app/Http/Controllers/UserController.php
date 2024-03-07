@@ -167,4 +167,14 @@ class UserController extends Controller
         return view('pages.downloads',compact('download'));
     }
 
+    /* Download Page function */
+    public function downloads_test()
+    {
+		$download_test = ManagePages::find(2);
+		$download_test->plateform_name = isset($download_test->plateform_name) ? json_decode($download_test->plateform_name, true) : [];
+		$download_test->plateform_file = isset($download_test->plateform_file) ? json_decode($download_test->plateform_file, true) : [];
+		$download_test->plateform_status = isset($download_test->plateform_status) ? json_decode($download_test->plateform_status, true) : [];
+        return view('pages.downloads-test',compact('download_test'));
+    }
+
 }

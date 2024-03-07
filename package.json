@@ -16,6 +16,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-decoupled-document": "^41.2.0",
+        "@ckeditor/ckeditor5-html-embed": "^41.2.0",
         "intl-tel-input": "^19.4.0"
     }
 }
