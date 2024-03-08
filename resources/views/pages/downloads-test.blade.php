@@ -105,7 +105,11 @@
                     {{isset($download_test->disclaimers) ? $download_test->disclaimers : ''}}
                 </textarea>
             </div>
-            <input type="button" id="download-btn" class="mt-4 cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
+
+            <div class="flex justify-end items-center mt-4 gap-2">
+                <div id="loader" style="display:none;"><img class="h-27 w-10" src="{{asset('assets/img/loader.gif')}}" alt="GlobalNation"></div>
+                <input type="button" id="download-btn" class="cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
+            </div>
         </form>
     </div>
 </main>
@@ -140,45 +144,66 @@
         disableButtonRemove();
     });
 
-    // Initialize CKEditor on the specified textarea
     let editorInstance ;
-    ClassicEditor
-    .create(document.querySelector('#editor'))
-    .then( newEditor => {
-        console.log('Editor was initialized', editor);
-        editorInstance  = newEditor; // Store the editor instance in the variable
-    } )
-    .catch(error => {
-        console.error(error);
+
+    tinymce.init({
+        selector: '#editor',
+        plugins: ' textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+        ],
+        color_picker_callback: function(callback, value) {
+            callback('#FF00FF');
+        },
+        setup: function (editor) {
+            editor.on('init', function () {
+                console.log('Editor was initialized', editor);
+                editorInstance = editor; // Store the editor instance in the variable
+            });
+        }
     });
 
+
     $('#download-btn').on('click', function(e) {
-            e.preventDefault();
-            let myform = document.getElementById("download-form");
-            let fd = new FormData(myform);
-            var textContent = editorInstance.getData();
-            fd.append("disclaimers", textContent);
-                $.ajax({
-                    url: "{{ route('save-page-test') }}",
-                    type: "POST",
-                    data: fd,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    dataType: "json",
-                    success: function(data) {
-                        Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Record updated successfully",
-                        showConfirmButton: false,
-                        timer: 2500
-                        });
-                    }
-                });
+        e.preventDefault();
+        let myform = document.getElementById("download-form");
+        let fd = new FormData(myform);
+        if (editorInstance) {
+            var textContent = editorInstance.getContent();
+        }else{
+            console.warn('Editor is not yet initialized.');
+        }
 
-
-        })
+        fd.append("disclaimers", textContent);
+            $.ajax({
+                url: "{{ route('save-page-test') }}",
+                type: "POST",
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                beforeSend: function() {
+                    $('#loader').show();
+                },
+                success: function(data) {
+                    Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Record updated successfully",
+                    showConfirmButton: false,
+                    timer: 2500
+                    });
+                },
+                complete: function() {
+                    $('#loader').hide();
+                }
+            });
+    });
 
     function disableButtonRemove() {
         container.find(".dynamic-field .remove-button").prop("disabled", container.find(".dynamic-field").length === 1);

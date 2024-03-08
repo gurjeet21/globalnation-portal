@@ -142,21 +142,36 @@
 
     // Initialize CKEditor on the specified textarea
     let editorInstance ;
-    ClassicEditor
-    .create(document.querySelector('#editor'))
-    .then( newEditor => {
-        console.log('Editor was initialized', editor);
-        editorInstance  = newEditor; // Store the editor instance in the variable
-    } )
-    .catch(error => {
-        console.error(error);
+    tinymce.init({
+        selector: '#editor',
+        plugins: ' textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+        ],
+        color_picker_callback: function(callback, value) {
+            callback('#FF00FF');
+        },
+        setup: function (editor) {
+            editor.on('init', function () {
+                console.log('Editor was initialized', editor);
+                editorInstance = editor; // Store the editor instance in the variable
+            });
+        }
     });
 
     $('#download-btn').on('click', function(e) {
             e.preventDefault();
             let myform = document.getElementById("download-form");
             let fd = new FormData(myform);
-            var textContent = editorInstance.getData();
+            if (editorInstance) {
+                var textContent = editorInstance.getContent();
+            }else{
+                console.warn('Editor is not yet initialized.');
+            }
             fd.append("disclaimers", textContent);
                 $.ajax({
                     url: "{{ route('save-page') }}",
@@ -168,7 +183,7 @@
                     dataType: "json",
                     success: function(data) {
                         Swal.fire({
-                        position: "top-end",
+                        position: "center",
                         icon: "success",
                         title: "Record updated successfully",
                         showConfirmButton: false,
@@ -178,7 +193,7 @@
                 });
 
 
-        })
+    });
 
     function disableButtonRemove() {
         container.find(".dynamic-field .remove-button").prop("disabled", container.find(".dynamic-field").length === 1);

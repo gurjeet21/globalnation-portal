@@ -15,7 +15,8 @@
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-laravel": "^2.1",
         "pragmarx/google2fa-qrcode": "^3.0",
-        "sonata-project/google-authenticator": "^2.3"
+        "sonata-project/google-authenticator": "^2.3",
+        "tinymce/tinymce": "^6.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

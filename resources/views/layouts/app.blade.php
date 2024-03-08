@@ -23,10 +23,9 @@
     <script src="{{asset('assets/js/init-alpine.js')}}"></script>
     <script src="{{asset('assets/js/alpine.min.js')}}"></script>
     <script src="{{asset('assets/js/focus-trap.js')}}"></script>
-    <!-- <script src="{{asset('assets/js/ckeditor.js')}}"></script>-->
-   <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/xo5s5qsxsrbdy3ccxodd9kpyo0h6vhr3nii0y42vj05v1mf7/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
         // window.addEventListener("pageshow", function (event) {
         //   var historyTraversal = event.persisted,
