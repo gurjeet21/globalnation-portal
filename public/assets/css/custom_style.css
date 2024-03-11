@@ -89,7 +89,12 @@ height: 37px!important;
   h2#swal2-title {
     font-size: 22px;
 }
-
+.tox-edit-area iframe {
+    background-image: url(https://globalnation.tv/static/media/GNTV_BG_Landing-Page.651eb1397180fd19a27d.svg)!important;
+    width: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
 
 @media(min-width: 1025px){
 .select2-container{

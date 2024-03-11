@@ -39,6 +39,8 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'max_file_uploads' => 512,
+            'max_request_size' => 100 * 1024,
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

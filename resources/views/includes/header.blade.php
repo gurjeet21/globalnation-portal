@@ -67,32 +67,37 @@
                     @endphp
 
                     @if(Str::contains(request()->path(), 'pages'))
-
                         <div class="relative w-full max-w-xl mr-6" >
-                        <ol class="breadcrumb">
-                            @if (!empty($breadcrumbs))
-                            <ol class="breadcrumb flex gap-2 items-center">
+							<ol class="breadcrumb">
+								@if (!empty($breadcrumbs))
+								<ol class="breadcrumb flex gap-2 items-center">
 
-                            @foreach ($breadcrumbs as $breadcrumb)
-                                <li class="breadcrumb-item">
-                                    @if ($breadcrumb['url'])
-                                    <i class="fa-solid fa-file text-[#797d7f]"></i> <a href="{{ $breadcrumb['url'] }}" class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb['name'] }}</a>
-                                    @else
-                                        <span class="text-[#61d5d8] text-lg dark:text-[#61d5d8] capitalize">{{ $breadcrumb['name'] }}</span>
-                                    @endif
-                                </li>
-                                @if (!$loop->last)
-                                    <span class="breadcrumb-separator">|</span>
-                                @endif
-                            @endforeach
-                            </ol>
-                            @endif
-                        </ol>
+								@foreach ($breadcrumbs as $breadcrumb)
+									<li class="breadcrumb-item">
+										@if ($breadcrumb['url'])
+										<i class="fa-solid fa-file text-[#797d7f]"></i> <a href="{{ $breadcrumb['url'] }}" class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb['name'] }}</a>
+										@else
+											<span class="text-[#61d5d8] text-lg dark:text-[#61d5d8] capitalize">{{ $breadcrumb['name'] }}</span>
+										@endif
+									</li>
+									@if (!$loop->last)
+										<span class="breadcrumb-separator">|</span>
+									@endif
+								@endforeach
+								</ol>
+								@endif
+							</ol>
                         </div>
 
                     @endif
 
-					<div class="flex items-center gap-x-4 lg:gap-x-6">
+					@if(Str::contains(request()->path(), 'pages'))
+					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5" >
+					<a href=""><i class="fa fa-eye"></i> Preview</a>
+					</div>
+					@endif
+
+					<div class="flex items-center gap-x-4 lg:gap-x-6 @if(Str::contains(request()->path(), 'pages')) w-full justify-end @endif">
 						{{--<div class="relative">
 							<button class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 focus:outline-none"
 								@click="toggleNotificationsMenu" @keydown.escape="closeNotificationsMenu" aria-label="Notifications"
