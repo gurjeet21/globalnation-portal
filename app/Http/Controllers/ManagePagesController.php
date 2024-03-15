@@ -41,9 +41,15 @@ class ManagePagesController extends Controller
                 }
             }
         }
+        
+        $status = $data['status'];
+        $page_id = $data['page_id'];
+        if($status == 2){
+            $page_id = 3;  
+        }
 
         ManagePages::updateOrCreate(
-            ['id' => 1],
+            ['id' => $page_id],          
             [
             'title' => $data['page_title'],
             'slug' => Str::slug($data['page_title'], '-'),
@@ -51,6 +57,7 @@ class ManagePagesController extends Controller
             'plateform_file' => json_encode($plateform_file),
             'plateform_status' => json_encode($data['plateform_status']),
             'disclaimers' => $data['disclaimers'],
+            'status' => $status
         ]);
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
@@ -59,7 +66,7 @@ class ManagePagesController extends Controller
 
     public function store_test(Request $request)
     {
-        $data = $request->all();
+        $data = $request->all();        
         $plateform_file = [];
         $total_plateform = count($data['plateform_name']);
         if($total_plateform > 0){
@@ -76,8 +83,15 @@ class ManagePagesController extends Controller
             }
         }
 
+        $status = $data['status'];
+        $page_id = $data['page_id'];
+        $page_id = $data['page_id'];
+        if($status == 2){
+            $page_id = 4;  
+        }
+
         ManagePages::updateOrCreate(
-            ['id' => 2],
+            ['id' => $page_id],
             [
             'title' => $data['page_title'],
             'slug' => Str::slug($data['page_title'], '-'),
@@ -85,6 +99,7 @@ class ManagePagesController extends Controller
             'plateform_file' => json_encode($plateform_file),
             'plateform_status' => json_encode($data['plateform_status']),
             'disclaimers' => $data['disclaimers'],
+            'status' => $status
         ]);
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);

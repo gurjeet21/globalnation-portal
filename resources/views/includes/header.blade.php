@@ -92,7 +92,7 @@
                     @endif
 
 					@if(Str::contains(request()->path(), 'pages'))
-					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5" >
+					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="downloads-preview-btn">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
 					</div>
 					@endif

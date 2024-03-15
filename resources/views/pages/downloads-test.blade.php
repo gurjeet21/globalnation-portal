@@ -18,6 +18,8 @@
                             placeholder="Downloads" type="text" name="page_title"
                             value="{{isset($download_test->title) ? $download_test->title : ''}}"
                         />
+                        <input type="hidden" name="page_id" value="{{isset($download->id) ? $download->id : ''}}"
+                        />
                     </label>
                 </div>
             </div>
@@ -177,7 +179,7 @@
         }else{
             console.warn('Editor is not yet initialized.');
         }
-
+        fd.append("status", 1);
         fd.append("disclaimers", textContent);
             $.ajax({
                 url: "{{ route('save-page-test') }}",
@@ -198,6 +200,37 @@
                     showConfirmButton: false,
                     timer: 2500
                     });
+                },
+                complete: function() {
+                    $('#loader').hide();
+                }
+            });
+    });
+
+    $('#downloads-preview-btn').on('click', function(e) {
+        e.preventDefault();
+        let myform = document.getElementById("download-form");
+        let fd = new FormData(myform);
+        if (editorInstance) {
+            var textContent = editorInstance.getContent();
+        }else{
+            console.warn('Editor is not yet initialized.');
+        }
+        fd.append("status", 2);
+        fd.append("disclaimers", textContent);
+            $.ajax({
+                url: "{{ route('save-page-test') }}",
+                type: "POST",
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                beforeSend: function() {
+                    $('#loader').show();
+                },
+                success: function(data) {
+                    window.open("https://globalnation.tv/downloads-test/preview");
                 },
                 complete: function() {
                     $('#loader').hide();
