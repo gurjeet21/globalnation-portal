@@ -10,7 +10,7 @@
         <form method="post" id="download-form" action="{{route('save-page-test')}}" enctype="multipart/form-data">
              @csrf
             <div class="flex gap-4">
-                <div class="flex-1 max-w-[45.5%]">
+                <div class="w-[43%]">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Page Title</span>
                         <input
@@ -22,13 +22,23 @@
                         />
                     </label>
                 </div>
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm  mb-4">
+                        <span class="text-black">Uplaod Background Image</span>
+                        <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                            <input class="hidden file-input" name="background_image" type="file">
+                            {{isset($download_test->background_image) ? $download_test->background_image : ''}}
+                        </div>
+                    </label>
+                </div>
             </div>
 
             <div class="dynamic-fields-container">
                 @if(isset($download_test->plateform_name))
                 @foreach($download_test->plateform_name as $key => $plateform)
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Platform</span>
                             <input
@@ -39,7 +49,7 @@
                             />
                         </label>
                     </div>
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
@@ -122,6 +132,7 @@
 <script>
  $(document).ready(function () {
     var container = $(".dynamic-fields-container");
+    var bgContainer = $(".bg-container");
     var dynamicFieldCount = 1;
 
     container.on("click", ".add-button", function () {
@@ -193,6 +204,7 @@
                     $('#loader').show();
                 },
                 success: function(data) {
+                    console.log(data);
                     Swal.fire({
                     position: "center",
                     icon: "success",
@@ -251,6 +263,18 @@
     }
 
     container.on('change', '.file-input', function () {
+        console.log('file input check');
+
+        var fileNameLabel = $(this).siblings('.file-label');
+
+        if (this.files.length > 0) {
+            fileNameLabel.text(this.files[0].name);
+        } else {
+            fileNameLabel.text('Choose File');
+        }
+    });
+
+    bgContainer.on('change', '.file-input', function () {
         var fileNameLabel = $(this).siblings('.file-label');
 
         if (this.files.length > 0) {

@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ManagePages extends Model
 {
     use HasFactory;
-    use SoftDeletes; 
+    use SoftDeletes;
     protected $table = 'manage_pages';
     protected $fillable = [
         'title',
         'slug',
+        'background_image',
         'plateform_name',
         'plateform_file',
         'plateform_status',

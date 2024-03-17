@@ -41,15 +41,15 @@ class ManagePagesController extends Controller
                 }
             }
         }
-        
+
         $status = $data['status'];
         $page_id = $data['page_id'];
         if($status == 2){
-            $page_id = 3;  
+            $page_id = 3;
         }
 
         ManagePages::updateOrCreate(
-            ['id' => $page_id],          
+            ['id' => $page_id],
             [
             'title' => $data['page_title'],
             'slug' => Str::slug($data['page_title'], '-'),
@@ -66,7 +66,8 @@ class ManagePagesController extends Controller
 
     public function store_test(Request $request)
     {
-        $data = $request->all();        
+        $data = $request->all();
+        // Print the form data and stop execution
         $plateform_file = [];
         $total_plateform = count($data['plateform_name']);
         if($total_plateform > 0){
@@ -83,11 +84,21 @@ class ManagePagesController extends Controller
             }
         }
 
+        $background_image = '';
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $imageName = time() . '_background.' . $file->getClientOriginalExtension();
+            $file->move(public_path('_uploads/builds'), $imageName);
+            $background_image = $imageName;
+        }
+
         $status = $data['status'];
         $page_id = $data['page_id'];
-        $page_id = $data['page_id'];
+
         if($status == 2){
-            $page_id = 4;  
+            $page_id = 4;
         }
 
         ManagePages::updateOrCreate(
@@ -95,6 +106,7 @@ class ManagePagesController extends Controller
             [
             'title' => $data['page_title'],
             'slug' => Str::slug($data['page_title'], '-'),
+            'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
             'plateform_status' => json_encode($data['plateform_status']),
