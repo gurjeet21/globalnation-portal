@@ -10,7 +10,7 @@
         <form method="post" id="download-form" action="{{route('save-page')}}" enctype="multipart/form-data">
              @csrf
             <div class="flex gap-4">
-                <div class="flex-1 max-w-[45.5%]">
+                <div class="w-[43%]">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Page Title</span>
                         <input
@@ -22,13 +22,15 @@
                         />
                     </label>
                 </div>
+                <div class="w-[43%]">
+                </div>
             </div>
 
             <div class="dynamic-fields-container">
                 @if(isset($download->plateform_name))
                 @foreach($download->plateform_name as $key => $plateform)
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Platform</span>
                             <input
@@ -39,7 +41,7 @@
                             />
                         </label>
                     </div>
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
@@ -68,7 +70,7 @@
 
                 @else
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Plateform</span>
                             <input
@@ -78,7 +80,7 @@
                             />
                         </label>
                     </div>
-                    <div class="flex-1">
+                    <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
