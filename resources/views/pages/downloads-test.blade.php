@@ -18,7 +18,7 @@
                             placeholder="Downloads" type="text" name="page_title"
                             value="{{isset($download_test->title) ? $download_test->title : ''}}"
                         />
-                        <input type="hidden" name="page_id" value="{{isset($download->id) ? $download->id : ''}}"
+                        <input type="hidden" name="page_id" value="{{isset($download_test->id) ? $download->id : ''}}"
                         />
                     </label>
                 </div>
