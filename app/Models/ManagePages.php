@@ -19,5 +19,6 @@ class ManagePages extends Model
         'plateform_file',
         'plateform_status',
         'disclaimers',
+        'background_image',
     ];
 }
