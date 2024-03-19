@@ -221,8 +221,6 @@
                         });
                     }
                 });
-
-
     });
 
     $('#downloads-preview-btn').on('click', function(e) {
