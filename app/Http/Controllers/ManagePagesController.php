@@ -42,8 +42,27 @@ class ManagePagesController extends Controller
             }
         }
 
+        $background_image = '';
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $imageName = time() . '_background.' . $file->getClientOriginalExtension();
+            $file->move(public_path('_uploads/builds'), $imageName);
+            $background_image = $imageName;
+        }
+
         $status = $data['status'];
         $page_id = $data['page_id'];
+        $title = $data['page_title'];
+
+        if (strpos($title, '<') !== false && strpos($title, '>') !== false) {
+            $page_title = strip_tags($title);
+        } else {
+            $page_title = $title;
+        }
+        $page_title = trim($page_title);
+
         if($status == 2){
             $page_id = 3;
         }
@@ -52,7 +71,8 @@ class ManagePagesController extends Controller
             ['id' => $page_id],
             [
             'title' => $data['page_title'],
-            'slug' => Str::slug($data['page_title'], '-'),
+            'slug' => Str::slug($page_title, '-'),
+            'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
             'plateform_status' => json_encode($data['plateform_status']),
@@ -96,6 +116,14 @@ class ManagePagesController extends Controller
 
         $status = $data['status'];
         $page_id = $data['page_id'];
+        $title = $data['page_title'];
+
+        if (strpos($title, '<') !== false && strpos($title, '>') !== false) {
+            $page_title = strip_tags($title);
+        } else {
+            $page_title = $title;
+        }
+        $page_title = trim($page_title);
 
         if($status == 2){
             $page_id = 4;
@@ -105,7 +133,7 @@ class ManagePagesController extends Controller
             ['id' => $page_id],
             [
             'title' => $data['page_title'],
-            'slug' => Str::slug($data['page_title'], '-'),
+            'slug' => Str::slug($page_title, '-'),
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),

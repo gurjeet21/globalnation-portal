@@ -10,7 +10,7 @@
         <form method="post" id="download-form" action="{{route('save-page')}}" enctype="multipart/form-data">
              @csrf
             <div class="flex gap-4">
-                <div class="w-[43%]">
+                <!-- <div class="w-[43%]">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Page Title</span>
                         <input
@@ -21,8 +21,16 @@
                         <input type="hidden" name="page_id" value="{{isset($download->id) ? $download->id : ''}}"
                         />
                     </label>
-                </div>
-                <div class="w-[43%]">
+                </div> -->
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm  mb-4">
+                        <span class="text-black">Uplaod Background Image</span>
+                        <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                            <input class="hidden file-input" name="background_image" type="file">
+                            {{isset($download->background_image) ? $download->background_image : ''}}
+                        </div>
+                    </label>
                 </div>
             </div>
 
@@ -103,6 +111,14 @@
                 @endif
             </div>
 
+            <div class="form-group mb-4">
+                <label for="editor" class="mb-1 block">Page Title</label>
+                <textarea class=""  name="page_title" id="page_title_editor">
+                    {{isset($download->title) ? $download->title : ''}}
+                </textarea>
+                <input type="hidden" name="page_id" value="{{isset($download->id) ? $download->id : ''}}"/>
+            </div>
+
             <div class="form-group">
                 <label for="editor">Disclaimers</label>
                 <textarea class="mt-1"  name="content" id="editor">
@@ -120,6 +136,7 @@
 <script>
  $(document).ready(function () {
     var container = $(".dynamic-fields-container");
+    var bgContainer = $(".bg-container");
     var dynamicFieldCount = 1;
 
     container.on("click", ".add-button", function () {
@@ -144,10 +161,10 @@
         disableButtonRemove();
     });
 
-    // Initialize CKEditor on the specified textarea
+    let titleeditorInstance ;
     let editorInstance ;
     tinymce.init({
-        selector: '#editor',
+        selector: '#editor, #page_title_editor',
         plugins: ' textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
@@ -162,7 +179,11 @@
         setup: function (editor) {
             editor.on('init', function () {
                 console.log('Editor was initialized', editor);
-                editorInstance = editor; // Store the editor instance in the variable
+                if (editor.id === 'editor') {
+                    editorInstance = editor; // Assign editor for disclaimers
+                } else if (editor.id === 'page_title_editor') {
+                    titleeditorInstance = editor; // Assign editor for page title
+                }
             });
         }
     });
@@ -173,11 +194,15 @@
             let fd = new FormData(myform);
             if (editorInstance) {
                 var textContent = editorInstance.getContent();
-            }else{
-                console.warn('Editor is not yet initialized.');
             }
+
+            if (titleeditorInstance) {
+                var titleContent = titleeditorInstance.getContent();
+            }
+
             fd.append("status", 1);
             fd.append("disclaimers", textContent);
+            fd.append("page_title", titleContent);
                 $.ajax({
                     url: "{{ route('save-page') }}",
                     type: "POST",
@@ -206,11 +231,15 @@
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
-        }else{
-            console.warn('Editor is not yet initialized.');
         }
+
+        if (titleeditorInstance) {
+            var titleContent = titleeditorInstance.getContent();
+        }
+
         fd.append("status", 2);
         fd.append("disclaimers", textContent);
+        fd.append("page_title", titleContent);
             $.ajax({
                 url: "{{ route('save-page') }}",
                 type: "POST",
@@ -244,6 +273,16 @@
     }
 
     container.on('change', '.file-input', function () {
+        var fileNameLabel = $(this).siblings('.file-label');
+
+        if (this.files.length > 0) {
+            fileNameLabel.text(this.files[0].name);
+        } else {
+            fileNameLabel.text('Choose File');
+        }
+    });
+
+    bgContainer.on('change', '.file-input', function () {
         var fileNameLabel = $(this).siblings('.file-label');
 
         if (this.files.length > 0) {

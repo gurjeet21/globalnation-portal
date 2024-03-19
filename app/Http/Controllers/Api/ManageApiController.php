@@ -16,13 +16,15 @@ class ManageApiController extends Controller
         }else{
             $download = ManagePages::first();
         }
+        $baseUrl = asset('_uploads/builds/');
         $download->plateform_name = json_decode($download->plateform_name, true);
         $download->plateform_file = json_decode($download->plateform_file, true);
         $download->plateform_status = json_decode($download->plateform_status, true);
+        $download->background_image = !empty($download->background_image) ? $baseUrl.'/'.$download->background_image : '';
         return response()->json(['download' => $download], 200);
     }
     public function downloadTestContent(Request $request){
-       
+
         if($request->pagestatus == 2){
             $download = ManagePages::find(4);
         }else{
