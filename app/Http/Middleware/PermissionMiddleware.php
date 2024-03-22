@@ -17,7 +17,7 @@ class PermissionMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = auth()->user();
-        if($user->role == "Super Admin1"){
+        if($user->role == "Super Admin"){
             return $next($request);
         }else{
             $user_role =  $user->role;
