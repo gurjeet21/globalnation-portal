@@ -34,7 +34,6 @@ class UserController extends Controller
     	if($request->isMethod('get')){
     		return view('pages.add-user');
     	}else{
-
     		$request->validate([
 	            'email' => 'required|email|unique:users',
 	        ]);
@@ -175,6 +174,12 @@ class UserController extends Controller
 		$download_test->plateform_file = isset($download_test->plateform_file) ? json_decode($download_test->plateform_file, true) : [];
 		$download_test->plateform_status = isset($download_test->plateform_status) ? json_decode($download_test->plateform_status, true) : [];
         return view('pages.downloads-test',compact('download_test'));
+    }
+
+    /* Download Page function */
+    public function interocitor()
+    {
+        return view('pages.interocitor');
     }
 
 }

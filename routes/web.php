@@ -59,10 +59,12 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::get('/settings', [SettingController::class, 'index'])->name('setting');
     //});
 });
+
 Route::group(['prefix' => 'pages'], function(){
     Route::get('/', [ManagePagesController::class, 'index'])->name('page.list');
     Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
     Route::get('/downloads-test', [UserController::class, 'downloads_test'])->name('downloads-test');
+    Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
     Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
