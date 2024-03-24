@@ -95,8 +95,7 @@ class ManagePagesController extends Controller
             $key_name = 'plateform_file_'.$x;
                 if ($request->hasFile($key_name)) {
                         $file = $request->file($key_name);
-                        $imageName = time().'_'. $x . '.' . $file->getClientOriginalExtension();
-                        $file->move(public_path('_uploads/builds'), $imageName);
+                        $imageName = $file->getClientOriginalName();
                         $plateform_file[] = $imageName;
                 }else{
                     $plateform_file[] = $data['plateform_file_hidden'][$x];
@@ -109,8 +108,7 @@ class ManagePagesController extends Controller
         // Upload background image if provided
         if ($request->hasFile('background_image')) {
             $file = $request->file('background_image');
-            $imageName = time() . '_background.' . $file->getClientOriginalExtension();
-            $file->move(public_path('_uploads/builds'), $imageName);
+            $imageName = $file->getClientOriginalName();
             $background_image = $imageName;
         }
 
@@ -144,5 +142,24 @@ class ManagePagesController extends Controller
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
 
+    }
+
+    public function store_file_progress(Request $request)
+    {
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            // Check if a file with the same name already exists
+            $existingFilePath = public_path('_uploads/builds/' . $file->getClientOriginalName());
+            if (file_exists($existingFilePath)) {
+                // Delete the existing file
+                unlink($existingFilePath);
+            }
+            $file->move(public_path('_uploads/builds'), $file->getClientOriginalName());
+
+            echo "File Uploaded new";
+        } else {
+            echo "File Not Uploaded";
+        }
     }
 }

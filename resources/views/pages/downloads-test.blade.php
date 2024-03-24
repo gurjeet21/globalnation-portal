@@ -10,22 +10,10 @@
         <form method="post" id="download-form" action="{{route('save-page-test')}}" enctype="multipart/form-data">
              @csrf
             <div class="flex gap-4">
-                <!-- <div class="w-[43%]">
-                    <label class="block text-sm  mb-4">
-                        <span class="text-black">Page Title</span>
-                        <input
-                            class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee]  focus:outline-none dark:focus:shadow-outline-gray form-input"
-                            placeholder="Downloads" type="text" name="page_title"
-                            value="{{isset($download_test->title) ? $download_test->title : ''}}"
-                        />
-                        <input type="hidden" name="page_id" value="{{isset($download_test->id) ? $download_test->id : ''}}"
-                        />
-                    </label>
-                </div> -->
                 <div class="w-[43%] bg-container">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Uplaod Background Image</span>
-                        <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                        <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative flex flex-col gap-1">
                             <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                             <input class="hidden file-input" name="background_image" type="file">
                             {{isset($download_test->background_image) ? $download_test->background_image : ''}}
@@ -52,10 +40,14 @@
                     <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
-                            <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative flex">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                                 <input class="hidden file-input" name="plateform_file_{{$key}}" type="file">
-                                {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}}
+
+                               <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
+                               <div class="progress mt-1">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
                             </div>
                         </label>
                     </div>
@@ -94,6 +86,9 @@
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                                 <input class="hidden file-input" name="plateform_file[]" type="file">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
                             </div>
                         </label>
                     </div>
@@ -286,20 +281,23 @@ $(document).ready(function () {
     }
 
     container.on('change', '.file-input', function () {
-        console.log('file input check');
-
+        var progressBar = $(this).siblings('.progress').find('.progress-bar');
         var fileNameLabel = $(this).siblings('.file-label');
 
         if (this.files.length > 0) {
             fileNameLabel.text(this.files[0].name);
+            $('.db_file_name').hide();
+            progressBar.parent().show();
+            uploadBgFile(this.files[0], progressBar);
         } else {
+            $('.db_file_name').show();
             fileNameLabel.text('Choose File');
+            progressBar.parent().hide();
         }
     });
 
     bgContainer.on('change', '.file-input', function () {
         var fileNameLabel = $(this).siblings('.file-label');
-
         if (this.files.length > 0) {
             fileNameLabel.text(this.files[0].name);
         } else {
@@ -330,6 +328,41 @@ $(document).ready(function () {
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
 
 });
+
+
+function uploadBgFile(file, progressBar) {
+        var formData = new FormData();
+        formData.append('background_image', file);
+
+        $.ajax({
+            url: "{{ route('save-file-with-progress') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        progressBar.width(percentComplete + '%').attr('aria-valuenow', percentComplete);
+                    }
+                }, false);
+                return xhr;
+            },
+            success: function (data) {
+                // Handle success
+                console.log(data);
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                console.error('Error uploading file:', error);
+            }
+        });
+    }
 </script>
 
 @endsection

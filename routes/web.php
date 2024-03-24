@@ -67,6 +67,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
+    Route::post('/save-file-with-progress', [ManagePagesController::class, 'store_file_progress'])->name('save-file-with-progress');
     Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
 });
 
