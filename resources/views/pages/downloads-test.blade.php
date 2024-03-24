@@ -25,7 +25,7 @@
             <div class="dynamic-fields-container">
                 @if(isset($download_test->plateform_name))
                 @foreach($download_test->plateform_name as $key => $plateform)
-                <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
+                <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$key}}">
                     <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Platform</span>
@@ -42,7 +42,7 @@
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative flex">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                <input class="hidden file-input" name="plateform_file_{{$key}}" type="file">
+                                <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
 
                                <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
                                <div class="progress mt-1">
@@ -52,6 +52,7 @@
                         </label>
                     </div>
                     <input class="plateform_file_hidden" type="hidden" name="plateform_file_hidden[]" value="{{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}}" />
+
                     <input class="plateform_status" type="hidden" name="plateform_status[]" value="{{$download_test->plateform_status[$key]}}" />
 
                     <div class="flex align-center flex-shrink-0 mt-6 icon-section">
@@ -85,7 +86,7 @@
                             <span class="text-black">Upload New Build</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                 <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                <input class="hidden file-input" name="plateform_file[]" type="file">
+                                <input class="hidden file-input build-file-upload" name="plateform_file[]" type="file">
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
@@ -205,6 +206,11 @@ $(document).ready(function () {
         fd.append("status", 1);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
+            var numItems = $('.dynamic-fields-container .dynamic-field').length;   
+            console.log('numItems' + numItems);    
+            for (i = 0; i < numItems; i++){             
+                fd.set("plateform_file_"+i, '');
+            }       
             $.ajax({
                 url: "{{ route('save-page-test') }}",
                 type: "POST",
@@ -280,9 +286,12 @@ $(document).ready(function () {
         container.find(".dynamic-field:last .add-button").prop("disabled", false);
     }
 
-    container.on('change', '.file-input', function () {
+    $(".dynamic-fields-container").on('change', '.file-input', function () {
         var progressBar = $(this).siblings('.progress').find('.progress-bar');
         var fileNameLabel = $(this).siblings('.file-label');
+        var fileName = this.files[0].name;
+        var hiddenInput = $(this).parent().parent().parent().parent();
+        hiddenInput.find('.plateform_file_hidden').val(fileName);       
 
         if (this.files.length > 0) {
             fileNameLabel.text(this.files[0].name);
@@ -354,8 +363,9 @@ function uploadBgFile(file, progressBar) {
                 return xhr;
             },
             success: function (data) {
-                // Handle success
-                console.log(data);
+                if(data.status == "success"){
+                   console.log('My file name ' + data.file); 
+                }
             },
             error: function (xhr, status, error) {
                 // Handle error
