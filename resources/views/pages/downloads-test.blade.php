@@ -47,7 +47,9 @@
                                <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
                                <div class="progress mt-1">
                                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar-percenatge"></div>
                                 </div>
+                               
                             </div>
                         </label>
                     </div>
@@ -288,6 +290,7 @@ $(document).ready(function () {
 
     $(".dynamic-fields-container").on('change', '.file-input', function () {
         var progressBar = $(this).siblings('.progress').find('.progress-bar');
+        var progressPercenatge = $(this).siblings('.progress').find('.progress-bar-percenatge');
         var fileNameLabel = $(this).siblings('.file-label');
         var fileName = this.files[0].name;
         var hiddenInput = $(this).parent().parent().parent().parent();
@@ -297,7 +300,7 @@ $(document).ready(function () {
             fileNameLabel.text(this.files[0].name);
             $('.db_file_name').hide();
             progressBar.parent().show();
-            uploadBgFile(this.files[0], progressBar);
+            uploadBgFile(this.files[0], progressBar, progressPercenatge);
         } else {
             $('.db_file_name').show();
             fileNameLabel.text('Choose File');
@@ -339,7 +342,7 @@ $(document).ready(function () {
 });
 
 
-function uploadBgFile(file, progressBar) {
+function uploadBgFile(file, progressBar, progressPercenatge) {
         var formData = new FormData();
         formData.append('background_image', file);
 
@@ -358,6 +361,10 @@ function uploadBgFile(file, progressBar) {
                     if (evt.lengthComputable) {
                         var percentComplete = (evt.loaded / evt.total) * 100;
                         progressBar.width(percentComplete + '%').attr('aria-valuenow', percentComplete);
+                        progressPercenatge.text(percentComplete.toFixed() + '%');
+                        if(percentComplete == 100){
+                            progressBar.parent().hide();
+                        }
                     }
                 }, false);
                 return xhr;
