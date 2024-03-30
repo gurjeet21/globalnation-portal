@@ -13,7 +13,7 @@
                 <div class="w-[43%] bg-container">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Uplaod Background Image</span>
-                        <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative flex flex-col gap-1">
+                        <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                             <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                             <input class="hidden file-input" name="background_image" type="file">
                             {{isset($download_test->background_image) ? $download_test->background_image : ''}}
@@ -40,16 +40,16 @@
                     <div class="w-[43%]">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
-                            <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative flex">
-                                <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
-
-                               <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
-                               <div class="progress mt-1">
+                            <div class="mt-1 p-2 bg-[#eeeeee] upload_new_build dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                                <div class="choose_main_sec">
+                                    <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                                    <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
+                                    <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
+                                </div>
+                                <div class="progress mt-2 ml-0">
                                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                     <div class="progress-bar-percenatge"></div>
                                 </div>
-                               
                             </div>
                         </label>
                     </div>
@@ -86,11 +86,16 @@
                     <div class="flex-1">
                         <label class="block text-sm">
                             <span class="text-black">Upload New Build</span>
-                            <div class="mt-1 p-2 bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
-                                <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                <input class="hidden file-input build-file-upload" name="plateform_file[]" type="file">
-                                <div class="progress">
+                            <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+
+                                <div class="choose_main_sec">
+                                    <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                                    <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
+                                    <span class="db_file_name"> {{isset($download_test->plateform_file[$key]) ? $download_test->plateform_file[$key] : ''}} </span>
+                                </div>
+                                <div class="progress mt-2 ml-0">
                                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar-percenatge"></div>
                                 </div>
                             </div>
                         </label>
@@ -208,11 +213,11 @@ $(document).ready(function () {
         fd.append("status", 1);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
-            var numItems = $('.dynamic-fields-container .dynamic-field').length;   
-            console.log('numItems' + numItems);    
-            for (i = 0; i < numItems; i++){             
+            var numItems = $('.dynamic-fields-container .dynamic-field').length;
+            console.log('numItems' + numItems);
+            for (i = 0; i < numItems; i++){
                 fd.set("plateform_file_"+i, '');
-            }       
+            }
             $.ajax({
                 url: "{{ route('save-page-test') }}",
                 type: "POST",
@@ -255,6 +260,12 @@ $(document).ready(function () {
         fd.append("status", 2);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
+        var numItems = $('.dynamic-fields-container .dynamic-field').length;
+        console.log('numItems' + numItems);
+        for (i = 0; i < numItems; i++){
+            fd.set("plateform_file_"+i, '');
+        }
+
             $.ajax({
                 url: "{{ route('save-page-test') }}",
                 type: "POST",
@@ -289,22 +300,25 @@ $(document).ready(function () {
     }
 
     $(".dynamic-fields-container").on('change', '.file-input', function () {
-        var progressBar = $(this).siblings('.progress').find('.progress-bar');
-        var progressPercenatge = $(this).siblings('.progress').find('.progress-bar-percenatge');
+        var progress = $(this).closest('.upload_new_build').find('.progress');
+        var progressBar = progress.find('.progress-bar');
+        var progressPercentage = progress.find('.progress-bar-percenatge');
         var fileNameLabel = $(this).siblings('.file-label');
+        var db_file_name = $(this).siblings('.db_file_name');
         var fileName = this.files[0].name;
-        var hiddenInput = $(this).parent().parent().parent().parent();
-        hiddenInput.find('.plateform_file_hidden').val(fileName);       
+        var parentContainer = $(this).closest('.upload_new_build');
+        var hiddenInput = $(this).parent().parent().parent().parent().parent();
+        hiddenInput.find('.plateform_file_hidden').val(fileName);
 
         if (this.files.length > 0) {
-            fileNameLabel.text(this.files[0].name);
-            $('.db_file_name').hide();
+            db_file_name.text(this.files[0].name);
             progressBar.parent().show();
-            uploadBgFile(this.files[0], progressBar, progressPercenatge);
+            uploadBgFile(this.files[0], progressBar, progressPercentage);
+            parentContainer.addClass(' flex gap-1 flex-col');
         } else {
             $('.db_file_name').show();
-            fileNameLabel.text('Choose File');
             progressBar.parent().hide();
+            parentContainer.addClass(' flex gap-1 flex-col');
         }
     });
 
@@ -342,7 +356,7 @@ $(document).ready(function () {
 });
 
 
-function uploadBgFile(file, progressBar, progressPercenatge) {
+    function uploadBgFile(file, progressBar, progressPercenatge) {
         var formData = new FormData();
         formData.append('background_image', file);
 
@@ -371,7 +385,7 @@ function uploadBgFile(file, progressBar, progressPercenatge) {
             },
             success: function (data) {
                 if(data.status == "success"){
-                   console.log('My file name ' + data.file); 
+                   console.log('My file name ' + data.file);
                 }
             },
             error: function (xhr, status, error) {

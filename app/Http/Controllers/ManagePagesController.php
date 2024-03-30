@@ -17,28 +17,13 @@ class ManagePagesController extends Controller
 
     public function store(Request $request)
     {
-        // $validator = validator()->make(request()->all(),
-        // [
-        //     'plateform_name' => 'required',
-        //     'disclaimers' => 'required',
-        // ]);
-        // if ($validator->fails()) {
-        //      return response()->json(['status' => 'error','message' => $validator->messages()], 200);
-        // }
         $data = $request->all();
+        // Print the form data and stop execution
         $plateform_file = [];
         $total_plateform = count($data['plateform_name']);
         if($total_plateform > 0){
             for ($x = 0; $x < $total_plateform; $x++) {
-            $key_name = 'plateform_file_'.$x;
-                if ($request->hasFile($key_name)) {
-                        $file = $request->file($key_name);
-                        $imageName = time().'_'. $x . '.' . $file->getClientOriginalExtension();
-                        $file->move(public_path('_uploads/builds'), $imageName);
-                        $plateform_file[] = $imageName;
-                }else{
-                    $plateform_file[] = $data['plateform_file_hidden'][$x];
-                }
+                $plateform_file[] = $data['plateform_file_hidden'][$x];
             }
         }
 
@@ -47,8 +32,7 @@ class ManagePagesController extends Controller
         // Upload background image if provided
         if ($request->hasFile('background_image')) {
             $file = $request->file('background_image');
-            $imageName = time() . '_background.' . $file->getClientOriginalExtension();
-            $file->move(public_path('_uploads/builds'), $imageName);
+            $imageName = $file->getClientOriginalName();
             $background_image = $imageName;
         }
 
@@ -64,7 +48,7 @@ class ManagePagesController extends Controller
         $page_title = trim($page_title);
 
         if($status == 2){
-            $page_id = 3;
+            $page_id = 4;
         }
 
         ManagePages::updateOrCreate(
@@ -86,7 +70,7 @@ class ManagePagesController extends Controller
 
     public function store_test(Request $request)
     {
-        $data = $request->all();    
+        $data = $request->all();
         // Print the form data and stop execution
         $plateform_file = [];
         $total_plateform = count($data['plateform_name']);
@@ -150,10 +134,10 @@ class ManagePagesController extends Controller
                 unlink($existingFilePath);
             }
             $file->move(public_path('_uploads/builds'), $file->getClientOriginalName());
-            return response()->json(['status' => 'success','file' => $file_name], 200);           
+            return response()->json(['status' => 'success','file' => $file_name], 200);
         } else {
             return response()->json(['status' => 'error','file' => 'Something went wrong'], 200);
-           
+
         }
     }
 }
