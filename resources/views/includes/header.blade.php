@@ -13,7 +13,7 @@
 					</button>
                     @if(!Str::contains(request()->path(), 'pages'))
 					<form class="flex justify-center flex-1 lg:mr-32">
-						<div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500" >
+						<div class="relative w-full max-w-xl mr-6" >
 							<div class="absolute inset-y-0 flex items-center pl-2">
 							<svg
 								class="w-4 h-4"
@@ -67,7 +67,7 @@
                     @endphp
 
                     @if(Str::contains(request()->path(), 'pages'))
-                        <div class="relative w-full max-w-xl mr-6" >
+                        <div class="relative w-full  mr-6" >
 							<ol class="breadcrumb">
 								@if (!empty($breadcrumbs))
 								<ol class="breadcrumb flex gap-2 items-center">

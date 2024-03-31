@@ -307,13 +307,6 @@
             }else{
                 window.location.href = href;
             }
-
-        // if(select == 0){
-        //     alert('vehicle is locked to update');
-        //     return false;
-        // }else{
-        //     window.location.href = href;
-        // }
         });
 
 
@@ -346,6 +339,47 @@
                 $(this).css('display','none');
             }
 
+        });
+
+        $(document).ready(function() {
+            // Function to update classes on menu items
+            function updateMenuClasses(currentURL) {
+                $('.page-main-menu a').each(function() {
+                    // Check if the href attribute matches the current URL
+                    if ($(this).attr('href') === currentURL) {
+                        // Add 'text-[#61d5d8]' class to the matching menu item
+                        $(this).addClass('text-[#61d5d8]');
+                    } else {
+                        // Add 'text-white' class to non-matching menu items
+                        $(this).addClass('text-white');
+                    }
+                });
+            }
+
+            // Click event handler for the menu button
+            $(document).on('click', '.page-main-menu button', function() {
+                // Get the current URL
+                var currentURL = window.location.href;
+
+                // Call the function to update classes on menu items after a short delay
+                setTimeout(function() {
+                    updateMenuClasses(currentURL);
+                }, 100); // Adjust the delay as needed
+            });
+
+            // Get the current URL
+            var currentURL = window.location.href;
+
+            // Call the function to update classes on menu items after a short delay
+            setTimeout(function() {
+                updateMenuClasses(currentURL);
+            }, 100); // Adjust the delay as needed
+
+            // Check if the current URL contains "/pages/"
+            if (currentURL.includes("/pages/")) {
+                // Trigger a click event on the button to toggle the submenu
+                $('.page-main-menu button').click();
+            }
         });
 
 

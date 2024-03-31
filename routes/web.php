@@ -8,6 +8,7 @@ use App\Http\Controllers\DownloadController;
 //use App\Http\Controllers\CronJobController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ManagePagesController;
+use App\Http\Controllers\FeaturedPagesController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\TwoFactorController;
@@ -69,6 +70,9 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
     Route::post('/save-file-with-progress', [ManagePagesController::class, 'store_file_progress'])->name('save-file-with-progress');
     Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
+    Route::get('/manage-featured', [FeaturedPagesController::class, 'index'])->name('manage-featured');
+    Route::get('/add-artists', [FeaturedPagesController::class, 'add_artists'])->name('add-artists');
+    Route::get('/add-featured', [FeaturedPagesController::class, 'add_featured'])->name('add-featured');
 });
 
 /* clear-cache */

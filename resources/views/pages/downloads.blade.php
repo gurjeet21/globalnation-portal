@@ -114,7 +114,7 @@
             </div>
 
             <div class="form-group mb-4">
-                <label for="editor" class="mb-1 block">Page Title</label>
+                <label for="editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class=""  name="page_title" id="page_title_editor">
                     {{isset($download->title) ? $download->title : ''}}
                 </textarea>
@@ -122,7 +122,7 @@
             </div>
 
             <div class="form-group mb-4">
-                <label for="editor" class="mb-1 block">Disclaimers</label>
+                <label for="editor" class="mb-1 block text-sm">Disclaimers</label>
                 <textarea class="mt-1" name="content" id="editor">
                     {{isset($download->disclaimers) ? $download->disclaimers : ''}}
                 </textarea>
