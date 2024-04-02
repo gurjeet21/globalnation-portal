@@ -167,7 +167,7 @@
                 timer: 2500
                 });
                 setTimeout( function(){
-                    window.open("http://localhost:3000/featured/preview");
+                    window.open("https://globalnation.tv/featured/preview");
                 }  , 2500 );
             },
             error: function (xhr) {
