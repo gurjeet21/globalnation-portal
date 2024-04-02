@@ -2,8 +2,9 @@
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
-        <form method="post" id="add-featured-form" action="" enctype="multipart/form-data">
+        <form method="post" id="update-featured-form" action="" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="featured_id" value="{{$artistFeatureds->id}}"/>
             <div class="flex gap-4">
                 <div class="w-2/4 bg-container">
                     <label class="block text-sm  mb-4">
@@ -12,7 +13,7 @@
                             <select name="artist_id" class="block w-full mt-1 text-sm form-select focus:outline-none  dark:focus:shadow-outline-gray" >
                                     <option value="">--Please select the Artist --</option>
                                     @foreach($artists as $artist)
-                                    <option value="{{$artist->id}}">{{$artist->first_name}} {{$artist->last_name}}</option>
+                                    <option value="{{$artist->id}}" {{ ($artistFeatureds->artist_id) ===  $artist->id  ? 'selected' : ''}}>{{$artist->first_name}} {{$artist->last_name}}</option>
                                     @endforeach
                             </select>
                         </div>
@@ -29,7 +30,7 @@
                         <span class="text-black">Featured Title</span>
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
-                            placeholder="Page Title" type="text" name="featured_title"
+                            placeholder="Page Title" type="text" name="featured_title" value="{{$artistFeatureds->title}}"
                         />
                     </label>
                     <span class="error error_featured_title"></span>
@@ -40,7 +41,7 @@
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee]  focus:outline-none dark:focus:shadow-outline-gray form-input"
                             placeholder="Video Link" type="text" name="video_link"
-                            value=""
+                            value="{{$artistFeatureds->video_url}}"
                         />
                     </label>
                     <span class="error error_video_link"></span>
@@ -50,7 +51,7 @@
             <div class="form-group">
                 <label for="description" class="block text-sm mb-1">Featured Description</label>
                 <textarea class="mt-1" name="featured_description" id="featured_description">
-
+                    {{$artistFeatureds->description}}
                 </textarea>
                 <span class="error error_featured_description"></span>
             </div>
@@ -97,11 +98,12 @@
         if(editorDescription) {
             var textContent = editorDescription.getContent();
         }
-        let myform = document.getElementById("add-featured-form");
+        let myform = document.getElementById("update-featured-form");
         let fd = new FormData(myform);
         fd.set("featured_description", textContent);
+        fd.append("is_preview", 0);
         $.ajax({
-            url: "{{ route('save-featured') }}",
+            url: "{{route('artist.featured.update',['id'=>$artistFeatureds->id])}}",
             type: "POST",
             data: fd,
             cache: false,
@@ -115,12 +117,57 @@
                 Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Featured added successfully",
+                title: "Featured updated successfully",
                 showConfirmButton: false,
                 timer: 2500
                 });
                 setTimeout( function(){ 
                     window.location.replace("/pages/manage-featured");
+                }  , 2500 );
+            },
+            error: function (xhr) {           
+                $.each(xhr.responseJSON.errors, function (key, value) {
+                    console.log(key +'valuevalue' + value)
+                    $(".error_"+key).text(value);
+                });
+            },
+            complete: function() {
+                $('#loader').hide();
+            }
+        });
+    })
+
+    $('#featured-preview-btn').on('click', function(e) {
+        e.preventDefault();
+        $(".error").html('');
+        if(editorDescription) {
+            var textContent = editorDescription.getContent();
+        }
+        let myform = document.getElementById("update-featured-form");
+        let fd = new FormData(myform);
+        fd.set("featured_description", textContent);
+        fd.append("is_preview", 1);
+        $.ajax({
+            url: "{{route('artist.featured.update',['id'=>$artistFeatureds->id])}}",
+            type: "POST",
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function() {
+                $('#loader').show();
+            },
+            success: function(data) {           
+                Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Featured updated successfully",
+                showConfirmButton: false,
+                timer: 2500
+                });
+                setTimeout( function(){ 
+                    window.open("https://globalnation.tv/featured/preview");
                 }  , 2500 );
             },
             error: function (xhr) {           

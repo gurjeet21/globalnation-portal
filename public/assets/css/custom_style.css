@@ -119,6 +119,12 @@ height: 37px!important;
     transition: width 0.3s ease;
 }
 
+#add-artist-form span.error, #add-featured-form span.error{
+    color: #e62222;
+    margin-top: 5px;
+    display: block;
+}
+
 @media(min-width: 1025px){
 .select2-container{
 width:25%!important;

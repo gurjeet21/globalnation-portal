@@ -91,8 +91,14 @@
 
                     @endif
 
-					@if(Str::contains(request()->path(), 'pages'))
+					@if(Str::contains(request()->path(), 'downloads'))
 					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="downloads-preview-btn">
+					<a href=""><i class="fa fa-eye"></i> Preview</a>
+					</div>
+					@endif
+
+					@if(Str::contains(request()->path(), 'manage-featured/update'))
+					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="featured-preview-btn">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
 					</div>
 					@endif

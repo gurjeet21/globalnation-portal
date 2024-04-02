@@ -73,6 +73,10 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/manage-featured', [FeaturedPagesController::class, 'index'])->name('manage-featured');
     Route::get('/add-artists', [FeaturedPagesController::class, 'add_artists'])->name('add-artists');
     Route::get('/add-featured', [FeaturedPagesController::class, 'add_featured'])->name('add-featured');
+    Route::post('/save-artist',[FeaturedPagesController::class,'store_artist'])->name('save-artist');
+    Route::post('/save-featured',[FeaturedPagesController::class,'store_featured'])->name('save-featured');
+    Route::match(['GET','POST'],'/manage-featured/update/{id}', [FeaturedPagesController::class, 'update_featured'])->name('artist.featured.update');
+    Route::get('/manage-featured/delete/{id}', [FeaturedPagesController::class, 'delete_featured'])->name('artist.featured.delete');
 });
 
 /* clear-cache */
