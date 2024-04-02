@@ -113,7 +113,7 @@
             beforeSend: function() {
                 $('#loader').show();
             },
-            success: function(data) {           
+            success: function(data) {
                 Swal.fire({
                 position: "center",
                 icon: "success",
@@ -121,11 +121,11 @@
                 showConfirmButton: false,
                 timer: 2500
                 });
-                setTimeout( function(){ 
+                setTimeout( function(){
                     window.location.replace("/pages/manage-featured");
                 }  , 2500 );
             },
-            error: function (xhr) {           
+            error: function (xhr) {
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     console.log(key +'valuevalue' + value)
                     $(".error_"+key).text(value);
@@ -158,7 +158,7 @@
             beforeSend: function() {
                 $('#loader').show();
             },
-            success: function(data) {           
+            success: function(data) {
                 Swal.fire({
                 position: "center",
                 icon: "success",
@@ -166,11 +166,11 @@
                 showConfirmButton: false,
                 timer: 2500
                 });
-                setTimeout( function(){ 
-                    window.open("https://globalnation.tv/featured/preview");
+                setTimeout( function(){
+                    window.open("http://localhost:3000/featured/preview");
                 }  , 2500 );
             },
-            error: function (xhr) {           
+            error: function (xhr) {
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     console.log(key +'valuevalue' + value)
                     $(".error_"+key).text(value);

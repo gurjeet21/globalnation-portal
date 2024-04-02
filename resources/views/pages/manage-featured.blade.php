@@ -26,7 +26,7 @@
                     @forelse($artistFeatureds as $key=>$featureds)
                     <tr class="text-gray-700 dark:text-gray-400">
                         <td class="px-4 py-3 text-sm">
-                         {{$artists[$featureds->id]}}
+                         {{$artists[$featureds->artist_id]}}
                          </td>
                          <td class="px-4 py-3 text-sm">
                          {{$featureds->title}}

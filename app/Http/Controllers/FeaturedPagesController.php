@@ -17,7 +17,7 @@ class FeaturedPagesController extends Controller
         $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', 0)->orderBy('id', 'DESC')->get();
         $artists = Artists::all()->mapWithKeys(function ($artist) {
             return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
-        });       
+        });
         return view('pages.manage-featured', compact('artistFeatureds', 'artists'));
     }
 
@@ -41,7 +41,7 @@ class FeaturedPagesController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => 'required|email|unique:artists|max:255',
         ]);
- 
+
         $file_name = null;
         if ($request->hasFile('artist_image')) {
             $file = $request->file('artist_image');
@@ -59,21 +59,30 @@ class FeaturedPagesController extends Controller
         return response()->json(['status' => 'success','message' => 'Artist added successfully'], 200);
     }
 
-    public function store_featured(Request $request){       
+    public function store_featured(Request $request){
         $request->validate([
             'artist_id' => ['required'],
             'featured_title' => ['required', 'string', 'max:255'],
             'video_link' => ['required'],
             'featured_description' => ['required'],
-        ]); 
-        
-        ArtistFeatureds::create([
+        ]);
+
+        $save_artist = ArtistFeatureds::create([
             'artist_id' => $request->artist_id,
             'title' => $request->featured_title,
             'video_url' => $request->video_link,
             'description' => $request->featured_description,
             'status' => 1,
             'is_preview' => 0,
+        ]);
+
+        ArtistFeatureds::create([
+            'artist_id' => $request->artist_id,
+            'title' => $request->featured_title,
+            'video_url' => $request->video_link,
+            'description' => $request->featured_description,
+            'status' => 1,
+            'is_preview' => $save_artist->id,
         ]);
 
         return response()->json(['status' => 'success','message' => 'Artist added successfully'], 200);
@@ -112,8 +121,8 @@ class FeaturedPagesController extends Controller
                     'description' => $request->featured_description,
                     'status' => 1,
                     'is_preview' => 0,
-                ]);                
-            }         
+                ]);
+            }
             return response()->json(['status' => 'success', 'is_preview' => $request->is_preview,'message' => 'Featured updated successfully'], 200);
         }else{
             $artists = Artists::where('deleted_at', null)->get();
@@ -128,6 +137,7 @@ class FeaturedPagesController extends Controller
 
     public function delete_featured(Request $request, $id){
         ArtistFeatureds::where('id',$id)->delete();
+        ArtistFeatureds::where('is_preview',$id)->delete();
     	return redirect()->back()->with(['succ_msg'=>'Featured sucessfully deleted']);
     }
 }
