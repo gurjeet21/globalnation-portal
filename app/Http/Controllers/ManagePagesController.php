@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ManagePages;
+use App\Models\Pages;
 use Illuminate\Support\Str;
 
 class ManagePagesController extends Controller
@@ -139,5 +140,79 @@ class ManagePagesController extends Controller
             return response()->json(['status' => 'error','file' => 'Something went wrong'], 200);
 
         }
+    }
+
+    public function add_privacy_policy(Request $request)
+    {
+        $currentUrl = $request->path();
+        // Check if the current URL is '/privacy-policy'
+        if ($currentUrl === 'privacy-policy') {
+            // Fetch the privacy policy data based on the slug
+            $privacyPolicy = Pages::where('page_slug', 'privacy-policy')->get();
+        } else {
+            // If URL is not '/privacy-policy', fetch all records (or handle as per your requirement)
+            $privacyPolicy = Pages::where('deleted_at', null)->get();
+        }
+
+        return view('pages.privacy-policy', compact('privacyPolicy'));
+
+    }
+
+    public function store_privacy_policy(Request $request)
+    {
+        //dd($request->only(['page_title', 'description', 'page_slug', 'status', 'is_preview']));
+        $data = $request->validate([
+            'page_title' => ['required'],
+            'description' => ['required'],
+            'page_slug' => ['required'],
+            'status' => ['required'],
+            'is_preview' => ['required'],
+        ]);
+
+        $title = $data['page_title'];
+        $page_slug = $data['page_slug'];
+        $status = $data['status'];
+        $is_preview = $data['is_preview'];
+
+        // Fetch the privacy policy record based on the slug
+        $privacyPolicy = Pages::where('page_slug', $page_slug)->first();
+
+        if (!$privacyPolicy) {
+            // If no record exists, create a new one
+            $privacyPolicy = Pages::create([
+                'page_title' => $data['page_title'],
+                'page_slug' =>  $page_slug,
+                'description' => $data['description'],
+                'status' => 1,
+                'is_preview' => $is_preview,
+            ]);
+        }else if($privacyPolicy && $data['is_preview']== 1){
+            $privacyPolicyPreview = Pages::where('page_slug', $page_slug)
+                          ->where('is_preview', $is_preview)
+                          ->first();
+            if (!$privacyPolicyPreview) {
+                $privacyPolicyPreview = Pages::create([
+                    'page_title' => $data['page_title'],
+                    'page_slug' =>  $page_slug,
+                    'description' => $data['description'],
+                    'status' => 1,
+                    'is_preview' => 1,
+                ]);
+            }else{
+                $privacyPolicyPreview->update([
+                    'page_title' => $data['page_title'],
+                    'description' => $data['description'],
+                ]);
+            }
+        } else {
+            // If a record exists, update it
+            $privacyPolicy->update([
+                'page_title' => $data['page_title'],
+                'description' => $data['description'],
+            ]);
+        }
+
+        // You can return a response or redirect as needed
+        return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'privacyPolicy' => $privacyPolicy], 200);
     }
 }

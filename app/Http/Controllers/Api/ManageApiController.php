@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ManagePages;
 use App\Models\Artists;
 use App\Models\ArtistFeatureds;
+use App\Models\Pages;
 
 class ManageApiController extends Controller
 {
@@ -65,7 +66,29 @@ class ManageApiController extends Controller
         foreach($artistFeatureds as $featured){
             $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'description' => $featured->description );
         }
-        return response()->json(['artists' => $result], 200);    
+        return response()->json(['artists' => $result], 200);
+
+    }
+
+    public function allPages(Request $request){
+        $Pages = Pages::where('deleted_at', null)->where('is_preview', 0)->get();
+        $result = [];
+
+        foreach($Pages as $Page){
+            $result[] = array('page_title' => $Page->page_title, 'page_slug' => $Page->page_slug, 'description' => $Page->description );
+        }
+        return response()->json(['pages' => $result], 200);
+
+    }
+
+    public function allPagesPreview(Request $request){
+        $Pages = Pages::where('deleted_at', null)->where('is_preview', '!=', 0)->get();
+        $result = [];
+
+        foreach($Pages as $Page){
+            $result[] = array('page_title' => $Page->page_title, 'page_slug' => $Page->page_slug, 'description' => $Page->description );
+        }
+        return response()->json(['pages' => $result], 200);
 
     }
 

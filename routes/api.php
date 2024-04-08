@@ -20,6 +20,8 @@ Route::get('/download-content',  [ManageApiController::class, 'downloadContent']
 Route::get('/download-test-content',  [ManageApiController::class, 'downloadTestContent']);
 Route::get('/featured-artist',  [ManageApiController::class, 'featuredArtist']);
 Route::get('/featured-artist-preview',  [ManageApiController::class, 'featuredArtistPreview']);
+Route::get('/all-pages',  [ManageApiController::class, 'allPages']);
+Route::get('/all-pages-preview',  [ManageApiController::class, 'allPagesPreview']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

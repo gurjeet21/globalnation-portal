@@ -77,6 +77,8 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-featured',[FeaturedPagesController::class,'store_featured'])->name('save-featured');
     Route::match(['GET','POST'],'/manage-featured/update/{id}', [FeaturedPagesController::class, 'update_featured'])->name('artist.featured.update');
     Route::get('/manage-featured/delete/{id}', [FeaturedPagesController::class, 'delete_featured'])->name('artist.featured.delete');
+    Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
+    Route::post('/save-privacy-policy', [ManagePagesController::class, 'store_privacy_policy'])->name('save-privacy-policy');
 });
 
 /* clear-cache */
