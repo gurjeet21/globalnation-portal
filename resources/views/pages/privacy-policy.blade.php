@@ -150,7 +150,7 @@ $(document).ready(function () {
                     timer: 2500
                 });
                 setTimeout( function(){
-                    window.open("http://localhost:3000/privacy-policy-test/preview");
+                    window.open("https://globalnation.tv/privacy-policy-test/preview");
                 }  , 2500 );
             },
             error: function (xhr) {
