@@ -8,21 +8,21 @@
         </div>
     @endif
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
-        <form method="post" id="update-privacy-policy" action="#" enctype="multipart/form-data">
+        <form method="post" id="update-terms-service" action="#" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-4 page-title-main">
                 <label for="page_title_editor" class="mb-1 block text-sm">Page Title</label>
-                <textarea class="" name="page_title" id="page_title_editor">{{ isset($privacyPolicy[0]->page_title) ? $privacyPolicy[0]->page_title : '' }}</textarea>
+                <textarea class="" name="page_title" id="page_title_editor">{{ isset($termsService->page_title) ? $termsService->page_title : '' }}</textarea>
             </div>
 
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block text-sm">Page Description</label>
-                <textarea class="mt-1" name="description" id="editor">{{ isset($privacyPolicy[0]->description) ? $privacyPolicy[0]->description : '' }}</textarea>
+                <textarea class="mt-1" name="description" id="editor">{{ isset($termsService->description) ? $termsService->description : '' }}</textarea>
             </div>
 
             <div class="flex justify-end items-center mt-4 gap-2">
                 <div id="loader" style="display:none;"><img class="h-27 w-10" src="{{ asset('assets/img/loader.gif') }}" alt="GlobalNation"></div>
-                <input type="button" id="update_privacy_policy" class="cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
+                <input type="button" id="update_terms_service" class="cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
             </div>
         </form>
     </div>
@@ -62,12 +62,12 @@ $(document).ready(function () {
         height: '800px',
     });
 
-    $('#update_privacy_policy').on('click', function(e) {
+    $('#update_terms_service').on('click', function(e) {
         e.preventDefault();
         let url = window.location.pathname;
         let slug = url.split('/').pop();
 
-        let myform = document.getElementById("update-privacy-policy");
+        let myform = document.getElementById("update-terms-service");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -84,7 +84,7 @@ $(document).ready(function () {
         fd.append("is_preview", 0);
 
         $.ajax({
-            url: "{{ route('save-privacy-policy') }}",
+            url: "{{ route('save-terms-of-service') }}",
             type: "POST",
             data: fd,
             cache: false,
@@ -114,7 +114,7 @@ $(document).ready(function () {
         let url = window.location.pathname;
         let slug = url.split('/').pop();
 
-        let myform = document.getElementById("update-privacy-policy");
+        let myform = document.getElementById("update-terms-service");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -131,7 +131,7 @@ $(document).ready(function () {
         fd.append("is_preview", 1);
 
         $.ajax({
-            url: "{{ route('save-privacy-policy') }}",
+            url: "{{ route('save-terms-of-service') }}",
             type: "POST",
             data: fd,
             cache: false,
@@ -150,7 +150,7 @@ $(document).ready(function () {
                     timer: 2500
                 });
                 setTimeout( function(){
-                    window.open("https://globalnation.tv/privacy-policy/preview");
+                    window.open("https://globalnation.tv/terms-of-service/preview");
                 }  , 2500 );
             },
             error: function (xhr) {

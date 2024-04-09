@@ -109,6 +109,12 @@
 					</div>
 					@endif
 
+                    @if(Str::contains(request()->path(), '/terms-of-service'))
+					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="privacypolicy-preview-btn">
+					<a href=""><i class="fa fa-eye"></i> Preview</a>
+					</div>
+					@endif
+
 					<div class="flex items-center gap-x-4 lg:gap-x-6 @if(Str::contains(request()->path(), 'pages')) w-full justify-end @endif">
 						{{--<div class="relative">
 							<button class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 focus:outline-none"

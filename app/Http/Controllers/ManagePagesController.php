@@ -215,4 +215,80 @@ class ManagePagesController extends Controller
         // You can return a response or redirect as needed
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'privacyPolicy' => $privacyPolicy], 200);
     }
+
+
+    public function add_terms_service(Request $request)
+    {
+        $currentUrl = $request->path();
+        // Check if the current URL is '/terms-of-service'
+        if ($currentUrl === 'pages/terms-of-service') {
+            // Fetch the terms of service data based on the slug
+            $termsService = Pages::where('page_slug', 'terms-of-service')->first();
+        }
+        else {
+            // If URL is not '/terms-of-service', fetch all records (or handle as per your requirement)
+            $termsService = Pages::where('deleted_at', null)->get();
+        }
+
+        return view('pages.terms-of-service', compact('termsService'));
+
+    }
+
+
+    public function store_terms_service(Request $request)
+    {
+        $data = $request->validate([
+            'page_title' => ['required'],
+            'description' => ['required'],
+            'page_slug' => ['required'],
+            'status' => ['required'],
+            'is_preview' => ['required'],
+        ]);
+
+        $title = $data['page_title'];
+        $page_slug = $data['page_slug'];
+        $status = $data['status'];
+        $is_preview = $data['is_preview'];
+
+        // Fetch the privacy policy record based on the slug
+        $termsService = Pages::where('page_slug', $page_slug)->first();
+
+        if (!$termsService) {
+            // If no record exists, create a new one
+            $termsService = Pages::create([
+                'page_title' => $data['page_title'],
+                'page_slug' =>  $page_slug,
+                'description' => $data['description'],
+                'status' => 1,
+                'is_preview' => $is_preview,
+            ]);
+        }else if($termsService && $data['is_preview']== 1){
+            $termsServicePreview = Pages::where('page_slug', $page_slug)
+                          ->where('is_preview', $is_preview)
+                          ->first();
+            if (!$termsServicePreview) {
+                $termsServicePreview = Pages::create([
+                    'page_title' => $data['page_title'],
+                    'page_slug' =>  $page_slug,
+                    'description' => $data['description'],
+                    'status' => 1,
+                    'is_preview' => 1,
+                ]);
+            }else{
+                $termsServicePreview->update([
+                    'page_title' => $data['page_title'],
+                    'description' => $data['description'],
+                ]);
+            }
+        } else {
+            // If a record exists, update it
+            $termsService->update([
+                'page_title' => $data['page_title'],
+                'description' => $data['description'],
+            ]);
+        }
+
+        // You can return a response or redirect as needed
+        return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'termsService' => $termsService], 200);
+    }
 }
