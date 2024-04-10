@@ -114,6 +114,13 @@
                                                                 Terms Of Service
                                                             </a>
                                                         </li>
+                                                        <li class="mt-0" style="margin-top:0;">
+                                                            <a href="{{route('featured')}}"
+                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                <i class="fa-solid fa-circle text-[5px]"></i>
+                                                                Featured
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </template>
                                             </li>
