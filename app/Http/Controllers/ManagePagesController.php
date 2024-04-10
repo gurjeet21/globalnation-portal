@@ -291,4 +291,11 @@ class ManagePagesController extends Controller
         // You can return a response or redirect as needed
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'termsService' => $termsService], 200);
     }
+
+
+    public function show_featured(Request $request)
+    {
+        // You can return a response or redirect as needed
+        return view('pages.featured');
+    }
 }
