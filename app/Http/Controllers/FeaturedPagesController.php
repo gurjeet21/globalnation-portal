@@ -38,8 +38,8 @@ class FeaturedPagesController extends Controller
         // $data = $request->all();
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => 'required|email|unique:artists|max:255',
+            //'last_name' => ['required', 'string', 'max:255'],
+            //'email' => 'required|email|unique:artists|max:255',
         ]);
 
         $file_name = null;
@@ -51,8 +51,8 @@ class FeaturedPagesController extends Controller
 
         $addArtists = Artists::create([
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
+            'last_name' => isset($request->last_name) ? $request->last_name : null,
+            'email' => isset($request->email) ? $request->email : null,
             'profile_image' => $file_name,
         ]);
 
@@ -84,6 +84,48 @@ class FeaturedPagesController extends Controller
             'status' => 1,
             'is_preview' => $save_artist->id,
         ]);
+
+        return response()->json(['status' => 'success','message' => 'Artist added successfully'], 200);
+    }
+
+    public function store_featured_post(Request $request){
+     
+        $disclaimers = explode(',', $request->disclaimers);     
+        $length = count($request->artist_id);
+        if($request->status == 1){
+            ArtistFeatureds::query()->truncate();
+            for($i = 0; $i < $length; $i++){
+                $save_artist = ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 0,
+                ]);
+        
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);            
+            }
+        }else{
+            ArtistFeatureds::where('is_preview',1)->delete();
+            for($i = 0; $i < $length; $i++){
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);
+            }
+        }
 
         return response()->json(['status' => 'success','message' => 'Artist added successfully'], 200);
     }

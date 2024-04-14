@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ManagePages;
 use App\Models\Pages;
+use App\Models\Artists;
+use App\Models\ArtistFeatureds;
 use Illuminate\Support\Str;
 
 class ManagePagesController extends Controller
@@ -296,6 +298,14 @@ class ManagePagesController extends Controller
     public function show_featured(Request $request)
     {
         // You can return a response or redirect as needed
-        return view('pages.featured');
+        $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', 0)->orderBy('id', 'ASC')->get();
+        $artists = Artists::all()->mapWithKeys(function ($artist) {
+            return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
+        });
+        if(count($artistFeatureds) == 0){
+            $artistFeatureds[] = (object)array('artist_id' => '', 'title' => '', 'video_url' => '', 'description' => '', 'status' => 1);
+        } 
+
+        return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
     }
 }
