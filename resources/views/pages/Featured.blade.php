@@ -32,7 +32,7 @@
         </form>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <form method="post" id="artist-featured-form" action="#" enctype="multipart/form-data">
-             @csrf           
+             @csrf
             <div class="dynamic-fields-container">
                  @foreach($artistFeatureds as $mkey => $featureds)
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$mkey}}">
@@ -71,8 +71,8 @@
                             />
                         </label>
                     </div>
-                    
-                    <div class="flex align-center flex-shrink-0 mt-6 icon-section">
+
+                    <div class="flex align-center flex-shrink-0 mt-6 icon-section w-[10%]">
                         <input class="featured_status" type="hidden" name="featured_status[]" value="{{$featureds->status}}" />
                         <div class="btn btn-secondary text-uppercase focus:outline-none add-button"><i class="fa fa-plus fa-fw"></i></div>
 
@@ -114,7 +114,7 @@ $(document).ready(function () {
     var container = $(".dynamic-fields-container");
     var disclaimersContainer = $("#disclaimers-dynamic-field");
     var bgContainer = $(".bg-container");
-    var dylength =  $('.dynamic-field').length;   
+    var dylength =  $('.dynamic-field').length;
     var dynamicFieldCount = dylength;
     initTinyMCE("editor");
     container.on("click", ".add-button", function () {
@@ -130,17 +130,17 @@ $(document).ready(function () {
         clone.find('.artist_ids').val(''); // Clear the input value
         field.after(clone);
         disableButtonRemove();
-      
-        var disfield = $(disclaimersContainer);       
+
+        var disfield = $(disclaimersContainer);
         var disclone = '<div class="form-group mb-4 disc-dynamic-field" id="disclaimers-dynamic-field-'+ dynamicFieldCount+'"><label for="editor" class="mb-1 block  text-sm">Disclaimers</label><textarea class="mt-1 disclaimer-text" name="content[]" id="editor-'+dynamicFieldCount+'"></textarea></div>';
-        var filedId = "disc-dynamic-field-" + dynamicFieldCount;       
-        $(".dynamic-disclaimers-container").append(disclone); 
+        var filedId = "disc-dynamic-field-" + dynamicFieldCount;
+        $(".dynamic-disclaimers-container").append(disclone);
         initTinyMCE("editor-"+dynamicFieldCount);
     });
 
     container.on("click", ".remove-button", function () {
         var field = $(this).closest(".dynamic-field");
-        var id = $(this).closest(".dynamic-field").attr('id');        
+        var id = $(this).closest(".dynamic-field").attr('id');
         id = id.replace('dynamic-field-', '');
         field.remove();
         $("#disclaimers-dynamic-field-"+id).remove();
@@ -148,7 +148,7 @@ $(document).ready(function () {
     });
 
     $(".disc-dynamic-field").each(function(){
-        var getId = $(this).find('.disclaimer-text').attr('id');       
+        var getId = $(this).find('.disclaimer-text').attr('id');
         initTinyMCE(getId);
     });
 
@@ -157,7 +157,7 @@ $(document).ready(function () {
         selector: `#${textareaId}`,
         plugins: 'textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        height : "250",      
+        height : "250",
         });
     }
 
@@ -169,7 +169,7 @@ $(document).ready(function () {
     $('#artist-btn').on('click', function(e) {
         e.preventDefault();
         let myform = document.getElementById("add-artist-form");
-        let fd = new FormData(myform);        
+        let fd = new FormData(myform);
         $.ajax({
             url: "{{ route('save-artist') }}",
             type: "POST",
@@ -195,7 +195,7 @@ $(document).ready(function () {
                 }  , 2500 );
             },
             complete: function() {
-                $('#loader').hide();            
+                $('#loader').hide();
             }
         });
     });
@@ -206,11 +206,11 @@ $(document).ready(function () {
         let fd = new FormData(myform);
         var disclaimer = [];
         $(".disc-dynamic-field").each(function(index){
-            var getId = $(this).find('.disclaimer-text').attr('id');       
+            var getId = $(this).find('.disclaimer-text').attr('id');
             var content = tinymce.get(getId).getContent();
-            fd.append("disclaimer[]", content);         
+            fd.append("disclaimer[]", content);
         });
-        fd.append("status", 1);             
+        fd.append("status", 1);
         $.ajax({
             url: "{{ route('save-featured-post') }}",
             type: "POST",
@@ -222,7 +222,7 @@ $(document).ready(function () {
             beforeSend: function() {
                 $('#loader').show();
             },
-            success: function(data) {                   
+            success: function(data) {
                 Swal.fire({
                 position: "center",
                 icon: "success",
@@ -246,12 +246,12 @@ $(document).ready(function () {
         let fd = new FormData(myform);
         var disclaimer = [];
         $(".disc-dynamic-field").each(function(){
-            var getId = $(this).find('.disclaimer-text').attr('id');       
+            var getId = $(this).find('.disclaimer-text').attr('id');
             var content = tinymce.get(getId).getContent();
             disclaimer.push(content);
         });
         fd.append("status", 2);
-        fd.append("disclaimers", disclaimer);        
+        fd.append("disclaimers", disclaimer);
         $.ajax({
             url: "{{ route('save-featured-post') }}",
             type: "POST",
@@ -292,7 +292,7 @@ $(document).ready(function () {
     function enableButtonAdd() {
         container.find(".dynamic-field:last .add-button").prop("disabled", false);
     }
-    
+
     $('.dynamic-fields-container').on('click', '.downImage', function () {
         var downParent = $(this).closest('div.dynamic-field').next();
         if (downParent.length > 0) {
@@ -308,7 +308,7 @@ $(document).ready(function () {
         $(this).parent().parent().find('.plate_form_hide').show();
     });
 
-    $(document).on('click', '.plate_form_hide', function(){ 
+    $(document).on('click', '.plate_form_hide', function(){
         $(this).parent().parent().find('.featured_status').val('1');
         $(this).hide();
         $(this).parent().parent().find('.plate_form_show').show();
@@ -317,7 +317,7 @@ $(document).ready(function () {
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
 
 });
-  
+
 </script>
 
 @endsection
