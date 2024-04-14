@@ -34,8 +34,8 @@
         <form method="post" id="artist-featured-form" action="#" enctype="multipart/form-data">
              @csrf           
             <div class="dynamic-fields-container">
-                 @foreach($artistFeatureds as $featureds)
-                <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field">
+                 @foreach($artistFeatureds as $mkey => $featureds)
+                <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$mkey}}">
                     <div class="w-[30%]">
                         <label class="block text-sm">
                             <span class="text-black">Select Artist</span>
@@ -89,7 +89,7 @@
             </div>
             <div class="dynamic-disclaimers-container">
                 @foreach($artistFeatureds as $key => $featureds)
-                <div class="form-group mb-4 disc-dynamic-field" id="disclaimers-dynamic-field">
+                <div class="form-group mb-4 disc-dynamic-field" id="disclaimers-dynamic-field-{{$key}}">
                     <label for="editor-{{$key}}" class="mb-1 block  text-sm">Disclaimers</label>
                     <textarea class="mt-1 disclaimer-text" name="content[]" id="editor-{{$key}}">
                         {{$featureds->description}}
@@ -114,7 +114,8 @@ $(document).ready(function () {
     var container = $(".dynamic-fields-container");
     var disclaimersContainer = $("#disclaimers-dynamic-field");
     var bgContainer = $(".bg-container");
-    var dynamicFieldCount = 1;
+    var dylength =  $('.dynamic-field').length;   
+    var dynamicFieldCount = dylength;
     initTinyMCE("editor");
     container.on("click", ".add-button", function () {
 
@@ -139,10 +140,10 @@ $(document).ready(function () {
 
     container.on("click", ".remove-button", function () {
         var field = $(this).closest(".dynamic-field");
-        var id = $(this).closest(".dynamic-field").attr('id');      
-        id = id.replace('dynamic-field-', '');    
-        $("#disc-dynamic-field-"+id).remove();
+        var id = $(this).closest(".dynamic-field").attr('id');        
+        id = id.replace('dynamic-field-', '');
         field.remove();
+        $("#disclaimers-dynamic-field-"+id).remove();
         disableButtonRemove();
     });
 
