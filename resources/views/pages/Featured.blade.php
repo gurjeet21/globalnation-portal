@@ -248,10 +248,9 @@ $(document).ready(function () {
         $(".disc-dynamic-field").each(function(){
             var getId = $(this).find('.disclaimer-text').attr('id');
             var content = tinymce.get(getId).getContent();
-            disclaimer.push(content);
+            fd.append("disclaimer[]", content);
         });
         fd.append("status", 2);
-        fd.append("disclaimers", disclaimer);
         $.ajax({
             url: "{{ route('save-featured-post') }}",
             type: "POST",

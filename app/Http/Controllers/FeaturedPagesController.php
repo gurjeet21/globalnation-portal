@@ -89,8 +89,6 @@ class FeaturedPagesController extends Controller
     }
 
     public function store_featured_post(Request $request){
-     
-        $disclaimers = explode(',', $request->disclaimers);     
         $length = count($request->artist_id);
         if($request->status == 1){
             ArtistFeatureds::query()->truncate();
@@ -103,7 +101,7 @@ class FeaturedPagesController extends Controller
                     'status' => $request->featured_status[$i],
                     'is_preview' => 0,
                 ]);
-        
+
                 ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
                     'title' => $request->featured_title[$i],
@@ -111,7 +109,7 @@ class FeaturedPagesController extends Controller
                     'description' => $request->disclaimer[$i],
                     'status' => $request->featured_status[$i],
                     'is_preview' => 1,
-                ]);            
+                ]);
             }
         }else{
             ArtistFeatureds::where('is_preview',1)->delete();

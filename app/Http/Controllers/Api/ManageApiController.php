@@ -57,7 +57,7 @@ class ManageApiController extends Controller
     }
 
     public function featuredArtistPreview(Request $request){
-        $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', '!=', 0)->get();
+        $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', '!=', 0)->orderBy('id', 'ASC')->get();
         $artists = Artists::all()->mapWithKeys(function ($artist) {
             return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
         });

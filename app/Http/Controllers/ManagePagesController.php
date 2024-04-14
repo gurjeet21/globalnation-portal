@@ -304,7 +304,7 @@ class ManagePagesController extends Controller
         });
         if(count($artistFeatureds) == 0){
             $artistFeatureds[] = (object)array('artist_id' => '', 'title' => '', 'video_url' => '', 'description' => '', 'status' => 1);
-        } 
+        }
 
         return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
     }
