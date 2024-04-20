@@ -16,6 +16,7 @@ class ArtistFeatureds extends Model
         'title',
         'video_url',
         'description',
+        'background_image',
         'status',
         'is_preview',
     ];

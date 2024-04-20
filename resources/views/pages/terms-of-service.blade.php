@@ -10,6 +10,18 @@
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
         <form method="post" id="update-terms-service" action="#" enctype="multipart/form-data">
             @csrf
+            <div class="flex gap-4">
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm  mb-4">
+                        <span class="text-black">Uplaod Background Image</span>
+                        <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                            <input class="hidden file-input" name="background_image" type="file">
+                            <span class="bg-file-name">{{isset($termsService->background_image) ? $termsService->background_image : ''}}</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
             <div class="form-group mb-4 page-title-main">
                 <label for="page_title_editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class="" name="page_title" id="page_title_editor">{{ isset($termsService->page_title) ? $termsService->page_title : '' }}</textarea>
@@ -163,6 +175,11 @@ $(document).ready(function () {
                 $('#loader').hide();
             }
         });
+    });
+
+    $(document).on('change', '.file-input', function () { 
+        var fileName = this.files[0].name;
+       $('.bg-file-name').text(fileName);      
     });
 });
 </script>

@@ -33,6 +33,18 @@
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <form method="post" id="artist-featured-form" action="#" enctype="multipart/form-data">
              @csrf
+            <div class="flex gap-4">
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm  mb-4">
+                        <span class="text-black">Uplaod Background Image</span>
+                        <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                            <input class="hidden file-input" name="background_image" type="file">
+                            <span class="bg-file-name">{{isset($artistFeatureds[0]->background_image) ? $artistFeatureds[0]->background_image : ''}}</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
             <div class="dynamic-fields-container">
                  @foreach($artistFeatureds as $mkey => $featureds)
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$mkey}}">
@@ -311,6 +323,11 @@ $(document).ready(function () {
         $(this).parent().parent().find('.featured_status').val('1');
         $(this).hide();
         $(this).parent().parent().find('.plate_form_show').show();
+    });
+
+    $(document).on('change', '.file-input', function () { 
+        var fileName = this.files[0].name;
+       $('.bg-file-name').text(fileName);      
     });
 
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');

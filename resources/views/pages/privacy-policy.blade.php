@@ -10,6 +10,19 @@
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
         <form method="post" id="update-privacy-policy" action="#" enctype="multipart/form-data">
             @csrf
+            <div class="flex gap-4">
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm  mb-4">
+                        <span class="text-black">Uplaod Background Image</span>
+                        <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                            <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                            <input class="hidden file-input" name="background_image" type="file">
+                            <span class="bg-file-name">{{isset($privacyPolicy[0]->background_image) ? $privacyPolicy[0]->background_image : ''}}</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
             <div class="form-group mb-4 page-title-main">
                 <label for="page_title_editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class="" name="page_title" id="page_title_editor">{{ isset($privacyPolicy[0]->page_title) ? $privacyPolicy[0]->page_title : '' }}</textarea>
@@ -109,60 +122,9 @@ $(document).ready(function () {
         });
     });
 
-    $('#privacypolicy-preview-btn').on('click', function(e) {
-        e.preventDefault();
-        let url = window.location.pathname;
-        let slug = url.split('/').pop();
-
-        let myform = document.getElementById("update-privacy-policy");
-        let fd = new FormData(myform);
-        if (editorInstance) {
-            var textContent = editorInstance.getContent();
-        }
-
-        if (titleeditorInstance) {
-            var titleContent = titleeditorInstance.getContent();
-        }
-
-        fd.append("description", textContent);
-        fd.append("page_title", titleContent);
-        fd.append("page_slug", slug);
-        fd.append("status", 1);
-        fd.append("is_preview", 1);
-
-        $.ajax({
-            url: "{{ route('save-privacy-policy') }}",
-            type: "POST",
-            data: fd,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            beforeSend: function() {
-                $('#loader').show();
-            },
-            success: function(data) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Record updated successfully",
-                    showConfirmButton: false,
-                    timer: 2500
-                });
-                setTimeout( function(){
-                    window.open("https://globalnation.tv/privacy-policy/preview");
-                }  , 2500 );
-            },
-            error: function (xhr) {
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    console.log(key +'valuevalue' + value)
-                    $(".error_"+key).text(value);
-                });
-            },
-            complete: function() {
-                $('#loader').hide();
-            }
-        });
+    $(document).on('change', '.file-input', function () { 
+        var fileName = this.files[0].name;
+       $('.bg-file-name').text(fileName);      
     });
 });
 </script>

@@ -90,6 +90,17 @@ class FeaturedPagesController extends Controller
 
     public function store_featured_post(Request $request){
         $length = count($request->artist_id);
+        $artistFeatureds = ArtistFeatureds::first();
+        $background_image = isset($artistFeatureds->background_image) ? $artistFeatureds->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }  
+
+
         if($request->status == 1){
             ArtistFeatureds::query()->truncate();
             for($i = 0; $i < $length; $i++){
@@ -98,6 +109,7 @@ class FeaturedPagesController extends Controller
                     'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
                     'status' => $request->featured_status[$i],
                     'is_preview' => 0,
                 ]);
@@ -107,6 +119,7 @@ class FeaturedPagesController extends Controller
                     'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
                     'status' => $request->featured_status[$i],
                     'is_preview' => 1,
                 ]);
@@ -119,6 +132,7 @@ class FeaturedPagesController extends Controller
                     'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
                     'status' => $request->featured_status[$i],
                     'is_preview' => 1,
                 ]);

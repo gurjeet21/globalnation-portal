@@ -15,6 +15,7 @@ class Pages extends Model
         'page_title',
         'page_slug',
         'description',
+        'background_image',
         'status',
         'is_preview',
     ];

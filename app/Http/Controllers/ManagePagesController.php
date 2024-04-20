@@ -169,7 +169,7 @@ class ManagePagesController extends Controller
             'page_slug' => ['required'],
             'status' => ['required'],
             'is_preview' => ['required'],
-        ]);
+        ]);   
 
         $title = $data['page_title'];
         $page_slug = $data['page_slug'];
@@ -179,12 +179,22 @@ class ManagePagesController extends Controller
         // Fetch the privacy policy record based on the slug
         $privacyPolicy = Pages::where('page_slug', $page_slug)->first();
 
+        $background_image = isset($privacyPolicy->background_image) ? $privacyPolicy->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }  
+
         if (!$privacyPolicy) {
             // If no record exists, create a new one
             $privacyPolicy = Pages::create([
                 'page_title' => $data['page_title'],
                 'page_slug' =>  $page_slug,
                 'description' => $data['description'],
+                'background_image' => $background_image,
                 'status' => 1,
                 'is_preview' => $is_preview,
             ]);
@@ -197,21 +207,25 @@ class ManagePagesController extends Controller
                     'page_title' => $data['page_title'],
                     'page_slug' =>  $page_slug,
                     'description' => $data['description'],
+                    'background_image' => $background_image,
                     'status' => 1,
                     'is_preview' => 1,
                 ]);
             }else{
-                $privacyPolicyPreview->update([
-                    'page_title' => $data['page_title'],
-                    'description' => $data['description'],
+                Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
+                ->update([
+                'page_title' => $data['page_title'],
+                'description' => $data['description'],
+                'background_image' => $background_image,
                 ]);
             }
         } else {
             // If a record exists, update it
-            $privacyPolicy->update([
+            Pages::where('page_slug', $page_slug)->update([
                 'page_title' => $data['page_title'],
                 'description' => $data['description'],
-            ]);
+                'background_image' => $background_image,
+            ]);          
         }
 
         // You can return a response or redirect as needed
@@ -255,6 +269,15 @@ class ManagePagesController extends Controller
         // Fetch the privacy policy record based on the slug
         $termsService = Pages::where('page_slug', $page_slug)->first();
 
+        $background_image = isset($termsService->background_image) ? $termsService->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        } 
+
         if (!$termsService) {
             // If no record exists, create a new one
             $termsService = Pages::create([
@@ -277,17 +300,20 @@ class ManagePagesController extends Controller
                     'is_preview' => 1,
                 ]);
             }else{
-                $termsServicePreview->update([
+                Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
+                ->update([
                     'page_title' => $data['page_title'],
                     'description' => $data['description'],
+                    'background_image' => $background_image,
                 ]);
             }
         } else {
-            // If a record exists, update it
-            $termsService->update([
+            // If a record exists, update it          
+            Pages::where('page_slug', $page_slug)->update([
                 'page_title' => $data['page_title'],
                 'description' => $data['description'],
-            ]);
+                'background_image' => $background_image,
+            ]); 
         }
 
         // You can return a response or redirect as needed
