@@ -49,9 +49,9 @@ class ManageApiController extends Controller
             return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
         });
         $result = [];
-
+        $baseUrl = asset('_uploads/bg/');
         foreach($artistFeatureds as $featured){
-            $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'description' => $featured->description );
+            $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
         }
         return response()->json(['artists' => $result], 200);
     }
@@ -62,9 +62,9 @@ class ManageApiController extends Controller
             return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
         });
         $result = [];
-
+        $baseUrl = asset('_uploads/bg/');
         foreach($artistFeatureds as $featured){
-            $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'description' => $featured->description );
+            $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
         }
         return response()->json(['artists' => $result], 200);
 
@@ -74,8 +74,15 @@ class ManageApiController extends Controller
         $Pages = Pages::where('deleted_at', null)->where('is_preview', 0)->get();
         $result = [];
 
+        $baseUrl = asset('_uploads/bg/');
+
         foreach($Pages as $Page){
-            $result[] = array('page_title' => $Page->page_title, 'page_slug' => $Page->page_slug, 'description' => $Page->description );
+            $result[] = array(
+                'page_title' => $Page->page_title,
+                'page_slug' => $Page->page_slug,
+                'description' => $Page->description,
+                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : '' 
+            );
         }
         return response()->json(['pages' => $result], 200);
 
@@ -84,9 +91,14 @@ class ManageApiController extends Controller
     public function allPagesPreview(Request $request){
         $Pages = Pages::where('deleted_at', null)->where('is_preview', '!=', 0)->get();
         $result = [];
-
+        $baseUrl = asset('_uploads/bg/');
         foreach($Pages as $Page){
-            $result[] = array('page_title' => $Page->page_title, 'page_slug' => $Page->page_slug, 'description' => $Page->description );
+            $result[] = array(
+                'page_title' => $Page->page_title,
+                'page_slug' => $Page->page_slug, 
+                'description' => $Page->description,
+                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : ''  
+            );
         }
         return response()->json(['pages' => $result], 200);
 
