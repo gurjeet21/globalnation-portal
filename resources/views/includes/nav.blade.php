@@ -42,13 +42,14 @@
                                         <ul class="overflow-hidden text-sm font-medium">
                                             <li class="relative page-main-menu text-[#297a99]">
                                                 <button
+                                                    id="togglePagesMenu"
                                                     class="focus:outline-none focus:shadow-outline-black group flex gap-x-3 items-center p-2 text-sm leading-6 "
                                                     @click="togglePagesMenu"
                                                     aria-haspopup="true"
                                                 >
                                                     <i class="fa-solid fa-file text-lg"></i>
                                                     Pages
-                                                    <i class="fa fa-caret-down"></i>
+                                                    <i id="submenuIcon" class="fa fa-caret-down"></i>
                                                 </button>
                                                 <template x-if="isPagesMenuOpen">
                                                     <ul
@@ -77,7 +78,7 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="downloads_test mt-0" style="margin-top:0;">
+                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{ route('manage-featured') }}"
                                                                 class=" hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa fa-tasks" aria-hidden="true"></i>
@@ -99,7 +100,7 @@
                                                                     </a>
                                                                 </li>
                                                             </ul>
-                                                        </li>
+                                                        </li> -->
                                                         <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{route('privacy-policy')}}"
                                                                 class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">

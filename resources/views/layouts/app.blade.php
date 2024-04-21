@@ -192,6 +192,10 @@
                 $(".rim_tab_view").addClass("hidden"); //hiding all tabs using tailwind css;
                 $(`#${tab_to_show}`).removeClass("hidden"); // removing class hidden from wanted tab only, note that i am using Grave Accent symbol instead for inverted comma ;
             });
+
+            $('#togglePagesMenu').click(function() {
+                $('#submenuIcon').toggleClass('fa-caret-down fa-caret-up');
+            });
         });
 
         $(document).on('keyup','#search-field',function(){
