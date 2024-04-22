@@ -62,7 +62,15 @@
                                                     class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-[#297a99] dark:text-gray-400 dark:bg-[#297a99]"
                                                     aria-label="submenu"
                                                     >
-                                                        <li class="downloads">
+                                                        <li>
+                                                            <a href="{{route('add-page')}}"
+                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                <i class="fa-solid fa-circle text-[5px]"></i>
+                                                                Add Page
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="downloads" style="margin-top:0;">
                                                             <a href="{{route('downloads')}}"
                                                                 class="<?php echo request()->routeIs('downloads-test') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>

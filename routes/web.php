@@ -83,7 +83,8 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
     Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
     Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
-    //Route::post('/add-featured', [ManagePagesController::class, 'add_featured'])->name('add-featured');
+    Route::get('/add-page', [ManagePagesController::class, 'add_new_page'])->name('add-page');
+    Route::post('/save-new-page', [ManagePagesController::class, 'save_new_page'])->name('save-new-page');
 });
 
 /* clear-cache */

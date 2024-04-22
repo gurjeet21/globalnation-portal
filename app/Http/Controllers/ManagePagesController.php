@@ -169,7 +169,7 @@ class ManagePagesController extends Controller
             'page_slug' => ['required'],
             'status' => ['required'],
             'is_preview' => ['required'],
-        ]);   
+        ]);
 
         $title = $data['page_title'];
         $page_slug = $data['page_slug'];
@@ -186,7 +186,7 @@ class ManagePagesController extends Controller
             $file = $request->file('background_image');
             $background_image = $file->getClientOriginalName();
             $file->move(public_path('_uploads/bg'), $background_image);
-        }  
+        }
 
         if (!$privacyPolicy) {
             // If no record exists, create a new one
@@ -225,7 +225,7 @@ class ManagePagesController extends Controller
                 'page_title' => $data['page_title'],
                 'description' => $data['description'],
                 'background_image' => $background_image,
-            ]);          
+            ]);
         }
 
         // You can return a response or redirect as needed
@@ -276,7 +276,7 @@ class ManagePagesController extends Controller
             $file = $request->file('background_image');
             $background_image = $file->getClientOriginalName();
             $file->move(public_path('_uploads/bg'), $background_image);
-        } 
+        }
 
         if (!$termsService) {
             // If no record exists, create a new one
@@ -308,12 +308,12 @@ class ManagePagesController extends Controller
                 ]);
             }
         } else {
-            // If a record exists, update it          
+            // If a record exists, update it
             Pages::where('page_slug', $page_slug)->update([
                 'page_title' => $data['page_title'],
                 'description' => $data['description'],
                 'background_image' => $background_image,
-            ]); 
+            ]);
         }
 
         // You can return a response or redirect as needed
@@ -333,5 +333,50 @@ class ManagePagesController extends Controller
         }
 
         return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
+    }
+
+    public function add_new_page(Request $request)
+    {
+        return view('pages.add-page');
+    }
+
+    public function save_new_page(Request $request)
+    {
+        $data = $request->validate([
+            'page_title' => ['required'],
+            'description' => ['required'],
+            'page_slug' => ['required'],
+            'status' => ['required'],
+            'is_preview' => ['required'],
+        ]);
+
+        $title = $data['page_title'];
+        $page_slug = $data['page_slug'];
+        $status = $data['status'];
+        $is_preview = $data['is_preview'];
+
+        // Fetch the new page record based on the slug
+        //$new_page = Pages::where('page_slug', $page_slug)->first();
+
+        $background_image = isset($new_page->background_image) ? $new_page->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }
+
+        $new_page = Pages::create([
+            'page_title' => $data['page_title'],
+            'page_slug' =>  $page_slug,
+            'description' => $data['description'],
+            'background_image' => $background_image,
+            'status' => 1,
+            'is_preview' => $is_preview,
+        ]);
+
+        // You can return a response or redirect as needed
+        return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
     }
 }
