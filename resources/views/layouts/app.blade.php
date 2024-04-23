@@ -196,7 +196,7 @@
             });
 
             $('#togglePagesMenu').click(function() {
-                $('#submenuIcon').toggleClass('fa-caret-down fa-caret-up');
+                $('#submenuIcon').toggleClass('fa-caret-down fa-caret-left');
             });
         });
 

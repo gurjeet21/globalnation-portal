@@ -49,7 +49,7 @@
                                                 >
                                                     <i class="fa-solid fa-file text-lg"></i>
                                                     Pages
-                                                    <i id="submenuIcon" class="fa fa-caret-down"></i>
+                                                    <i id="submenuIcon" class="fa fa-caret-left"></i>
                                                 </button>
                                                 <template x-if="isPagesMenuOpen">
                                                     <ul
