@@ -8,7 +8,7 @@
         </div>
     @endif
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
-        <form method="post" id="add-page" action="#" enctype="multipart/form-data">
+        <form method="post" id="dynamic-page" action="#" enctype="multipart/form-data">
             @csrf
             <div class="flex gap-4">
                 <div class="w-[43%] bg-container">
@@ -17,7 +17,7 @@
                         <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                             <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                             <input class="hidden file-input" name="background_image" type="file">
-                            <span class="bg-file-name"></span>
+                            <span class="bg-file-name">{{isset($page->background_image) ? $page->background_image : ''}}</span>
                         </div>
                     </label>
                 </div>
@@ -25,17 +25,17 @@
 
             <div class="form-group mb-4 page-title-main">
                 <label for="page_title_editor" class="mb-1 block text-sm">Page Title</label>
-                <textarea class="" name="page_title" id="page_title_editor"></textarea>
+                <textarea class="" name="page_title" id="page_title_editor">{{isset($page->page_title) ? $page->page_title : ''}}</textarea>
             </div>
 
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block text-sm">Page Description</label>
-                <textarea class="mt-1" name="description" id="editor"></textarea>
+                <textarea class="mt-1" name="description" id="editor">{{isset($page->description) ? $page->description : ''}}</textarea>
             </div>
 
             <div class="flex justify-end items-center mt-4 gap-2">
                 <div id="loader" style="display:none;"><img class="h-27 w-10" src="{{ asset('assets/img/loader.gif') }}" alt="GlobalNation"></div>
-                <input type="button" id="add_new_page" class="cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
+                <input type="button" id="update_dynamic_page" class="cursor-pointer float-right text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]" value="Save">
             </div>
         </form>
     </div>
@@ -75,10 +75,10 @@ $(document).ready(function () {
         height: '800px',
     });
 
-    $('#add_new_page').on('click', function(e) {
+    $('#update_dynamic_page').on('click', function(e) {
         e.preventDefault();
 
-        let myform = document.getElementById("add-page");
+        let myform = document.getElementById("dynamic-page");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -92,12 +92,12 @@ $(document).ready(function () {
 
         fd.append("description", textContent);
         fd.append("page_title", titleContent);
-        fd.append("page_slug", slug);
+        fd.append("page_slug", '{{$page->page_slug}}');
         fd.append("status", 1);
         fd.append("is_preview", 0);
 
         $.ajax({
-            url: "{{ route('save-new-page') }}",
+            url: "{{ route('save-dynamic-page') }}",
             type: "POST",
             data: fd,
             cache: false,
@@ -118,62 +118,6 @@ $(document).ready(function () {
                 setTimeout( function(){ 
                 window.location.replace("/pages/manage-pages");
             }  , 2500 );
-            },
-            complete: function() {
-                $('#loader').hide();
-            }
-        });
-    });
-
-    $('#new-page-preview-btn').on('click', function(e) {
-        e.preventDefault();
-        let url = window.location.pathname;
-        let slug = url.split('/').pop();
-
-        let myform = document.getElementById("update-terms-service");
-        let fd = new FormData(myform);
-        if (editorInstance) {
-            var textContent = editorInstance.getContent();
-        }
-
-        if (titleeditorInstance) {
-            var titleContent = titleeditorInstance.getContent();
-        }
-
-        fd.append("description", textContent);
-        fd.append("page_title", titleContent);
-        fd.append("page_slug", slug);
-        fd.append("status", 1);
-        fd.append("is_preview", 1);
-
-        $.ajax({
-            url: "{{ route('save-new-page') }}",
-            type: "POST",
-            data: fd,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: "json",
-            beforeSend: function() {
-                $('#loader').show();
-            },
-            success: function(data) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Record updated successfully",
-                    showConfirmButton: false,
-                    timer: 2500
-                });
-                setTimeout( function(){
-                    window.open("https://globalnation.tv/terms-of-service/preview");
-                }  , 2500 );
-            },
-            error: function (xhr) {
-                $.each(xhr.responseJSON.errors, function (key, value) {
-                    console.log(key +'valuevalue' + value)
-                    $(".error_"+key).text(value);
-                });
             },
             complete: function() {
                 $('#loader').hide();

@@ -373,10 +373,68 @@ class ManagePagesController extends Controller
             'description' => $data['description'],
             'background_image' => $background_image,
             'status' => 1,
+            'is_dynamic' => 1,
             'is_preview' => $is_preview,
         ]);
 
         // You can return a response or redirect as needed
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
+    }
+
+    public function managePages(Request $request){     
+    	$dynamicPages = Pages::where('is_preview', 0)->get()->toArray();
+        $pages = array(array('page_title' => 'Downloads', 'page_slug'=> 'downloads', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'), array('page_title' => 'Featured', 'page_slug'=> 'featured', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'));
+        foreach($dynamicPages as  $dpage){
+            array_push($pages, $dpage);
+        } 
+  
+    	return view('pages.manage-pages',compact('pages'));
+    }
+
+    public function updatePage(Request $request, $page_slug){     
+        $page = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
+        return view('pages.update-page',compact('page'));
+    }
+
+    public function saveDynamicPage(Request $request){     
+        $data = $request->validate([
+            'page_title' => ['required'],
+            'description' => ['required'],
+            'page_slug' => ['required'],
+            'status' => ['required'],
+            'is_preview' => ['required'],
+        ]);
+        
+        $title = $data['page_title'];
+        $page_slug = $data['page_slug'];
+        $status = $data['status'];
+        $is_preview = $data['is_preview'];
+
+         $pageData = Pages::where('page_slug', $page_slug)->first();
+
+         $background_image = isset($pageData->background_image) ? $pageData->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }
+
+        Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
+        ->update([
+            'page_title' => $data['page_title'],
+            'description' => $data['description'],
+            'background_image' => $background_image,
+        ]);
+
+        // You can return a response or redirect as needed
+        return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
+    }
+
+    public function deleteDynamicPage(Request $request, $id){
+        Pages::where('id',$id)->delete();
+        Pages::where('is_preview',$id)->delete();
+    	return redirect()->back()->with(['succ_msg'=>'Page sucessfully deleted']);
     }
 }

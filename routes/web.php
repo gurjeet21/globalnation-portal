@@ -64,6 +64,10 @@ Route::middleware(['auth', 'permission'])->group(function () {
 Route::group(['prefix' => 'pages'], function(){
     Route::get('/', [ManagePagesController::class, 'index'])->name('page.list');
     Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    Route::get('/manage-pages', [ManagePagesController::class, 'managePages'])->name('manage.pages');
+    Route::match(['GET','POST'],'dynamic/{page_slug}', [ManagePagesController::class, 'updatePage'])->name('page.update');
+    Route::post('/save-dynamic-page', [ManagePagesController::class, 'saveDynamicPage'])->name('save-dynamic-page');
+    Route::get('/delete/{id}', [ManagePagesController::class, 'deleteDynamicPage'])->name('page.dynamic.delete');
     Route::get('/downloads-test', [UserController::class, 'downloads_test'])->name('downloads-test');
     Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
