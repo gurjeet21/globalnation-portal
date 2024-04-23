@@ -135,6 +135,18 @@ height: 37px!important;
 #artist-featured-form .dynamic-field:last-child .add-button {
     display: block;
 }
+.dt-layout-row .dt-info, .dt-layout-row .dt-length, .dt-search {
+    font-size: 14px!important;
+    color: inherit !important;
+}
+#all_pages_tbl_wrapper .dt-paging .dt-paging-button.current {
+    color: #fff !important;
+    background: #297a99 !important;
+}
+.dt-paging-button {
+    padding: 2px 12px !important;
+    background: #f9fafb !important;
+}
 
 @media(min-width: 1025px){
 .select2-container{

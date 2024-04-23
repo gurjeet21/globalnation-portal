@@ -3,7 +3,7 @@
 @section('content')
 <main class="h-full overflow-y-auto px-6">
     <div class="mx-auto grid mt-8">
-        <h2 class="mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        <h2 class="mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-700">
             Dashboard
         </h2>
         <!-- Cards -->

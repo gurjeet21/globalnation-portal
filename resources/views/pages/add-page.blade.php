@@ -111,11 +111,11 @@ $(document).ready(function () {
                 Swal.fire({
                     position: "center",
                     icon: "success",
-                    title: "Record updated successfully",
+                    title: "Page Added successfully",
                     showConfirmButton: false,
                     timer: 2500
                 });
-                setTimeout( function(){ 
+                setTimeout( function(){
                 window.location.replace("/pages/manage-pages");
             }  , 2500 );
             },

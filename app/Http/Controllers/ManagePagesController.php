@@ -381,22 +381,22 @@ class ManagePagesController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
     }
 
-    public function managePages(Request $request){     
+    public function managePages(Request $request){
     	$dynamicPages = Pages::where('is_preview', 0)->get()->toArray();
         $pages = array(array('page_title' => 'Downloads', 'page_slug'=> 'downloads', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'), array('page_title' => 'Featured', 'page_slug'=> 'featured', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'));
         foreach($dynamicPages as  $dpage){
             array_push($pages, $dpage);
-        } 
-  
+        }
+
     	return view('pages.manage-pages',compact('pages'));
     }
 
-    public function updatePage(Request $request, $page_slug){     
+    public function updatePage(Request $request, $page_slug){
         $page = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
         return view('pages.update-page',compact('page'));
     }
 
-    public function saveDynamicPage(Request $request){     
+    public function saveDynamicPage(Request $request){
         $data = $request->validate([
             'page_title' => ['required'],
             'description' => ['required'],
@@ -404,7 +404,7 @@ class ManagePagesController extends Controller
             'status' => ['required'],
             'is_preview' => ['required'],
         ]);
-        
+
         $title = $data['page_title'];
         $page_slug = $data['page_slug'];
         $status = $data['status'];

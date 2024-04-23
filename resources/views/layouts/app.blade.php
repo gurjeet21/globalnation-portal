@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{asset('assets/css/custom_style.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.4.0/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css" />
+
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://tailwindcss.com/docs/installation"></script>
