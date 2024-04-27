@@ -39,6 +39,11 @@
 <!-- JavaScript code -->
 <script>
 $(document).ready(function() {
+    $(window).on('load', function() {
+        $('#pageSelect').trigger('change');
+    });
+    //$('#pageSelect').trigger('change');
+
     $(document).on('change', '#pageSelect', function(e) {
         e.preventDefault();
 
@@ -50,8 +55,6 @@ $(document).ready(function() {
             cache: false,
             success: function(data) {
                 $('#pageContent').html(data);
-                // Destroy existing editor instance, if any
-                // Destroy existing editor instance, if any
                 if (typeof tinymce !== 'undefined') {
                     tinymce.remove();
                 }
