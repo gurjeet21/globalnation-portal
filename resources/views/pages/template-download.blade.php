@@ -151,10 +151,13 @@ $(document).ready(function () {
         if (titleeditorInstance) {
             var titleContent = titleeditorInstance.getContent();
         }
+        var strippedTitle = titleContent.replace(/<[^>]+>/g, '');
+        var slug = strippedTitle.trim().toLowerCase().replace(/\s+/g, '-');
 
         fd.append("status", 1);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
+        fd.append("page_slug", slug);
         var numItems = $('.dynamic-fields-container .dynamic-field').length;
         console.log('numItems' + numItems);
         for (i = 0; i < numItems; i++){
