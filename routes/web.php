@@ -93,6 +93,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/add-page', [ManagePagesController::class, 'add_new_page'])->name('add-page');
     Route::post('/load-page', [ManagePagesController::class, 'load_page'])->name('load-page');
     Route::get('/template-download', [ManagePagesController::class, 'template_downlaod'])->name('template-download');
+    Route::match(['GET','POST'],'/{page_slug}', [ManagePagesController::class, 'show_download_temp_page'])->name('page.show-download-temp-page');
 });
 
 /* clear-cache */

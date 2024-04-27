@@ -396,6 +396,11 @@ class ManagePagesController extends Controller
         return view('pages.update-page',compact('page'));
     }
 
+    public function show_download_temp_page(Request $request, $page_slug){
+        $page = ManagePages::where('slug', $page_slug)->where('status', 1)->first();
+        return view('pages.show-download-template-page',compact('page'));
+    }
+
     public function saveDynamicPage(Request $request){
         $data = $request->validate([
             'page_title' => ['required'],

@@ -18,5 +18,6 @@ class Pages extends Model
         'background_image',
         'status',
         'is_preview',
+        'is_dynamic',
     ];
 }
