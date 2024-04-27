@@ -21,6 +21,7 @@ Route::get('/download-test-content',  [ManageApiController::class, 'downloadTest
 Route::get('/featured-artist',  [ManageApiController::class, 'featuredArtist']);
 Route::get('/featured-artist-preview',  [ManageApiController::class, 'featuredArtistPreview']);
 Route::get('/all-pages',  [ManageApiController::class, 'allPages']);
+Route::get('/dynamicpage/{page_slug}',  [ManageApiController::class, 'dynamicPage']);
 Route::get('/all-pages-preview',  [ManageApiController::class, 'allPagesPreview']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

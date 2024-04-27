@@ -104,4 +104,28 @@ class ManageApiController extends Controller
 
     }
 
+    public function dynamicPage(Request $request, $page_slug){
+      
+        $Pages = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
+
+        $baseUrl = asset('_uploads/bg/');
+        if(!empty($Pages)){
+            $result = array(
+                'page_title' => $Pages->page_title,
+                'page_slug' => $Pages->page_slug,
+                'description' => $Pages->description,
+                'background_image' => !empty($Pages->background_image) ? $baseUrl.'/'.$Pages->background_image : '' 
+            );
+            return response()->json(['pages' => $result, 'status' => 'success'], 200);
+        }
+        $result = array(
+            'page_title' => 'Not Found',
+            'page_slug' => 'not-found',
+            'description' => 'Page not found',
+            'background_image' => '' 
+        );       
+        return response()->json(['pages' => $result, 'status' => 'not found'], 200);
+
+    }
+
 }
