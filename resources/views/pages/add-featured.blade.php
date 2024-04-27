@@ -70,7 +70,7 @@
     let editorDescription ;
     tinymce.init({
         selector: '#featured_description',
-        plugins: 'textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+        plugins: 'textcolor anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
@@ -111,7 +111,7 @@
             beforeSend: function() {
                 $('#loader').show();
             },
-            success: function(data) {           
+            success: function(data) {
                 Swal.fire({
                 position: "center",
                 icon: "success",
@@ -119,11 +119,11 @@
                 showConfirmButton: false,
                 timer: 2500
                 });
-                setTimeout( function(){ 
+                setTimeout( function(){
                     window.location.replace("/pages/manage-featured");
                 }  , 2500 );
             },
-            error: function (xhr) {           
+            error: function (xhr) {
                 $.each(xhr.responseJSON.errors, function (key, value) {
                     console.log(key +'valuevalue' + value)
                     $(".error_"+key).text(value);

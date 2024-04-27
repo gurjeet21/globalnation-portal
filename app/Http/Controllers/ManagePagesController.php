@@ -124,6 +124,52 @@ class ManagePagesController extends Controller
 
     }
 
+    public function save_download_template_new_item(Request $request)
+    {
+        $data = $request->all();
+        // Print the form data and stop execution
+        $plateform_file = [];
+        $total_plateform = count($data['plateform_name']);
+        if($total_plateform > 0){
+            for ($x = 0; $x < $total_plateform; $x++) {
+                $plateform_file[] = $data['plateform_file_hidden'][$x];
+            }
+        }
+
+        $background_image = '';
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $imageName = $file->getClientOriginalName();
+            $background_image = $imageName;
+        }
+
+        $status = $data['status'];
+        $title = $data['page_title'];
+
+        if (strpos($title, '<') !== false && strpos($title, '>') !== false) {
+            $page_title = strip_tags($title);
+        } else {
+            $page_title = $title;
+        }
+        $page_title = trim($page_title);
+
+        ManagePages::updateOrCreate(
+            [
+            'title' => $data['page_title'],
+            'slug' => Str::slug($page_title, '-'),
+            'background_image' => $background_image,
+            'plateform_name' => json_encode($data['plateform_name']),
+            'plateform_file' => json_encode($plateform_file),
+            'disclaimers' => $data['disclaimers'],
+            'status' => $status
+            ]);
+
+        return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
+
+    }
+
     public function store_file_progress(Request $request)
     {
         // Upload background image if provided
@@ -335,9 +381,9 @@ class ManagePagesController extends Controller
         return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
     }
 
-    public function add_new_page(Request $request)
+    public function template_page_text(Request $request)
     {
-        return view('pages.add-page');
+        return view('pages.template-page-text');
     }
 
     public function save_new_page(Request $request)
@@ -436,5 +482,27 @@ class ManagePagesController extends Controller
         Pages::where('id',$id)->delete();
         Pages::where('is_preview',$id)->delete();
     	return redirect()->back()->with(['succ_msg'=>'Page sucessfully deleted']);
+    }
+
+    public function template_downlaod(Request $request)
+    {
+        return view('pages.template-download');
+    }
+
+    public function add_new_page(Request $request)
+    {
+        return view('pages.add-page');
+    }
+
+    public function load_page(Request $request)
+    {
+        $page = $request->input('page');
+        if ($page === 'page-text-template') {
+            return view('pages.template-page-text');
+        } else if ($page === 'download-template') {
+            return view('pages.template-download');
+        } else if ($page === 'video-template') {
+            return view('pages.featured');
+        }
     }
 }

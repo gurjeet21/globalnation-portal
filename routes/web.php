@@ -72,6 +72,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
+    Route::post('/save-download-template-new-item',[ManagePagesController::class,'save_download_template_new_item'])->name('save-download-template-new-item');
     Route::post('/save-file-with-progress', [ManagePagesController::class, 'store_file_progress'])->name('save-file-with-progress');
     Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
     Route::get('/manage-featured', [FeaturedPagesController::class, 'index'])->name('manage-featured');
@@ -87,8 +88,11 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
     Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
     Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
+    Route::get('/template-page-text', [ManagePagesController::class, 'template_page_text'])->name('template-page-text');
+    Route::post('/save-template-page-text', [ManagePagesController::class, 'save_new_page'])->name('save-template-page-text');
     Route::get('/add-page', [ManagePagesController::class, 'add_new_page'])->name('add-page');
-    Route::post('/save-new-page', [ManagePagesController::class, 'save_new_page'])->name('save-new-page');
+    Route::post('/load-page', [ManagePagesController::class, 'load_page'])->name('load-page');
+    Route::get('/template-download', [ManagePagesController::class, 'template_downlaod'])->name('template-download');
 });
 
 /* clear-cache */
