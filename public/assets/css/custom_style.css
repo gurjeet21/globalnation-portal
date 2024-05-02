@@ -147,6 +147,13 @@ height: 37px!important;
     padding: 2px 12px !important;
     background: #f9fafb !important;
 }
+body div.dt-container .dt-paging .dt-paging-button:hover {
+    color: #297a99 !important;
+    border-color: #297a99;
+}
+.breadcrumb-item a {
+    color: #297a99;
+}
 
 @media(min-width: 1025px){
 .select2-container{

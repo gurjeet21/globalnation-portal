@@ -7,8 +7,11 @@
         </div>
     @endif
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
-        <form method="post" id="download-form" action="{{route('save-page-test')}}" enctype="multipart/form-data">
+        <form method="post" id="download-template-form" action="{{route('update-download-template-page')}}" enctype="multipart/form-data">
              @csrf
+
+            <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->slug) ? $show_temp_data->slug : ''}}" />
+
             <div class="flex gap-4">
                 <div class="w-[43%] bg-container">
                     <label class="block text-sm  mb-4">
@@ -16,60 +19,63 @@
                         <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                             <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                             <input class="hidden file-input" name="background_image" type="file">
-                            {{isset($page->background_image) ? $page->background_image : ''}}
+                            {{isset($show_temp_data->background_image) ? $show_temp_data->background_image : ''}}
                         </div>
                     </label>
                 </div>
             </div>
 
             <div class="dynamic-fields-container">
-                @if(isset($page->plateform_name))
-                @foreach($page->plateform_name as $key => $plateform)
-                <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$key}}">
-                    <div class="w-[43%]">
-                        <label class="block text-sm">
-                            <span class="text-black">Platform</span>
-                            <input
-                                class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
-                                placeholder="Downloads" type="text"
-                                name="plateform_name[]"
-                                value="{{$plateform}}"
-                            />
-                        </label>
-                    </div>
-                    <div class="w-[43%]">
-                        <label class="block text-sm">
-                            <span class="text-black">Upload New Build</span>
-                            <div class="mt-1 p-2 bg-[#eeeeee] upload_new_build dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
-                                <div class="choose_main_sec">
-                                    <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                                    <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
-                                    <span class="db_file_name"> {{isset($page->plateform_file[$key]) ? $page->plateform_file[$key] : ''}} </span>
+                @if(isset($show_temp_data->plateform_name))
+                    @foreach($show_temp_data->plateform_name as $key => $plateform)
+                    <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$key}}">
+                        <div class="w-[43%]">
+                            <label class="block text-sm">
+                                <span class="text-black">Platform</span>
+                                <input
+                                    class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                                    placeholder="Downloads" type="text"
+                                    name="plateform_name[]"
+                                    value="{{$plateform}}"
+                                />
+                            </label>
+                        </div>
+
+
+                        <div class="w-[43%]">
+                            <label class="block text-sm">
+                                <span class="text-black">Upload New Build</span>
+                                <div class="mt-1 p-2 bg-[#eeeeee] upload_new_build dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
+                                    <div class="choose_main_sec">
+                                        <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
+                                        <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
+                                        <span class="db_file_name"> {{isset($show_temp_data->plateform_file[$key]) ? $show_temp_data->plateform_file[$key] : ''}} </span>
+                                    </div>
+                                    <div class="progress mt-2 ml-0">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar-percenatge"></div>
+                                    </div>
                                 </div>
-                                <div class="progress mt-2 ml-0">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <div class="progress-bar-percenatge"></div>
-                                </div>
+                            </label>
+                        </div>
+
+                        <input class="plateform_file_hidden" type="hidden" name="plateform_file_hidden[]" value="{{isset($show_temp_data->plateform_file[$key]) ? $show_temp_data->plateform_file[$key] : ''}}" />
+
+                        <input class="plateform_status" type="hidden" name="plateform_status[]" value="{{$show_temp_data->plateform_status[$key]}}" />
+
+                        <div class="flex align-center flex-shrink-0 mt-6 icon-section">
+                            <div class="btn btn-secondary text-uppercase focus:outline-none add-button"><i class="fa fa-plus fa-fw"></i></div>
+
+                            <div class="btn btn-secondary text-uppercase focus:outline-none ml-1 remove-button" disabled><i class="fa fa-minus fa-fw"></i></div>
+
+                            <div class='downImage ml-1'><i class="fa fa-caret-down" style="font-size:20px"></i></div>
+                            <div class='plate_form_status ml-1'>
+                                <span class="plate_form_show" style="display: {{$show_temp_data->plateform_status[$key] == '1' ? 'block' : 'none'}}"><i class="fa fa-eye" style="font-size:10px"></i></span>
+                                <span class="plate_form_hide" style="display: {{$show_temp_data->plateform_status[$key] == '0' ? 'block' : 'none'}}"><i class="fa fa-eye-slash" style="font-size:10px"></i></span>
                             </div>
-                        </label>
-                    </div>
-                    <input class="plateform_file_hidden" type="hidden" name="plateform_file_hidden[]" value="{{isset($page->plateform_file[$key]) ? $page->plateform_file[$key] : ''}}" />
-
-                    <input class="plateform_status" type="hidden" name="plateform_status[]" value="{{$page->plateform_status[$key]}}" />
-
-                    <div class="flex align-center flex-shrink-0 mt-6 icon-section">
-                        <div class="btn btn-secondary text-uppercase focus:outline-none add-button"><i class="fa fa-plus fa-fw"></i></div>
-
-                        <div class="btn btn-secondary text-uppercase focus:outline-none ml-1 remove-button" disabled><i class="fa fa-minus fa-fw"></i></div>
-
-                        <div class='downImage ml-1'><i class="fa fa-caret-down" style="font-size:20px"></i></div>
-                        <div class='plate_form_status ml-1'>
-                            <span class="plate_form_show" style="display: {{$page->plateform_status[$key] == '1' ? 'block' : 'none'}}"><i class="fa fa-eye" style="font-size:10px"></i></span>
-                            <span class="plate_form_hide" style="display: {{$page->plateform_status[$key] == '0' ? 'block' : 'none'}}"><i class="fa fa-eye-slash" style="font-size:10px"></i></span>
                         </div>
                     </div>
-                </div>
-                @endforeach
+                    @endforeach
 
                 @else
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
@@ -91,7 +97,7 @@
                                 <div class="choose_main_sec">
                                     <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
                                     <input class="hidden file-input build-file-upload" name="plateform_file_{{$key}}" type="file">
-                                    <span class="db_file_name"> {{isset($page->plateform_file[$key]) ? $page->plateform_file[$key] : ''}} </span>
+                                    <span class="db_file_name"> {{isset($show_temp_data->plateform_file[$key]) ? $show_temp_data->plateform_file[$key] : ''}} </span>
                                 </div>
                                 <div class="progress mt-2 ml-0">
                                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -117,15 +123,15 @@
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class=""  name="page_title" id="page_title_editor">
-                    {{isset($page->title) ? $page->title : ''}}
+                    {{isset($show_temp_data->title) ? $show_temp_data->title : ''}}
                 </textarea>
-                <input type="hidden" name="page_id" value="{{isset($page->id) ? $page->id : ''}}"/>
+                <input type="hidden" name="page_id" value="{{isset($show_temp_data->id) ? $show_temp_data->id : ''}}"/>
             </div>
 
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block  text-sm">Disclaimers</label>
                 <textarea class="mt-1" name="content" id="editor">
-                    {{isset($page->disclaimers) ? $page->disclaimers : ''}}
+                    {{isset($show_temp_data->disclaimers) ? $show_temp_data->disclaimers : ''}}
                 </textarea>
             </div>
 
@@ -168,6 +174,7 @@ $(document).ready(function () {
         disableButtonRemove();
     });
 
+    /* Editor */
     let titleeditorInstance ;
     let editorInstance ;
 
@@ -197,10 +204,11 @@ $(document).ready(function () {
         }
     });
 
-
+    /* Update Data*/
     $('#download-btn').on('click', function(e) {
         e.preventDefault();
-        let myform = document.getElementById("download-form");
+        var slug = $('#page_slug').val();
+        let myform = document.getElementById("download-template-form");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -211,6 +219,7 @@ $(document).ready(function () {
         }
 
         fd.append("status", 1);
+        fd.append("slug", slug);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
             var numItems = $('.dynamic-fields-container .dynamic-field').length;
@@ -219,7 +228,7 @@ $(document).ready(function () {
                 fd.set("plateform_file_"+i, '');
             }
             $.ajax({
-                url: "{{ route('save-page-test') }}",
+                url: "{{ route('update-download-template-page') }}",
                 type: "POST",
                 data: fd,
                 cache: false,
@@ -245,9 +254,10 @@ $(document).ready(function () {
             });
     });
 
+    /* Preview Data */
     $('#downloads-preview-btn').on('click', function(e) {
         e.preventDefault();
-        let myform = document.getElementById("download-form");
+        let myform = document.getElementById("download-template-form");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -267,7 +277,7 @@ $(document).ready(function () {
         }
 
             $.ajax({
-                url: "{{ route('save-page-test') }}",
+                url: "{{ route('update-download-template-page') }}",
                 type: "POST",
                 data: fd,
                 cache: false,

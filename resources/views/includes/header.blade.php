@@ -41,54 +41,71 @@
                     @endif
 
                     @php
-                        // Get the current route name
-                        $currentRouteName = \Illuminate\Support\Facades\Route::currentRouteName();
+                        // Get the current URL
+                        $currentUrl = request()->url();
 
-                        // Extract segments from the route name
-                        $segments = explode('.', $currentRouteName);
+                        // Get the base URL
+                        $baseUrl = url('/');
 
-                        // Display "pages" as the first segment
+                        // Remove the base URL from the current URL
+                        $path = trim(str_replace($baseUrl, '', $currentUrl), '/');
+
+                        // Explode the path into segments
+                        $segments = explode('/', $path);
+
+                        // Initialize breadcrumbs with the first segment as "pages"
                         $breadcrumbs = [['url' => '/', 'name' => 'pages']];
 
-                        // Add the remaining segments
-                        $currentUrl = '/pages';
-                        $totalSegments = count($segments);
-
+                        // Construct the breadcrumbs for each segment
+                        $currentPath = '';
                         foreach ($segments as $key => $segment) {
-                            $currentUrl .= '/' . $segment;
+                            $currentPath .= '/' . $segment;
 
-                            // Skip anchor tag for the last segment if it's the current route
-                            if ($key === $totalSegments - 1) {
+                            // Skip anchor tag for the last segment if it's the current path
+                            if ($key === count($segments) - 1) {
                                 $breadcrumbs[] = ['url' => null, 'name' => $segment];
                             } else {
-                                $breadcrumbs[] = ['url' => $currentUrl, 'name' => $segment];
+                                $breadcrumbs[] = ['url' => $currentPath, 'name' => $segment];
                             }
                         }
                     @endphp
 
                     @if(Str::contains(request()->path(), 'pages'))
-                        <div class="relative w-full  mr-6" >
-							<ol class="breadcrumb">
-								@if (!empty($breadcrumbs))
-								<ol class="breadcrumb flex gap-2 items-center">
+                    <div class="relative w-full  mr-6" >
+                        <ol class="breadcrumb">
+                            @if (!empty($breadcrumbs))
+                                <ol class="breadcrumb flex gap-2 items-center">
 
-								@foreach ($breadcrumbs as $breadcrumb)
-									<li class="breadcrumb-item">
-										@if ($breadcrumb['url'])
-										<i class="fa-solid fa-file text-[#797d7f]"></i> <a href="{{ $breadcrumb['url'] }}" class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb['name'] }}</a>
-										@else
-											<span class="text-[#61d5d8] text-lg dark:text-[#61d5d8] capitalize">{{ $breadcrumb['name'] }}</span>
-										@endif
-									</li>
-									@if (!$loop->last)
-										<span class="breadcrumb-separator">|</span>
-									@endif
-								@endforeach
-								</ol>
-								@endif
-							</ol>
-                        </div>
+                                    @php
+                                        $mergedBreadcrumbs = [];
+                                        $previousBreadcrumb = null;
 
+                                        foreach ($breadcrumbs as $breadcrumb) {
+                                            if ($breadcrumb['name'] === 'pages' && $previousBreadcrumb === 'pages') {
+                                                continue;
+                                            }
+
+                                            // Otherwise, add the current breadcrumb to the merged breadcrumbs
+                                            $mergedBreadcrumbs[] = $breadcrumb['name'];
+                                            $previousBreadcrumb = $breadcrumb['name'];
+                                        }
+                                    @endphp
+
+                                    @foreach ($mergedBreadcrumbs as $index => $breadcrumb)
+                                        <li class="breadcrumb-item">
+                                            @if ($index === 0)
+                                                <i class="fa-solid fa-file text-[#797d7f]"></i>
+                                                <span class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb }}</span>
+                                            @else
+                                                <span class="breadcrumb-separator">|</span>
+                                                <a href="{{ implode('/', array_slice($segments, 0, $index + 1)) }}" class="capitalize text-[#797d7f] text-lg">{{ $breadcrumb }}</a>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ol>
+                            @endif
+                        </ol>
+                    </div>
                     @endif
 
 					@if(Str::contains(request()->path(), 'downloads') || Str::contains(request()->path(), 'featured'))

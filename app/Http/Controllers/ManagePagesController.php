@@ -124,6 +124,55 @@ class ManagePagesController extends Controller
 
     }
 
+    public function update_download_template_page(Request $request)
+    {
+        $data = $request->all();
+        // Get the slug from the request data
+        $slug = $data['slug'];
+
+        // Print the form data and stop execution
+        $plateform_file = [];
+        $total_plateform = count($data['plateform_name']);
+        if($total_plateform > 0){
+            for ($x = 0; $x < $total_plateform; $x++) {
+                $plateform_file[] = $data['plateform_file_hidden'][$x];
+            }
+        }
+
+        $background_image = '';
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $imageName = $file->getClientOriginalName();
+            $background_image = $imageName;
+        }
+
+        $status = $data['status'];
+        $page_id = $data['page_id'];
+        $title = $data['page_title'];
+
+
+        $updated = ManagePages::where('slug', $slug)->update([
+            'title' => $data['page_title'],
+            'slug' => $slug, // Use $title variable instead of $page_title
+            'background_image' => $background_image,
+            'plateform_name' => json_encode($data['plateform_name']),
+            'plateform_file' => json_encode($plateform_file),
+            'plateform_status' => json_encode($data['plateform_status']),
+            'disclaimers' => $data['disclaimers'],
+            'status' => $status
+        ]);
+
+        // Check if record was updated successfully
+        if ($updated) {
+            return response()->json(['status' => 'success', 'message' => 'Record updated successfully'], 200);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Failed to update record'], 500);
+        }
+
+    }
+
     public function store_file_progress(Request $request)
     {
         // Upload background image if provided
@@ -144,25 +193,97 @@ class ManagePagesController extends Controller
         }
     }
 
-    public function add_privacy_policy(Request $request)
+    // public function add_privacy_policy(Request $request)
+    // {
+    //     $currentUrl = $request->path();
+    //     // Check if the current URL is '/privacy-policy'
+    //     if ($currentUrl === 'privacy-policy') {
+    //         // Fetch the privacy policy data based on the slug
+    //         $privacyPolicy = Pages::where('page_slug', 'privacy-policy')->get();
+    //     } else {
+    //         // If URL is not '/privacy-policy', fetch all records (or handle as per your requirement)
+    //         $privacyPolicy = Pages::where('deleted_at', null)->get();
+    //     }
+
+    //     return view('pages.privacy-policy', compact('privacyPolicy'));
+
+    // }
+
+    // public function store_privacy_policy(Request $request)
+    // {
+    //     //dd($request->only(['page_title', 'description', 'page_slug', 'status', 'is_preview']));
+    //     $data = $request->validate([
+    //         'page_title' => ['required'],
+    //         'description' => ['required'],
+    //         'page_slug' => ['required'],
+    //         'status' => ['required'],
+    //         'is_preview' => ['required'],
+    //     ]);
+
+    //     $title = $data['page_title'];
+    //     $page_slug = $data['page_slug'];
+    //     $status = $data['status'];
+    //     $is_preview = $data['is_preview'];
+
+    //     // Fetch the privacy policy record based on the slug
+    //     $privacyPolicy = Pages::where('page_slug', $page_slug)->first();
+
+    //     $background_image = isset($privacyPolicy->background_image) ? $privacyPolicy->background_image : null;
+
+    //     // Upload background image if provided
+    //     if ($request->hasFile('background_image')) {
+    //         $file = $request->file('background_image');
+    //         $background_image = $file->getClientOriginalName();
+    //         $file->move(public_path('_uploads/bg'), $background_image);
+    //     }
+
+    //     if (!$privacyPolicy) {
+    //         // If no record exists, create a new one
+    //         $privacyPolicy = Pages::create([
+    //             'page_title' => $data['page_title'],
+    //             'page_slug' =>  $page_slug,
+    //             'description' => $data['description'],
+    //             'background_image' => $background_image,
+    //             'status' => 1,
+    //             'is_preview' => $is_preview,
+    //         ]);
+    //     }else if($privacyPolicy && $data['is_preview']== 1){
+    //         $privacyPolicyPreview = Pages::where('page_slug', $page_slug)
+    //                       ->where('is_preview', $is_preview)
+    //                       ->first();
+    //         if (!$privacyPolicyPreview) {
+    //             $privacyPolicyPreview = Pages::create([
+    //                 'page_title' => $data['page_title'],
+    //                 'page_slug' =>  $page_slug,
+    //                 'description' => $data['description'],
+    //                 'background_image' => $background_image,
+    //                 'status' => 1,
+    //                 'is_preview' => 1,
+    //             ]);
+    //         }else{
+    //             Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
+    //             ->update([
+    //             'page_title' => $data['page_title'],
+    //             'description' => $data['description'],
+    //             'background_image' => $background_image,
+    //             ]);
+    //         }
+    //     } else {
+    //         // If a record exists, update it
+    //         Pages::where('page_slug', $page_slug)->update([
+    //             'page_title' => $data['page_title'],
+    //             'description' => $data['description'],
+    //             'background_image' => $background_image,
+    //         ]);
+    //     }
+
+    //     // You can return a response or redirect as needed
+    //     return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'privacyPolicy' => $privacyPolicy], 200);
+    // }
+
+
+    public function update_text_template_pages(Request $request)
     {
-        $currentUrl = $request->path();
-        // Check if the current URL is '/privacy-policy'
-        if ($currentUrl === 'privacy-policy') {
-            // Fetch the privacy policy data based on the slug
-            $privacyPolicy = Pages::where('page_slug', 'privacy-policy')->get();
-        } else {
-            // If URL is not '/privacy-policy', fetch all records (or handle as per your requirement)
-            $privacyPolicy = Pages::where('deleted_at', null)->get();
-        }
-
-        return view('pages.privacy-policy', compact('privacyPolicy'));
-
-    }
-
-    public function store_privacy_policy(Request $request)
-    {
-        //dd($request->only(['page_title', 'description', 'page_slug', 'status', 'is_preview']));
         $data = $request->validate([
             'page_title' => ['required'],
             'description' => ['required'],
@@ -177,9 +298,9 @@ class ManagePagesController extends Controller
         $is_preview = $data['is_preview'];
 
         // Fetch the privacy policy record based on the slug
-        $privacyPolicy = Pages::where('page_slug', $page_slug)->first();
+        $text_temp_data = Pages::where('page_slug', $page_slug)->first();
 
-        $background_image = isset($privacyPolicy->background_image) ? $privacyPolicy->background_image : null;
+        $background_image = isset($text_temp_data->background_image) ? $text_temp_data->background_image : null;
 
         // Upload background image if provided
         if ($request->hasFile('background_image')) {
@@ -188,17 +309,7 @@ class ManagePagesController extends Controller
             $file->move(public_path('_uploads/bg'), $background_image);
         }
 
-        if (!$privacyPolicy) {
-            // If no record exists, create a new one
-            $privacyPolicy = Pages::create([
-                'page_title' => $data['page_title'],
-                'page_slug' =>  $page_slug,
-                'description' => $data['description'],
-                'background_image' => $background_image,
-                'status' => 1,
-                'is_preview' => $is_preview,
-            ]);
-        }else if($privacyPolicy && $data['is_preview']== 1){
+        if($text_temp_data && $data['is_preview']== 1){
             $privacyPolicyPreview = Pages::where('page_slug', $page_slug)
                           ->where('is_preview', $is_preview)
                           ->first();
@@ -229,7 +340,7 @@ class ManagePagesController extends Controller
         }
 
         // You can return a response or redirect as needed
-        return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'privacyPolicy' => $privacyPolicy], 200);
+        return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'privacyPolicy' => $text_temp_data], 200);
     }
 
 
@@ -381,14 +492,43 @@ class ManagePagesController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
     }
 
-    public function managePages(Request $request){
-    	$dynamicPages = Pages::where('is_preview', 0)->get()->toArray();
-        $pages = array(array('page_title' => 'Downloads', 'page_slug'=> 'downloads', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'), array('page_title' => 'Featured', 'page_slug'=> 'featured', 'is_dynamic'=> 0, 'created_at' => '2024-04-06T04:16:39.000000Z'));
-        foreach($dynamicPages as  $dpage){
-            array_push($pages, $dpage);
-        }
+    public function managePages(Request $request)
+    {
+        // Retrieve dynamic pages with status = 1 from ManagePages model
+        $get_download_temp_data = ManagePages::where('status', 1)
+                                              ->get()
+                                              ->toArray();
 
-    	return view('pages.manage-pages',compact('pages'));
+        // Retrieve all dynamic pages from Pages model
+        $get_text_temp_data = Pages::where('is_preview', 0)
+                                   ->get()
+                                   ->toArray();
+
+        // Merge the two arrays and map the fields accordingly
+        $pages = array_map(function($page) {
+            // If the page is from ManagePages model, map the fields accordingly
+            if (isset($page['title'])) {
+                return [
+                    'id' => $page['id'],
+                    'table_name' => 'manage_pages', // Add the table name here
+                    'page_title' => $page['title'],
+                    'page_slug' => $page['slug'],
+                    'created_at' => $page['created_at'],
+                    // Add other fields as needed
+                ];
+            }
+            // If the page is from Pages model, map the fields accordingly
+            return [
+                'id' => $page['id'],
+                'table_name' => 'pages', // Add the table name here
+                'page_title' => $page['page_title'],
+                'page_slug' => $page['page_slug'],
+                'created_at' => $page['created_at'],
+                // Add other fields as needed
+            ];
+        }, array_merge($get_download_temp_data, $get_text_temp_data));
+
+        return view('pages.manage-pages', compact('pages'));
     }
 
     public function updatePage(Request $request, $page_slug){
@@ -396,9 +536,25 @@ class ManagePagesController extends Controller
         return view('pages.update-page',compact('page'));
     }
 
-    public function show_download_temp_page(Request $request, $page_slug){
-        $page = ManagePages::where('slug', $page_slug)->where('status', 1)->first();
-        return view('pages.show-download-template-page',compact('page'));
+    public function show_template_data(Request $request, $page_slug){
+        $download_table = ManagePages::where('slug', $page_slug)->where('status', 1)->first();
+        $page_table = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
+
+        if($download_table) {
+            $show_temp_data = $download_table;
+            $view = 'pages.show-download-template-page';
+        } elseif($page_table) {
+            $show_temp_data = $page_table;
+            $view = 'pages.show-text-template-page';
+        } else {
+            abort(404);
+        }
+
+        $show_temp_data->plateform_name = isset($show_temp_data->plateform_name) ? json_decode($show_temp_data->plateform_name, true) : [];
+        $show_temp_data->plateform_file = isset($show_temp_data->plateform_file) ? json_decode($show_temp_data->plateform_file, true) : [];
+        $show_temp_data->plateform_status = isset($show_temp_data->plateform_status) ? json_decode($show_temp_data->plateform_status, true) : [];
+
+        return view($view,compact('show_temp_data'));
     }
 
     public function saveDynamicPage(Request $request){
@@ -437,10 +593,27 @@ class ManagePagesController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
     }
 
-    public function deleteDynamicPage(Request $request, $id){
-        Pages::where('id',$id)->delete();
-        Pages::where('is_preview',$id)->delete();
-    	return redirect()->back()->with(['succ_msg'=>'Page sucessfully deleted']);
+    public function deleteDynamicPage(Request $request, $id, $table){
+        // Determine the model based on the provided table name
+        switch ($table) {
+            case 'manage_pages':
+                $model = ManagePages::class;
+                break;
+            case 'pages':
+                $model = Pages::class;
+                break;
+            default:
+                return redirect()->back()->with(['error_msg' => 'Invalid table name']);
+        }
+
+        // Delete the page from the appropriate model
+        $model::where('id', $id)->delete();
+        // Delete associated data from the preview table if necessary
+        if ($table === 'pages') {
+            Pages::where('is_preview', $id)->delete();
+        }
+
+        return redirect()->back()->with(['succ_msg' => 'Page successfully deleted']);
     }
 
     public function template_downlaod(Request $request)
@@ -504,6 +677,7 @@ class ManagePagesController extends Controller
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
+            'plateform_status' => json_encode($data['plateform_status']),
             'disclaimers' => $data['disclaimers'],
             'status' => $status
             ]);

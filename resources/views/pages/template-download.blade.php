@@ -50,12 +50,15 @@
 
                     <input class="plateform_file_hidden" type="hidden" name="plateform_file_hidden[]" value="" />
 
+                    <input class="plateform_status" type="hidden" name="plateform_status[]" value="1" />
+
                     <div class="flex align-center flex-shrink-0 mt-6 icon-section">
                         <div class="btn btn-secondary text-uppercase focus:outline-none add-button"><i class="fa fa-plus fa-fw"></i></div>
 
                         <div class="btn btn-secondary text-uppercase focus:outline-none ml-1 remove-button" disabled><i class="fa fa-minus fa-fw"></i></div>
 
-                        <div class='downImage ml-1'><i class="fa fa-caret-down" style="font-size:20px"></i></div>
+                        <div class='downImage ml-1'><i class="fa fa-caret-down" style="font-size:10px"></i></div>
+                        <div class='plate_form_status ml-1'><i class="fa fa-eye" style="font-size:10px"></i></div>
                     </div>
                 </div>
             </div>
@@ -159,7 +162,7 @@ $(document).ready(function () {
         fd.append("page_title", titleContent);
         fd.append("page_slug", slug);
         var numItems = $('.dynamic-fields-container .dynamic-field').length;
-        console.log('numItems' + numItems);
+
         for (i = 0; i < numItems; i++){
             fd.set("plateform_file_"+i, '');
         }

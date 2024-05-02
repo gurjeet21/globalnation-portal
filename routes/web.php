@@ -67,11 +67,12 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/manage-pages', [ManagePagesController::class, 'managePages'])->name('manage.pages');
     Route::match(['GET','POST'],'dynamic/{page_slug}', [ManagePagesController::class, 'updatePage'])->name('page.update');
     Route::post('/save-dynamic-page', [ManagePagesController::class, 'saveDynamicPage'])->name('save-dynamic-page');
-    Route::get('/delete/{id}', [ManagePagesController::class, 'deleteDynamicPage'])->name('page.dynamic.delete');
+    Route::get('/delete/{id}/{table}', [ManagePagesController::class, 'deleteDynamicPage'])->name('page.dynamic.delete');
     Route::get('/downloads-test', [UserController::class, 'downloads_test'])->name('downloads-test');
     Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
+    Route::post('/update-download-template-page',[ManagePagesController::class,'update_download_template_page'])->name('update-download-template-page');
     Route::post('/save-download-template-new-item',[ManagePagesController::class,'save_download_template_new_item'])->name('save-download-template-new-item');
     Route::post('/save-file-with-progress', [ManagePagesController::class, 'store_file_progress'])->name('save-file-with-progress');
     Route::post('/edit-page/{slug}',[ManagePagesController::class,'update'])->name('update-page');
@@ -83,8 +84,9 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-featured-post',[FeaturedPagesController::class,'store_featured_post'])->name('save-featured-post');
     Route::match(['GET','POST'],'/manage-featured/update/{id}', [FeaturedPagesController::class, 'update_featured'])->name('artist.featured.update');
     Route::get('/manage-featured/delete/{id}', [FeaturedPagesController::class, 'delete_featured'])->name('artist.featured.delete');
-    Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
-    Route::post('/save-privacy-policy', [ManagePagesController::class, 'store_privacy_policy'])->name('save-privacy-policy');
+    // Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
+    // Route::post('/save-privacy-policy', [ManagePagesController::class, 'store_privacy_policy'])->name('save-privacy-policy');
+    Route::post('/update-text-template-pages', [ManagePagesController::class, 'update_text_template_pages'])->name('update-text-template-pages');
     Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
     Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
     Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
@@ -93,7 +95,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::get('/add-page', [ManagePagesController::class, 'add_new_page'])->name('add-page');
     Route::post('/load-page', [ManagePagesController::class, 'load_page'])->name('load-page');
     Route::get('/template-download', [ManagePagesController::class, 'template_downlaod'])->name('template-download');
-    Route::match(['GET','POST'],'/{page_slug}', [ManagePagesController::class, 'show_download_temp_page'])->name('page.show-download-temp-page');
+    Route::match(['GET','POST'],'/{page_slug}', [ManagePagesController::class, 'show_template_data'])->name('page.show-download-temp-page');
 });
 
 /* clear-cache */

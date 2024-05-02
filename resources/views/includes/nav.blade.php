@@ -117,13 +117,7 @@
                                                                 </li>
                                                             </ul>
                                                         </li> -->
-                                                        <li class="downloads_test mt-0" style="margin-top:0;">
-                                                            <a href="{{route('privacy-policy')}}"
-                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Privacy Policy
-                                                            </a>
-                                                        </li>
+
                                                         <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{route('terms-of-service')}}"
                                                                 class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
