@@ -198,6 +198,9 @@
             $('#togglePagesMenu').click(function() {
                 $('#submenuIcon').toggleClass('fa-caret-down fa-caret-left');
             });
+            $('#toggleMembersMenu').click(function() {
+                $('#membersubmenuIcon').toggleClass('fa-caret-down fa-caret-left');
+            });
         });
 
         $(document).on('keyup','#search-field',function(){
@@ -364,6 +367,18 @@
                     }
                 });
             }
+            function updateMemberMenuClasses(currentURL) {
+                $('.member-main-menu a').each(function() {
+                    // Check if the href attribute matches the current URL
+                    if ($(this).attr('href') === currentURL) {
+                        // Add 'text-[#61d5d8]' class to the matching menu item
+                        $(this).addClass('text-[#61d5d8]');
+                    } else {
+                        // Add 'text-white' class to non-matching menu items
+                        $(this).addClass('text-white');
+                    }
+                });
+            }
 
             // Click event handler for the menu button
             $(document).on('click', '.page-main-menu button', function() {
@@ -375,8 +390,24 @@
                     updateMenuClasses(currentURL);
                 }, 100); // Adjust the delay as needed
             });
+            $(document).on('click', '.member-main-menu button', function() {
+                // Get the current URL
+                var currentURL = window.location.href;
+
+                // Call the function to update classes on menu items after a short delay
+                setTimeout(function() {
+                    updateMemberMenuClasses(currentURL);
+                }, 100); // Adjust the delay as needed
+            });
 
             // Get the current URL
+            var currentURL = window.location.href;
+
+            // Call the function to update classes on menu items after a short delay
+            setTimeout(function() {
+                updateMenuClasses(currentURL);
+            }, 100); // Adjust the delay as needed
+
             var currentURL = window.location.href;
 
             // Call the function to update classes on menu items after a short delay
@@ -388,6 +419,10 @@
             if (currentURL.includes("/pages/")) {
                 // Trigger a click event on the button to toggle the submenu
                 $('.page-main-menu button').click();
+            }
+            if (currentURL.includes("/interocitormembers")) {
+                // Trigger a click event on the button to toggle the submenu
+                $('.member-main-menu button').click();
             }
         });
 

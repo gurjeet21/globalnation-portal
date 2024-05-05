@@ -9,6 +9,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ManagePagesController;
 use App\Http\Controllers\FeaturedPagesController;
+use App\Http\Controllers\InterociterMemberController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\TwoFactorController;
@@ -58,6 +59,9 @@ Route::middleware(['auth', 'permission'])->group(function () {
 
         /* setting routes*/
         Route::get('/settings', [SettingController::class, 'index'])->name('setting');
+        /* interocitormembers routes*/
+        Route::get('/interocitormembers',[InterociterMemberController::class,'index'])->name('interocitormembers');
+
     //});
 });
 
