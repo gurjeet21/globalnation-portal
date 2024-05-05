@@ -62,7 +62,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
+        'interocitorDB' => [
+            'driver' => 'mysql',
+            'host' => env('INTEROCITOR_DB_HOST', '127.0.0.1'),
+            'port' => env('INTEROCITOR_DB_PORT', '3306'),
+            'database' => env('INTEROCITOR_DB_DATABASE', 'forge'),
+            'username' => env('INTEROCITOR_DB_USERNAME', 'forge'),
+            'password' => env('INTEROCITOR_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
