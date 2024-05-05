@@ -20,7 +20,7 @@
                         >
                             <option value="page-text-template" selected>Add Page Text</option>
                             <option value="download-template">Add Download template</option>
-                            <option value="video-template">Add Video Template</option>
+                            <!-- <option value="video-template">Add Video Template</option> -->
                         </select>
                     </div>
 

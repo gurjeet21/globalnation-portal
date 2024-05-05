@@ -38,7 +38,7 @@
 											Users
 										</a>
 									</li>
-									
+
 									<li class="downloads">
                                         <ul class="overflow-hidden text-sm font-medium">
                                             <li class="relative member-main-menu text-[#297a99]">
@@ -69,7 +69,7 @@
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
 																Interocitor Members
                                                             </a>
-                                                        </li>                                                        
+                                                        </li>
                                                     </ul>
                                                 </template>
                                             </li>
@@ -115,21 +115,21 @@
                                                             </a>
                                                         </li>
 
-                                                        <li class="downloads" style="margin-top:0;">
+                                                        <!-- <li class="downloads" style="margin-top:0;">
                                                             <a href="{{route('downloads')}}"
-                                                                class="<?php echo request()->routeIs('downloads-test') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                class="<?php //echo request()->routeIs('downloads-test') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
                                                                 Downloads
                                                             </a>
-                                                        </li>
+                                                        </li> -->
 
-                                                        <li class="downloads_test mt-0" style="margin-top:0;">
+                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{route('downloads-test')}}"
-                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                class="<?php //echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
                                                                 Downloads Test
                                                             </a>
-                                                        </li>
+                                                        </li> -->
 
                                                         <!-- <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{ route('manage-featured') }}"
@@ -155,13 +155,13 @@
                                                             </ul>
                                                         </li> -->
 
-                                                        <li class="downloads_test mt-0" style="margin-top:0;">
+                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
                                                             <a href="{{route('terms-of-service')}}"
-                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                class="<?php //echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
                                                                 Terms Of Service
                                                             </a>
-                                                        </li>
+                                                        </li> -->
                                                         <li class="mt-0" style="margin-top:0;">
                                                             <a href="{{route('featured')}}"
                                                                 class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
