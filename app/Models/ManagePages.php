@@ -12,8 +12,8 @@ class ManagePages extends Model
     use SoftDeletes;
     protected $table = 'manage_pages';
     protected $fillable = [
-        'title',
-        'slug',
+        'page_title',
+        'page_slug',
         'background_image',
         'plateform_name',
         'plateform_file',

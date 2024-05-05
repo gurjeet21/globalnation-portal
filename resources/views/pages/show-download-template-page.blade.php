@@ -10,7 +10,7 @@
         <form method="post" id="download-template-form" action="{{route('update-download-template-page')}}" enctype="multipart/form-data">
              @csrf
 
-            <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->slug) ? $show_temp_data->slug : ''}}" />
+            <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->page_slug) ? $show_temp_data->slug : ''}}" />
 
             <div class="flex gap-4">
                 <div class="w-[43%] bg-container">
@@ -123,7 +123,7 @@
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class=""  name="page_title" id="page_title_editor">
-                    {{isset($show_temp_data->title) ? $show_temp_data->title : ''}}
+                    {{isset($show_temp_data->page_title) ? $show_temp_data->page_title : ''}}
                 </textarea>
                 <input type="hidden" name="page_id" value="{{isset($show_temp_data->id) ? $show_temp_data->id : ''}}"/>
             </div>

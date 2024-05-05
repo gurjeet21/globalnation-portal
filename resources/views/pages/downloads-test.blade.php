@@ -117,7 +117,7 @@
             <div class="form-group mb-4">
                 <label for="editor" class="mb-1 block text-sm">Page Title</label>
                 <textarea class=""  name="page_title" id="page_title_editor">
-                    {{isset($download_test->title) ? $download_test->title : ''}}
+                    {{isset($download_test->page_title) ? $download_test->page_title : ''}}
                 </textarea>
                 <input type="hidden" name="page_id" value="{{isset($download_test->id) ? $download_test->id : ''}}"/>
             </div>

@@ -13,6 +13,8 @@ class ArtistFeatureds extends Model
     protected $table = 'artist_featureds';
     protected $fillable = [
         'artist_id',
+        'page_title',
+        'page_slug',
         'title',
         'video_url',
         'description',

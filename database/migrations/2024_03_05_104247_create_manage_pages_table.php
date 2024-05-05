@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('manage_pages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug');
+            $table->string('page_title');
+            $table->string('page_slug');
             $table->json('plateform_name')->nullable();
             $table->json('plateform_file')->nullable();
             $table->json('plateform_status')->nullable();

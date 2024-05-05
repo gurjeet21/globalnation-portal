@@ -57,8 +57,8 @@ class ManagePagesController extends Controller
         ManagePages::updateOrCreate(
             ['id' => $page_id],
             [
-            'title' => $data['page_title'],
-            'slug' => Str::slug($page_title, '-'),
+            'page_title' => $data['page_title'],
+            'page_slug' => Str::slug($page_title, '-'),
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
@@ -110,8 +110,8 @@ class ManagePagesController extends Controller
         ManagePages::updateOrCreate(
             ['id' => $page_id],
             [
-            'title' => $data['page_title'],
-            'slug' => Str::slug($page_title, '-'),
+            'page_title' => $data['page_title'],
+            'page_slug' => Str::slug($page_title, '-'),
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
@@ -153,9 +153,9 @@ class ManagePagesController extends Controller
         $title = $data['page_title'];
 
 
-        $updated = ManagePages::where('slug', $slug)->update([
-            'title' => $data['page_title'],
-            'slug' => $slug, // Use $title variable instead of $page_title
+        $updated = ManagePages::where('page_slug', $slug)->update([
+            'page_title' => $data['page_title'],
+            'page_slug' => $slug, // Use $title variable instead of $page_title
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
@@ -495,38 +495,46 @@ class ManagePagesController extends Controller
     public function managePages(Request $request)
     {
         // Retrieve dynamic pages with status = 1 from ManagePages model
-        $get_download_temp_data = ManagePages::where('status', 1)
-                                              ->get()
-                                              ->toArray();
+        $managePagesData = ManagePages::where('status', 1)
+        ->whereNotNull('page_slug')
+        ->get()->toArray();
 
         // Retrieve all dynamic pages from Pages model
-        $get_text_temp_data = Pages::where('is_preview', 0)
-                                   ->get()
-                                   ->toArray();
+        $pagesData = Pages::where('is_preview', 0)
+        ->whereNotNull('page_slug')
+        ->get()->toArray();
 
-        // Merge the two arrays and map the fields accordingly
+        // Retrieve all dynamic pages from ArtistFeatureds model
+        $artistFeaturedsData = ArtistFeatureds::where('is_preview', 0)
+        ->whereNotNull('page_slug')
+        ->get()->toArray();
+
+        // Merge the arrays and map the fields accordingly
         $pages = array_map(function($page) {
             // If the page is from ManagePages model, map the fields accordingly
-            if (isset($page['title'])) {
+            if (isset($page['page_title'])) {
                 return [
                     'id' => $page['id'],
                     'table_name' => 'manage_pages', // Add the table name here
-                    'page_title' => $page['title'],
-                    'page_slug' => $page['slug'],
+                    'page_title' => $page['page_title'],
+                    'page_slug' => $page['page_slug'],
                     'created_at' => $page['created_at'],
                     // Add other fields as needed
                 ];
             }
             // If the page is from Pages model, map the fields accordingly
-            return [
-                'id' => $page['id'],
-                'table_name' => 'pages', // Add the table name here
-                'page_title' => $page['page_title'],
-                'page_slug' => $page['page_slug'],
-                'created_at' => $page['created_at'],
-                // Add other fields as needed
-            ];
-        }, array_merge($get_download_temp_data, $get_text_temp_data));
+            elseif (isset($page['page_title'])) {
+                return [
+                    'id' => $page['id'],
+                    'table_name' => 'pages', // Add the table name here
+                    'page_title' => $page['page_title'],
+                    'page_slug' => $page['page_slug'],
+                    'created_at' => $page['created_at'],
+                    // Add other fields as needed
+                ];
+            }
+
+        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));
 
         return view('pages.manage-pages', compact('pages'));
     }
@@ -537,8 +545,9 @@ class ManagePagesController extends Controller
     }
 
     public function show_template_data(Request $request, $page_slug){
-        $download_table = ManagePages::where('slug', $page_slug)->where('status', 1)->first();
+        $download_table = ManagePages::where('page_slug', $page_slug)->where('status', 1)->first();
         $page_table = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
+        $video_table = ArtistFeatureds::where('page_slug', $page_slug)->where('is_preview', 0)->first();
 
         if($download_table) {
             $show_temp_data = $download_table;
@@ -546,6 +555,9 @@ class ManagePagesController extends Controller
         } elseif($page_table) {
             $show_temp_data = $page_table;
             $view = 'pages.show-text-template-page';
+        } elseif($video_table) {
+            $show_temp_data = $video_table;
+            $view = 'pages.show-featured-template-page';
         } else {
             abort(404);
         }
@@ -634,7 +646,8 @@ class ManagePagesController extends Controller
         } else if ($page === 'download-template') {
             return view('pages.template-download');
         } else if ($page === 'video-template') {
-            return view('pages.featured');
+            $artists = Artists::all();
+            return view('pages.template-featured', compact('artists'));
         }
     }
 
@@ -672,17 +685,83 @@ class ManagePagesController extends Controller
 
         ManagePages::updateOrCreate(
             [
-            'title' => $data['page_title'],
-            'slug' => $page_slug,
+            'page_title' => $data['page_title'],
+            'page_slug' => $page_slug,
             'background_image' => $background_image,
             'plateform_name' => json_encode($data['plateform_name']),
             'plateform_file' => json_encode($plateform_file),
             'plateform_status' => json_encode($data['plateform_status']),
             'disclaimers' => $data['disclaimers'],
             'status' => $status
-            ]);
+            ]
+        );
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
 
+    }
+
+    public function save_template_video(Request $request){
+        $request->validate([
+            'background_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'page_title' => 'required|string|max:255',
+            'page_slug' => 'required|string|max:255',
+        ]);
+
+        $length = count($request->artist_id);
+        $artistFeatureds = ArtistFeatureds::first();
+        $background_image = isset($artistFeatureds->background_image) ? $artistFeatureds->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }
+
+
+        if($request->status == 1){
+            for($i = 0; $i < $length; $i++){
+                $save_artist = ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'page_title' => $request->page_title,
+                    'page_slug' => $request->page_slug,
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 0,
+                ]);
+
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'page_title' => $request->page_title,
+                    'page_slug' => $request->page_slug,
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);
+            }
+        }else{
+            ArtistFeatureds::where('is_preview',1)->delete();
+            for($i = 0; $i < $length; $i++){
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'page_title' => $request->page_title,
+                    'page_slug' => $request->page_slug,
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'success','message' => 'Record successfully Added'], 200);
     }
 }

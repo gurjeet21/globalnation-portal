@@ -82,6 +82,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-artist',[FeaturedPagesController::class,'store_artist'])->name('save-artist');
     Route::post('/save-featured',[FeaturedPagesController::class,'store_featured'])->name('save-featured');
     Route::post('/save-featured-post',[FeaturedPagesController::class,'store_featured_post'])->name('save-featured-post');
+    Route::post('/save-template-video',[ManagePagesController::class,'save_template_video'])->name('save-template-video');
     Route::match(['GET','POST'],'/manage-featured/update/{id}', [FeaturedPagesController::class, 'update_featured'])->name('artist.featured.update');
     Route::get('/manage-featured/delete/{id}', [FeaturedPagesController::class, 'delete_featured'])->name('artist.featured.delete');
     // Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
@@ -91,6 +92,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
     Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
     Route::get('/template-page-text', [ManagePagesController::class, 'template_page_text'])->name('template-page-text');
+    Route::get('/template-featured', [ManagePagesController::class, 'template_featured'])->name('template-featured');
     Route::post('/save-template-page-text', [ManagePagesController::class, 'save_new_page'])->name('save-template-page-text');
     Route::get('/add-page', [ManagePagesController::class, 'add_new_page'])->name('add-page');
     Route::post('/load-page', [ManagePagesController::class, 'load_page'])->name('load-page');
