@@ -534,7 +534,7 @@ class ManagePagesController extends Controller
                 ];
             }
 
-        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));
+        }, array_merge($managePagesData, $pagesData));
 
         return view('pages.manage-pages', compact('pages'));
     }
