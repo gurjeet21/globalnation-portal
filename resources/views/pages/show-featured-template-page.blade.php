@@ -33,8 +33,11 @@
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
         <form method="post" id="artist-featured-form" action="#" enctype="multipart/form-data">
              @csrf
+
+            <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}" />
+
             <div class="flex gap-4">
-                <div class="w-[43%] bg-container">
+                <div class="w-[30%] bg-container">
                     <label class="block text-sm  mb-4">
                         <span class="text-black">Uplaod Background Image</span>
                         <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
@@ -44,9 +47,35 @@
                         </div>
                     </label>
                 </div>
+                <div class="w-[30%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Page Title</span>
+                        <input
+                            class="block page_title w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Page Title" type="text"
+                            name="page_title"
+                            value="{{isset($show_temp_data->first()->page_title) ? $show_temp_data->first()->page_title : ''}}"
+                        />
+                    </label>
+                </div>
+                <div class="w-[30%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Slug <strong>|</strong> </span>
+                        <a style="color:blue;" href="https://globalnation.tv/pages/{{isset($show_temp_data->first()->page_slug) ? $show_temp_data->first()->page_slug : ''}}">/pages/{{isset($show_temp_data->first()->page_slug) ? $show_temp_data->first()->page_slug : ''}}</a>
+                        <input
+                            class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Slug"
+                            type="text"
+                            name="page_slug"
+                            value="{{isset($show_temp_data->first()->page_slug) ? $show_temp_data->first()->page_slug : ''}}"
+                        />
+                    </label>
+                </div>
+                <div class="w-[10%] bg-container">
+                </div>
             </div>
             <div class="dynamic-fields-container">
-                 @foreach($artistFeatureds as $mkey => $show_temp_data)
+                 @foreach($show_temp_data as $mkey => $show_temp_datas)
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$mkey}}">
                     <div class="w-[30%]">
                         <label class="block text-sm">
@@ -54,7 +83,7 @@
                             <select name="artist_id[]" class="block artist_ids w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
                                     <option value="">--Please select the Artist --</option>
                                     @foreach($artists as $key => $artist)
-                                    <option value="{{$key}}" {{ (@$show_temp_data->artist_id) ===  $key ? 'selected' : ''}}>{{$artist}}</option>
+                                    <option value="{{$key}}" {{ (@$show_temp_datas->artist_id) ===  $key ? 'selected' : ''}}>{{$artist}}</option>
                                     @endforeach
                             </select>
                         </label>
@@ -67,7 +96,7 @@
                                 class="block featured_title w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                                 placeholder="Name of Show" type="text"
                                 name="featured_title[]"
-                                value="{{$show_temp_data->title}}"
+                                value="{{$show_temp_datas->title}}"
                             />
                         </label>
                     </div>
@@ -79,32 +108,32 @@
                                 class="block video_link w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                                 placeholder="Video Url" type="text"
                                 name="video_link[]"
-                                value="{{$show_temp_data->video_url}}"
+                                value="{{$show_temp_datas->video_url}}"
                             />
                         </label>
                     </div>
 
                     <div class="flex align-center flex-shrink-0 mt-6 icon-section w-[10%]">
-                        <input class="featured_status" type="hidden" name="featured_status[]" value="{{$show_temp_data->status}}" />
+                        <input class="featured_status" type="hidden" name="featured_status[]" value="{{$show_temp_datas->status}}" />
                         <div class="btn btn-secondary text-uppercase focus:outline-none add-button"><i class="fa fa-plus fa-fw"></i></div>
 
                         <div class="btn btn-secondary text-uppercase focus:outline-none ml-1 remove-button" disabled><i class="fa fa-minus fa-fw"></i></div>
 
                         <div class='downImage ml-1'><i class="fa fa-caret-down" style="font-size:20px"></i></div>
                         <div class='plate_form_status ml-1'>
-                            <span class="plate_form_show" style="display: {{$show_temp_data->status == '1' ? 'block' : 'none'}}"><i class="fa fa-eye" style="font-size:10px"></i></span>
-                            <span class="plate_form_hide" style="display: {{$show_temp_data->status == '0' ? 'block' : 'none'}}"><i class="fa fa-eye-slash" style="font-size:10px"></i></span>
+                            <span class="plate_form_show" style="display: {{$show_temp_datas->status == '1' ? 'block' : 'none'}}"><i class="fa fa-eye" style="font-size:10px"></i></span>
+                            <span class="plate_form_hide" style="display: {{$show_temp_datas->status == '0' ? 'block' : 'none'}}"><i class="fa fa-eye-slash" style="font-size:10px"></i></span>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
             <div class="dynamic-disclaimers-container">
-                @foreach($artistFeatureds as $key => $show_temp_data)
+                @foreach($show_temp_data as $key => $show_temp_datas)
                 <div class="form-group mb-4 disc-dynamic-field" id="disclaimers-dynamic-field-{{$key}}">
                     <label for="editor-{{$key}}" class="mb-1 block  text-sm">Disclaimers</label>
                     <textarea class="mt-1 disclaimer-text" name="content[]" id="editor-{{$key}}">
-                        {{$show_temp_data->description}}
+                        {{$show_temp_datas->description}}
                     </textarea>
                 </div>
                 @endforeach
@@ -167,7 +196,7 @@ $(document).ready(function () {
     function initTinyMCE(textareaId) {
         tinymce.init({
         selector: `#${textareaId}`,
-        plugins: 'textcolor colorpicker anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         height : "250",
         });
@@ -214,6 +243,7 @@ $(document).ready(function () {
 
     $('#featured-submit-btn').on('click', function(e) {
         e.preventDefault();
+        var slug = $('.page_slug').val();
         let myform = document.getElementById("artist-featured-form");
         let fd = new FormData(myform);
         var disclaimer = [];
@@ -223,8 +253,9 @@ $(document).ready(function () {
             fd.append("disclaimer[]", content);
         });
         fd.append("status", 1);
+        fd.append("slug", slug);
         $.ajax({
-            url: "{{ route('save-featured-post') }}",
+            url: "{{ route('update-video-template-data') }}",
             type: "POST",
             data: fd,
             cache: false,
@@ -245,6 +276,10 @@ $(document).ready(function () {
                 setTimeout( function(){
                     location.reload();
                 }  , 2500 );
+            },
+            error:function(data)
+            {
+            console.log(data);
             },
             complete: function() {
                 $('#loader').hide();

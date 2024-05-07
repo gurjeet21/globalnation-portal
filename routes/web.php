@@ -102,6 +102,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/load-page', [ManagePagesController::class, 'load_page'])->name('load-page');
     Route::get('/template-download', [ManagePagesController::class, 'template_downlaod'])->name('template-download');
     Route::match(['GET','POST'],'/{page_slug}', [ManagePagesController::class, 'show_template_data'])->name('page.show-download-temp-page');
+    Route::post('/update-video-template-data',[ManagePagesController::class,'update_video_template_data'])->name('update-video-template-data');
 });
 
 /* clear-cache */

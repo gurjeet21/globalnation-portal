@@ -108,13 +108,24 @@
                     </div>
                     @endif
 
-					@if(Str::contains(request()->path(), 'downloads') || Str::contains(request()->path(), 'featured'))
+                    @php
+                        $urlPath = request()->path();
+                        $segments = explode('/', $urlPath);
+                    @endphp
+
+                    @if(!Str::contains(request()->path(), '/manage-pages'))
+                    <div class="preview_btn relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="template-preview-btn" data-type="{{ $segments[0] }}" data-path="{{ $segments[1] }}">
+					<a href=""><i class="fa fa-eye"></i> Preview</a>
+					</div>
+                    @endif
+
+					<!-- @if(Str::contains(request()->path(), 'downloads') || Str::contains(request()->path(), 'featured'))
 					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="downloads-preview-btn">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
 					</div>
-					@endif
+					@endif -->
 
-					@if(Str::contains(request()->path(), 'manage-featured/update'))
+					<!-- @if(Str::contains(request()->path(), 'manage-featured/update'))
 					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="featured-preview-btn">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
 					</div>
@@ -129,6 +140,13 @@
                     @if(Str::contains(request()->path(), '/terms-of-service'))
 					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="privacypolicy-preview-btn">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
+					</div>
+					@endif -->
+
+
+                    @if(Str::contains(request()->path(), '/manage-pages'))
+					<div class="relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="privacypolicy-preview-btn">
+					<a href="{{route('add-page')}}"><i class="fa fa-file"></i> Add Page</a>
 					</div>
 					@endif
 

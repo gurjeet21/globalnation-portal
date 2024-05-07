@@ -18,6 +18,18 @@
                         </div>
                     </label>
                 </div>
+
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Slug</span>
+                        <input
+                            class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Slug"
+                            type="text"
+                            name="page_slug"
+                        />
+                    </label>
+                </div>
             </div>
 
             <div class="form-group mb-4 page-title-main">
@@ -81,8 +93,9 @@ $(document).ready(function () {
         if (titleeditorInstance) {
             var titleContent = titleeditorInstance.getContent();
         }
-        var strippedTitle = titleContent.replace(/<[^>]+>/g, '');
-        var slug = strippedTitle.trim().toLowerCase().replace(/\s+/g, '-');
+
+        var page_slug = $('.page_slug').val();
+        var slug = page_slug.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
         fd.append("description", textContent);
         fd.append("page_title", titleContent);

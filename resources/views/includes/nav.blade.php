@@ -75,7 +75,16 @@
                                             </li>
                                         </ul>
 									</li>
-									<li class="downloads">
+
+                                    <li class="users">
+										<a href="{{route('manage.pages')}}"
+											class="<?php echo request()->routeIs('manage.pages') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
+											<i class="fa-solid fa-file text-lg"></i>
+											Manage pages
+										</a>
+									</li>
+
+									<!-- <li class="downloads">
                                         <ul class="overflow-hidden text-sm font-medium">
                                             <li class="relative page-main-menu text-[#297a99]">
                                                 <button
@@ -99,72 +108,16 @@
                                                     class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-[#297a99] dark:text-gray-400 dark:bg-[#297a99]"
                                                     aria-label="submenu"
                                                     >
-                                                        <li>
-                                                            <a href="{{route('add-page')}}"
-                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Add Page
-                                                            </a>
-                                                        </li>
-
 														<li class="manage-pages" style="margin-top:0;">
                                                             <a href="{{route('manage.pages')}}"
-                                                                class="<?php echo request()->routeIs('manage.pages') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('manage.pages') || request()->routeIs('manage.pages')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                class="<?php// echo request()->routeIs('manage.pages') ? 'text-white ' : 'text-[#297a99]'; ?> <?php// echo (request()->routeIs('manage.pages') || request()->routeIs('manage.pages')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
                                                                 Manage pages
                                                             </a>
                                                         </li>
-
-                                                        <!-- <li class="downloads" style="margin-top:0;">
-                                                            <a href="{{route('downloads')}}"
-                                                                class="<?php //echo request()->routeIs('downloads-test') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Downloads
-                                                            </a>
-                                                        </li> -->
-
-                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
-                                                            <a href="{{route('downloads-test')}}"
-                                                                class="<?php //echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Downloads Test
-                                                            </a>
-                                                        </li> -->
-
-                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
-                                                            <a href="{{ route('manage-featured') }}"
-                                                                class=" hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa fa-tasks" aria-hidden="true"></i>
-                                                                Manage Featured
-                                                            </a>
-                                                            <ul class="overflow-hidden text-sm font-medium ml-5">
-                                                                <li class="downloads_test mt-0" style="margin-top:0;">
-                                                                    <a href="{{route('add-artists')}}"
-                                                                        class="hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                        <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                        Add Artists
-                                                                    </a>
-                                                                </li>
-                                                                <li class="downloads_test mt-0" style="margin-top:0;">
-                                                                    <a href="{{route('add-featured')}}"
-                                                                        class="hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                        <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                        Add Featured
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </li> -->
-
-                                                        <!-- <li class="downloads_test mt-0" style="margin-top:0;">
-                                                            <a href="{{route('terms-of-service')}}"
-                                                                class="<?php //echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Terms Of Service
-                                                            </a>
-                                                        </li> -->
                                                         <li class="mt-0" style="margin-top:0;">
                                                             <a href="{{route('featured')}}"
-                                                                class="<?php echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+                                                                class="<?php// echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
                                                                 <i class="fa-solid fa-circle text-[5px]"></i>
                                                                 Featured
                                                             </a>
@@ -173,7 +126,7 @@
                                                 </template>
                                             </li>
                                         </ul>
-									</li>
+									</li> -->
 								<?php } ?>
 								</ul>
 							</li>

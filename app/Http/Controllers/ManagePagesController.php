@@ -128,7 +128,7 @@ class ManagePagesController extends Controller
     {
         $data = $request->all();
         // Get the slug from the request data
-        $slug = $data['slug'];
+        $page_slug = $data['page_slug'];
 
         // Print the form data and stop execution
         $plateform_file = [];
@@ -152,17 +152,48 @@ class ManagePagesController extends Controller
         $page_id = $data['page_id'];
         $title = $data['page_title'];
 
+        $update_download_temp = ManagePages::where('page_slug', $page_slug)->first();
 
-        $updated = ManagePages::where('page_slug', $slug)->update([
-            'page_title' => $data['page_title'],
-            'page_slug' => $slug, // Use $title variable instead of $page_title
-            'background_image' => $background_image,
-            'plateform_name' => json_encode($data['plateform_name']),
-            'plateform_file' => json_encode($plateform_file),
-            'plateform_status' => json_encode($data['plateform_status']),
-            'disclaimers' => $data['disclaimers'],
-            'status' => $status
-        ]);
+        if($update_download_temp && $status == 2){
+            $download_temp_preview = ManagePages::where('page_slug', $page_slug)
+                          ->where('status', $status)
+                          ->first();
+
+            if (!$download_temp_preview) {
+                $updated = ManagePages::create([
+                    'page_title' => $data['page_title'],
+                    'page_slug' => $page_slug, // Use $title variable instead of $page_title
+                    'background_image' => $background_image,
+                    'plateform_name' => json_encode($data['plateform_name']),
+                    'plateform_file' => json_encode($plateform_file),
+                    'plateform_status' => json_encode($data['plateform_status']),
+                    'disclaimers' => $data['disclaimers'],
+                    'status' => $status,
+                ]);
+            }else{
+                $updated = ManagePages::where('page_slug', $page_slug)->where('status', 2)->update([
+                    'page_title' => $data['page_title'],
+                    'page_slug' => $page_slug, // Use $title variable instead of $page_title
+                    'background_image' => $background_image,
+                    'plateform_name' => json_encode($data['plateform_name']),
+                    'plateform_file' => json_encode($plateform_file),
+                    'plateform_status' => json_encode($data['plateform_status']),
+                    'disclaimers' => $data['disclaimers'],
+                    'status' => $status,
+                ]);
+            }
+        }else{
+            $updated = ManagePages::where('page_slug', $page_slug)->where('status', $status)->update([
+                'page_title' => $data['page_title'],
+                'page_slug' => $page_slug, // Use $title variable instead of $page_title
+                'background_image' => $background_image,
+                'plateform_name' => json_encode($data['plateform_name']),
+                'plateform_file' => json_encode($plateform_file),
+                'plateform_status' => json_encode($data['plateform_status']),
+                'disclaimers' => $data['disclaimers'],
+                'status' => $status
+            ]);
+        }
 
         // Check if record was updated successfully
         if ($updated) {
@@ -310,11 +341,11 @@ class ManagePagesController extends Controller
         }
 
         if($text_temp_data && $data['is_preview']== 1){
-            $privacyPolicyPreview = Pages::where('page_slug', $page_slug)
+            $text_template_preview_data = Pages::where('page_slug', $page_slug)
                           ->where('is_preview', $is_preview)
                           ->first();
-            if (!$privacyPolicyPreview) {
-                $privacyPolicyPreview = Pages::create([
+            if (!$text_template_preview_data) {
+                $text_template_preview_data = Pages::create([
                     'page_title' => $data['page_title'],
                     'page_slug' =>  $page_slug,
                     'description' => $data['description'],
@@ -332,7 +363,7 @@ class ManagePagesController extends Controller
             }
         } else {
             // If a record exists, update it
-            Pages::where('page_slug', $page_slug)->update([
+            Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)->update([
                 'page_title' => $data['page_title'],
                 'description' => $data['description'],
                 'background_image' => $background_image,
@@ -534,9 +565,10 @@ class ManagePagesController extends Controller
                 ];
             }
 
-        }, array_merge($managePagesData, $pagesData));
+        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));
 
         return view('pages.manage-pages', compact('pages'));
+
     }
 
     public function updatePage(Request $request, $page_slug){
@@ -547,7 +579,8 @@ class ManagePagesController extends Controller
     public function show_template_data(Request $request, $page_slug){
         $download_table = ManagePages::where('page_slug', $page_slug)->where('status', 1)->first();
         $page_table = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
-        $video_table = ArtistFeatureds::where('page_slug', $page_slug)->where('is_preview', 0)->first();
+        $video_table = ArtistFeatureds::where('page_slug', $page_slug)->where('is_preview', 0)->get();
+        $artists = [];
 
         if($download_table) {
             $show_temp_data = $download_table;
@@ -558,6 +591,9 @@ class ManagePagesController extends Controller
         } elseif($video_table) {
             $show_temp_data = $video_table;
             $view = 'pages.show-featured-template-page';
+            $artists = Artists::all()->mapWithKeys(function ($artist) {
+                return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
+            });
         } else {
             abort(404);
         }
@@ -566,7 +602,7 @@ class ManagePagesController extends Controller
         $show_temp_data->plateform_file = isset($show_temp_data->plateform_file) ? json_decode($show_temp_data->plateform_file, true) : [];
         $show_temp_data->plateform_status = isset($show_temp_data->plateform_status) ? json_decode($show_temp_data->plateform_status, true) : [];
 
-        return view($view,compact('show_temp_data'));
+        return view($view, compact('show_temp_data', 'artists'));
     }
 
     public function saveDynamicPage(Request $request){
@@ -698,6 +734,65 @@ class ManagePagesController extends Controller
 
         return response()->json(['status' => 'success','message' => 'Record updated successfully'], 200);
 
+    }
+
+
+    public function update_video_template_data(Request $request){
+        $data = $request->all();
+        $slug = $data['page_slug'];
+        $length = count($request->artist_id);
+        $artistFeatureds = ArtistFeatureds::first();
+        $background_image = isset($artistFeatureds->background_image) ? $artistFeatureds->background_image : null;
+
+        // Upload background image if provided
+        if ($request->hasFile('background_image')) {
+            $file = $request->file('background_image');
+            $background_image = $file->getClientOriginalName();
+            $file->move(public_path('_uploads/bg'), $background_image);
+        }
+
+
+        if($request->status == 1){
+            ArtistFeatureds::where('page_slug', $slug)->where('is_preview', 0)->delete();
+            for($i = 0; $i < $length; $i++){
+                $save_artist = ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'page_slug' => $slug,
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 0,
+                ]);
+
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'page_slug' => $slug,
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);
+            }
+        }else{
+            ArtistFeatureds::where('is_preview',1)->delete();
+            for($i = 0; $i < $length; $i++){
+                ArtistFeatureds::create([
+                    'artist_id' => $request->artist_id[$i],
+                    'title' => $request->featured_title[$i],
+                    'video_url' => $request->video_link[$i],
+                    'description' => $request->disclaimer[$i],
+                    'background_image' => $background_image,
+                    'status' => $request->featured_status[$i],
+                    'is_preview' => 1,
+                ]);
+            }
+        }
+
+        return response()->json(['status' => 'success','message' => 'Record Successfully Updated'], 200);
     }
 
     public function save_template_video(Request $request){

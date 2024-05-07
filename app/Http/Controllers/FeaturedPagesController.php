@@ -89,6 +89,7 @@ class FeaturedPagesController extends Controller
     }
 
     public function store_featured_post(Request $request){
+        $data = $request->all();
         $length = count($request->artist_id);
         $artistFeatureds = ArtistFeatureds::first();
         $background_image = isset($artistFeatureds->background_image) ? $artistFeatureds->background_image : null;
@@ -98,7 +99,7 @@ class FeaturedPagesController extends Controller
             $file = $request->file('background_image');
             $background_image = $file->getClientOriginalName();
             $file->move(public_path('_uploads/bg'), $background_image);
-        }  
+        }
 
 
         if($request->status == 1){

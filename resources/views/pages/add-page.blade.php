@@ -11,16 +11,16 @@
         <div class="flex gap-4">
             <div class="w-full bg-container">
                 <label class="block text-sm  mb-4">
-                    <span class="text-black">Select Page Template</span>
+                    <span class="text-black">Select a Page Template</span>
                     <div class="w-[43%] mt-1 p-2 add_new_page bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                         <select
                             id="pageSelect"
                             name="select_template"
                             class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         >
-                            <option value="page-text-template" selected>Add Page Text</option>
-                            <option value="download-template">Add Download template</option>
-                            <!-- <option value="video-template">Add Video Template</option> -->
+                            <option value="page-text-template" selected>Text Page</option>
+                            <option value="video-template">Video Page</option>
+                            <option value="download-template">File Download Page</option>
                         </select>
                     </div>
 

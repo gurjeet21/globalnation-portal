@@ -81,7 +81,7 @@ class ManageApiController extends Controller
                 'page_title' => $Page->page_title,
                 'page_slug' => $Page->page_slug,
                 'description' => $Page->description,
-                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : '' 
+                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : ''
             );
         }
         return response()->json(['pages' => $result], 200);
@@ -95,9 +95,9 @@ class ManageApiController extends Controller
         foreach($Pages as $Page){
             $result[] = array(
                 'page_title' => $Page->page_title,
-                'page_slug' => $Page->page_slug, 
+                'page_slug' => $Page->page_slug,
                 'description' => $Page->description,
-                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : ''  
+                'background_image' => !empty($Page->background_image) ? $baseUrl.'/'.$Page->background_image : ''
             );
         }
         return response()->json(['pages' => $result], 200);
@@ -105,7 +105,6 @@ class ManageApiController extends Controller
     }
 
     public function dynamicPage(Request $request, $page_slug){
-      
         $Pages = Pages::where('page_slug', $page_slug)->where('is_preview', 0)->first();
 
         $baseUrl = asset('_uploads/bg/');
@@ -114,7 +113,7 @@ class ManageApiController extends Controller
                 'page_title' => $Pages->page_title,
                 'page_slug' => $Pages->page_slug,
                 'description' => $Pages->description,
-                'background_image' => !empty($Pages->background_image) ? $baseUrl.'/'.$Pages->background_image : '' 
+                'background_image' => !empty($Pages->background_image) ? $baseUrl.'/'.$Pages->background_image : ''
             );
             return response()->json(['pages' => $result, 'status' => 'success'], 200);
         }
@@ -122,8 +121,8 @@ class ManageApiController extends Controller
             'page_title' => 'Not Found',
             'page_slug' => 'not-found',
             'description' => 'Page not found',
-            'background_image' => '' 
-        );       
+            'background_image' => ''
+        );
         return response()->json(['pages' => $result, 'status' => 'not found'], 200);
 
     }

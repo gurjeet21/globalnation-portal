@@ -17,13 +17,25 @@
                         </div>
                     </label>
                 </div>
+
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Slug</span>
+                        <input
+                            class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Slug"
+                            type="text"
+                            name="page_slug"
+                        />
+                    </label>
+                </div>
             </div>
 
             <div class="dynamic-fields-container">
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field">
                     <div class="w-[43%]">
                         <label class="block text-sm">
-                            <span class="text-black">Platform</span>
+                            <span class="text-black">Label</span>
                             <input
                                 class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                                 placeholder="Downloads" type="text"
@@ -34,7 +46,7 @@
                     </div>
                     <div class="w-[43%]">
                         <label class="block text-sm">
-                            <span class="text-black">Upload New Build</span>
+                            <span class="text-black">Upload File</span>
                             <div class="mt-1 p-2 bg-[#eeeeee] upload_new_build dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                 <div class="choose_main_sec">
                                     <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
@@ -154,8 +166,9 @@ $(document).ready(function () {
         if (titleeditorInstance) {
             var titleContent = titleeditorInstance.getContent();
         }
-        var strippedTitle = titleContent.replace(/<[^>]+>/g, '');
-        var slug = strippedTitle.trim().toLowerCase().replace(/\s+/g, '-');
+
+        var page_slug = $('.page_slug').val();
+        var slug = page_slug.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
         fd.append("status", 1);
         fd.append("disclaimers", textContent);

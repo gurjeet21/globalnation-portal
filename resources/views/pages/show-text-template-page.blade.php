@@ -8,7 +8,7 @@
         </div>
     @endif
     <div class="container p-[1.875rem] mx-auto bg-white rounded-[5px] mt-[1.875rem]">
-        <form method="post" id="update-privacy-policy" action="#" enctype="multipart/form-data">
+        <form method="post" id="update-text-template" action="#" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}">
             <div class="flex gap-4">
@@ -20,6 +20,20 @@
                             <input class="hidden file-input" name="background_image" type="file">
                             <span class="bg-file-name">{{isset($show_temp_data->background_image) ? $show_temp_data->background_image : ''}}</span>
                         </div>
+                    </label>
+                </div>
+
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Slug <strong>|</strong></span>
+                        <a style="color:blue;" href="https://globalnation.tv/pages/{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}">/pages/{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}</a>
+                        <input
+                            class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Slug"
+                            type="text"
+                            name="page_slug"
+                            value="{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}"
+                        />
                     </label>
                 </div>
             </div>
@@ -79,7 +93,7 @@ $(document).ready(function () {
     $('#update_privacy_policy').on('click', function(e) {
         e.preventDefault();
         let slug = $('#page_slug').val();
-        let myform = document.getElementById("update-privacy-policy");
+        let myform = document.getElementById("update-text-template");
         let fd = new FormData(myform);
         if (editorInstance) {
             var textContent = editorInstance.getContent();
@@ -94,6 +108,52 @@ $(document).ready(function () {
         fd.append("page_slug", slug);
         fd.append("status", 1);
         fd.append("is_preview", 0);
+
+        $.ajax({
+            url: "{{ route('update-text-template-pages') }}",
+            type: "POST",
+            data: fd,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            beforeSend: function() {
+                $('#loader').show();
+            },
+            success: function(data) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Record updated successfully",
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            },
+            complete: function() {
+                $('#loader').hide();
+            }
+        });
+    });
+
+    /* Preview Data */
+    $('#template-preview-btn').on('click', function(e) {
+        e.preventDefault();
+        var slug = $(this).data('path');
+        let myform = document.getElementById("update-text-template");
+        let fd = new FormData(myform);
+        if (editorInstance) {
+            var textContent = editorInstance.getContent();
+        }
+
+        if (titleeditorInstance) {
+            var titleContent = titleeditorInstance.getContent();
+        }
+
+        fd.append("description", textContent);
+        fd.append("page_title", titleContent);
+        fd.append("page_slug", slug);
+        fd.append("status", 1);
+        fd.append("is_preview", 1);
 
         $.ajax({
             url: "{{ route('update-text-template-pages') }}",

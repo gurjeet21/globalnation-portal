@@ -23,6 +23,19 @@
                         </div>
                     </label>
                 </div>
+                <div class="w-[43%] bg-container">
+                    <label class="block text-sm">
+                        <span class="text-black">Slug <strong>|</strong> </span>
+                        <a style="color:blue;" href="https://globalnation.tv/pages/{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}">/pages/{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}</a>
+                        <input
+                            class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
+                            placeholder="Slug"
+                            type="text"
+                            name="page_slug"
+                            value="{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}"
+                        />
+                    </label>
+                </div>
             </div>
 
             <div class="dynamic-fields-container">
@@ -31,7 +44,7 @@
                     <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$key}}">
                         <div class="w-[43%]">
                             <label class="block text-sm">
-                                <span class="text-black">Platform</span>
+                                <span class="text-black">Label</span>
                                 <input
                                     class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                                     placeholder="Downloads" type="text"
@@ -44,7 +57,7 @@
 
                         <div class="w-[43%]">
                             <label class="block text-sm">
-                                <span class="text-black">Upload New Build</span>
+                                <span class="text-black">Upload File</span>
                                 <div class="mt-1 p-2 bg-[#eeeeee] upload_new_build dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                                     <div class="choose_main_sec">
                                         <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
@@ -91,7 +104,7 @@
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm">
-                            <span class="text-black">Upload New Build</span>
+                            <span class="text-black">Upload File</span>
                             <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
 
                                 <div class="choose_main_sec">
@@ -207,7 +220,7 @@ $(document).ready(function () {
     /* Update Data*/
     $('#download-btn').on('click', function(e) {
         e.preventDefault();
-        var slug = $('#page_slug').val();
+        var slug = $('.page_slug').val();
         let myform = document.getElementById("download-template-form");
         let fd = new FormData(myform);
         if (editorInstance) {
@@ -219,7 +232,7 @@ $(document).ready(function () {
         }
 
         fd.append("status", 1);
-        fd.append("slug", slug);
+        fd.append("page_slug", slug);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
             var numItems = $('.dynamic-fields-container .dynamic-field').length;
@@ -247,6 +260,9 @@ $(document).ready(function () {
                     showConfirmButton: false,
                     timer: 2500
                     });
+                    setTimeout( function(){
+                    window.location.replace("/pages/manage-pages");
+                }  , 2500 );
                 },
                 complete: function() {
                     $('#loader').hide();
@@ -255,8 +271,9 @@ $(document).ready(function () {
     });
 
     /* Preview Data */
-    $('#downloads-preview-btn').on('click', function(e) {
+    $('#template-preview-btn').on('click', function(e) {
         e.preventDefault();
+        var slug = $(this).data('path');
         let myform = document.getElementById("download-template-form");
         let fd = new FormData(myform);
         if (editorInstance) {
@@ -270,6 +287,7 @@ $(document).ready(function () {
         fd.append("status", 2);
         fd.append("disclaimers", textContent);
         fd.append("page_title", titleContent);
+        fd.append("page_slug", slug);
         var numItems = $('.dynamic-fields-container .dynamic-field').length;
         console.log('numItems' + numItems);
         for (i = 0; i < numItems; i++){
