@@ -261,8 +261,8 @@ $(document).ready(function () {
                     timer: 2500
                     });
                     setTimeout( function(){
-                    window.location.replace("/pages/manage-pages");
-                }  , 2500 );
+                        location.reload();
+                    }  , 2500 );
                 },
                 complete: function() {
                     $('#loader').hide();

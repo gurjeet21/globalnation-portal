@@ -31,7 +31,7 @@
             </div>
         </form>
         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-        <form method="post" id="artist-featured-form" action="#" enctype="multipart/form-data">
+        <form method="post" id="video-template-form" action="#" enctype="multipart/form-data">
              @csrf
 
             <input type="hidden" name="page_slug" id="page_slug" value="{{isset($show_temp_data->page_slug) ? $show_temp_data->page_slug : ''}}" />
@@ -244,7 +244,7 @@ $(document).ready(function () {
     $('#featured-submit-btn').on('click', function(e) {
         e.preventDefault();
         var slug = $('.page_slug').val();
-        let myform = document.getElementById("artist-featured-form");
+        let myform = document.getElementById("video-template-form");
         let fd = new FormData(myform);
         var disclaimer = [];
         $(".disc-dynamic-field").each(function(index){
@@ -269,7 +269,7 @@ $(document).ready(function () {
                 Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Featured updated successfully",
+                title: "Record Updated successfully",
                 showConfirmButton: false,
                 timer: 2500
                 });
@@ -287,9 +287,10 @@ $(document).ready(function () {
         });
     });
 
-    $('#downloads-preview-btn').on('click', function(e) {
+    $('#template-preview-btn').on('click', function(e) {
         e.preventDefault();
-        let myform = document.getElementById("artist-featured-form");
+        var slug = $(this).data('path');
+        let myform = document.getElementById("video-template-form");
         let fd = new FormData(myform);
         var disclaimer = [];
         $(".disc-dynamic-field").each(function(){
@@ -299,7 +300,7 @@ $(document).ready(function () {
         });
         fd.append("status", 2);
         $.ajax({
-            url: "{{ route('save-featured-post') }}",
+            url: "{{ route('update-video-template-data') }}",
             type: "POST",
             data: fd,
             cache: false,
@@ -313,7 +314,7 @@ $(document).ready(function () {
                 Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Featured Preview updated successfully",
+                title: "Record Updated Successfully",
                 showConfirmButton: false,
                 timer: 2500
                 });

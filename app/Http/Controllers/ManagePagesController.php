@@ -758,8 +758,9 @@ class ManagePagesController extends Controller
             for($i = 0; $i < $length; $i++){
                 $save_artist = ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
-                    'page_slug' => $slug,
                     'page_title' => $page_title,
+                    'page_slug' => $slug,
+                    'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
@@ -769,8 +770,9 @@ class ManagePagesController extends Controller
 
                 ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
-                    'page_slug' => $slug,
                     'page_title' => $page_title,
+                    'page_slug' => $slug,
+                    'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
@@ -779,12 +781,13 @@ class ManagePagesController extends Controller
                 ]);
             }
         }else{
-            ArtistFeatureds::where('is_preview',1)->delete();
+            ArtistFeatureds::where('page_slug', $slug)->where('is_preview',1)->delete();
             for($i = 0; $i < $length; $i++){
                 ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
-                    'page_title' => $page_title,
                     'page_slug' => $slug,
+                    'page_title' => $page_title,
+                    'title' => $request->featured_title[$i],
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
