@@ -2,6 +2,9 @@
 
 @section('content')
 <main class="flex flex-1 flex-col grow p-[1.875rem] overflow-y-auto">
+    <div class="flex align-center justify-between">
+        <h2 class="text-black font-semibold text-xl">Templates</h2>
+    </div>
     @if(Session::has('success'))
         <div class="p-4 mb-2 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <span class="font-semibold">Success: </span> {{ session('success') }}
@@ -18,7 +21,8 @@
                             name="select_template"
                             class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         >
-                            <option value="page-text-template" selected>Text Page</option>
+                            <option value="">Select a Page Template</option>
+                            <option value="page-text-template">Text Page</option>
                             <option value="video-template">Video Page</option>
                             <option value="download-template">File Download Page</option>
                         </select>
@@ -39,15 +43,16 @@
 <!-- JavaScript code -->
 <script>
 $(document).ready(function() {
-    $(window).on('load', function() {
-        $('#pageSelect').trigger('change');
-    });
-    //$('#pageSelect').trigger('change');
+    // $(window).on('load', function() {
+    //     $('#pageSelect').trigger('change');
+    // });
+    // //$('#pageSelect').trigger('change');
 
     $(document).on('change', '#pageSelect', function(e) {
         e.preventDefault();
 
         var selectedPage = $(this).val();
+
         $.ajax({
             url: "{{ route('load-page') }}",
             type: "POST",

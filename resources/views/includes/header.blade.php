@@ -113,7 +113,7 @@
                         $segments = explode('/', $urlPath);
                     @endphp
 
-                    @if(!Str::contains(request()->path(), '/manage-pages'))
+                    @if($segments[0] === 'pages' && $segments[1] !== 'manage-pages' && $segments[1] !== 'add-page')
                     <div class="preview_btn relative w-full text-center preview-sec bg-[#297a99] text-white dark:bg-[#297a99] dark:text-white max-w-32 justify-center items-center flex rounded-lg gap-1 p-2.5"  id="template-preview-btn" data-type="{{ $segments[0] }}" data-path="{{ $segments[1] }}">
 					<a href=""><i class="fa fa-eye"></i> Preview</a>
 					</div>

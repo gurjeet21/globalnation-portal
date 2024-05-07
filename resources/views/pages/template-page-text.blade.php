@@ -13,7 +13,7 @@
                         <span class="text-black">Uplaod Background Image</span>
                         <div class="mt-1 p-2 upload_new_build bg-[#eeeeee] dark:border-gray-600 cursor-pointer rounded border border-solid border-secondary-600 relative">
                             <span class="bg-white px-2 py-1 rounded file-label">Choose File</span>
-                            <input required class="hidden file-input" name="background_image" type="file">
+                            <input class="hidden file-input" name="background_image" type="file">
                             <span class="bg-file-name"></span>
                         </div>
                     </label>
@@ -130,6 +130,12 @@ $(document).ready(function () {
                 $('#loader').hide();
             }
         });
+    });
+
+
+    $(document).on('change', '.file-input', function () {
+        var fileName = this.files[0].name;
+       $('.bg-file-name').text(fileName);
     });
 });
 </script>

@@ -131,7 +131,6 @@ $(document).ready(function () {
     tinymce.init({
         selector: '#download_description_editor, #download_page_title_editor',
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor | backcolor | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
@@ -144,7 +143,6 @@ $(document).ready(function () {
         },
         setup: function (editor) {
             editor.on('init', function () {
-                console.log('Editor was initialized', editor);
                 if (editor.id === 'download_description_editor') {
                     editorInstance = editor; // Assign editor for disclaimers
                 } else if (editor.id === 'download_page_title_editor') {
