@@ -740,6 +740,7 @@ class ManagePagesController extends Controller
     public function update_video_template_data(Request $request){
         $data = $request->all();
         $slug = $data['page_slug'];
+        $page_title = $data['page_title'];
         $length = count($request->artist_id);
         $artistFeatureds = ArtistFeatureds::first();
         $background_image = isset($artistFeatureds->background_image) ? $artistFeatureds->background_image : null;
@@ -758,7 +759,7 @@ class ManagePagesController extends Controller
                 $save_artist = ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
                     'page_slug' => $slug,
-                    'title' => $request->featured_title[$i],
+                    'page_title' => $page_title,
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
@@ -769,7 +770,7 @@ class ManagePagesController extends Controller
                 ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
                     'page_slug' => $slug,
-                    'title' => $request->featured_title[$i],
+                    'page_title' => $page_title,
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
@@ -782,7 +783,8 @@ class ManagePagesController extends Controller
             for($i = 0; $i < $length; $i++){
                 ArtistFeatureds::create([
                     'artist_id' => $request->artist_id[$i],
-                    'title' => $request->featured_title[$i],
+                    'page_title' => $page_title,
+                    'page_slug' => $slug,
                     'video_url' => $request->video_link[$i],
                     'description' => $request->disclaimer[$i],
                     'background_image' => $background_image,
