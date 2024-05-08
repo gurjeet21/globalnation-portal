@@ -9,16 +9,18 @@ use App\Models\ManagePages;
 use DB;
 class UserController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+		$currentPage = $request->query('page', 1);
+        $itemsPerPage = $request->query('itemsPerPage', 10);
     	$auth_user = \Auth::user()->role;
     	$auth_user_id = \Auth::user()->id;
     	if($auth_user == 'Super Admin'){
-    		$users = User::get();
+    		$users = User::paginate($itemsPerPage);
     	}else{
-    		$users = User::where('role','!=','Super Admin')->get();
+    		$users = User::where('role','!=','Super Admin')->paginate($itemsPerPage);
     	}
 
-    	return view('pages.users',compact('users'));
+    	return view('pages.users',compact('users','itemsPerPage'));
     }
 
     public function dashboard_count(){

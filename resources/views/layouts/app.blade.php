@@ -420,7 +420,7 @@
                 // Trigger a click event on the button to toggle the submenu
                 $('.page-main-menu button').click();
             }
-            if (currentURL.includes("/interocitormembers")) {
+            if (currentURL.includes("/interocitormembers") || currentURL.includes("/user")) {
                 // Trigger a click event on the button to toggle the submenu
                 $('.member-main-menu button').click();
             }

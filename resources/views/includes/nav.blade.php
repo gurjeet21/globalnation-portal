@@ -31,13 +31,13 @@
 									</li>
 
 									<?php if(\Auth::user()->role == 'Super Admin' || \Auth::user()->role == 'Admin'){?>
-									<li class="users">
+									<!-- <li class="users">
 										<a href="{{route('user')}}"
 											class="<?php echo request()->routeIs('user') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
 											<i class="fa-solid fa-user text-lg"></i>
 											Users
 										</a>
-									</li>
+									</li> -->
 
 									<li class="downloads">
                                         <ul class="overflow-hidden text-sm font-medium">
@@ -49,7 +49,7 @@
                                                     aria-haspopup="true"
                                                 >
                                                     <i class="fa-solid fa-users text-lg"></i>
-                                                    Members
+                                                    Users
                                                     <i id="membersubmenuIcon" class="fa fa-caret-left"></i>
                                                 </button>
                                                 <template x-if="isMembersMenuOpen">
@@ -63,6 +63,13 @@
                                                     class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-[#297a99] dark:text-gray-400 dark:bg-[#297a99]"
                                                     aria-label="submenu"
                                                     >
+														<li>
+															<a href="{{route('user')}}"
+																class="<?php echo request()->routeIs('user') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
+																<i class="fa-solid fa-circle text-[5px]"></i>
+																GNTV Internal
+															</a>
+														</li>
                                                         <li>
                                                             <a href="{{route('interocitormembers')}}"
                                                                 class="<?php echo request()->routeIs('interocitormembers') ? 'text-white ' : 'text-[#297a99]'; ?> <?php echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
@@ -70,6 +77,7 @@
 																Interocitor Members
                                                             </a>
                                                         </li>
+														
                                                     </ul>
                                                 </template>
                                             </li>
