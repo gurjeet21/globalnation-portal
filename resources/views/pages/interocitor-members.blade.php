@@ -33,8 +33,8 @@
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <th class="px-4 py-3">Member ID</th>
               <th class="px-4 py-3">Salutation</th>
-              <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3">Moniker</th>
+              <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3">Registered Devices</th>
               <th class="px-4 py-3">First Time</th>
               <th class="px-4 py-3">Last Time
@@ -53,12 +53,11 @@
                 {{$member->member_name ? $member->member_name : '-'}}
               </td>
               <td class="px-4 py-3 text-sm">
-                {{$member->email ? $member->email : '-'}}
-              </td>
-              <td class="px-4 py-3 text-sm">
                 {{$member->moniker ? $member->moniker : '-'}}
               </td>
-
+              <td class="px-4 py-3 text-sm">
+                {{$member->email ? $member->email : '-'}}
+              </td>
               <td class="px-4 py-3 text-xs">
                 <select name="" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" style="min-width: 200px;">
                   @foreach($member->devices as $device)
@@ -173,8 +172,8 @@
                   var row = '<tr class="text-gray-700 dark:text-gray-400">' +
                         '<td class="px-4 py-3 text-sm">' + (member.member_id ? member.member_id : '-') + '</td>' +
                         '<td class="px-4 py-3 text-sm">' + (member.member_name ? member.member_name : '-') + '</td>' +
-                        '<td class="px-4 py-3 text-sm">' + (member.email ? member.email : '-') + '</td>' +
                         '<td class="px-4 py-3 text-sm">' + (member.moniker ? member.moniker : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.email ? member.email : '-') + '</td>' +
                         '<td class="px-4 py-3 text-xs">' +
                         '<select name="" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" style="min-width: 200px;">' +
                         (member.devices ? member.devices.map(device => '<option value="' + device.device_name + '">' + (device.device_name ? device.device_name.charAt(0).toUpperCase() + device.device_name.slice(1) : '') + '</option>').join('') : '') +
