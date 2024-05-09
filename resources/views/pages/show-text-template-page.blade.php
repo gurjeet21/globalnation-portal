@@ -128,6 +128,9 @@ $(document).ready(function () {
                     showConfirmButton: false,
                     timer: 2500
                 });
+                setTimeout( function(){
+                    location.reload();
+                }  , 2500 );
             },
             complete: function() {
                 $('#loader').hide();

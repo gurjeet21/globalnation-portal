@@ -61,18 +61,20 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::get('/settings', [SettingController::class, 'index'])->name('setting');
         /* interocitormembers routes*/
         Route::get('/interocitormembers',[InterociterMemberController::class,'index'])->name('interocitormembers');
+        Route::get('/sort-data', [InterociterMemberController::class, 'sortData'])->name('sortData');
+
 
     //});
 });
 
 Route::group(['prefix' => 'pages'], function(){
     Route::get('/', [ManagePagesController::class, 'index'])->name('page.list');
-    Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
+    // Route::get('/downloads', [UserController::class, 'downloads'])->name('downloads');
     Route::get('/manage-pages', [ManagePagesController::class, 'managePages'])->name('manage.pages');
     Route::match(['GET','POST'],'dynamic/{page_slug}', [ManagePagesController::class, 'updatePage'])->name('page.update');
     Route::post('/save-dynamic-page', [ManagePagesController::class, 'saveDynamicPage'])->name('save-dynamic-page');
-    Route::get('/delete/{id}/{table}', [ManagePagesController::class, 'deleteDynamicPage'])->name('page.dynamic.delete');
-    Route::get('/downloads-test', [UserController::class, 'downloads_test'])->name('downloads-test');
+    Route::get('/delete/{page_slug}/{table}', [ManagePagesController::class, 'deleteDynamicPage'])->name('page.dynamic.delete');
+    // Route::get('/downloads-test', [UserController::class, 'downloads_test'])->name('downloads-test');
     Route::get('/interocitor', [UserController::class, 'interocitor'])->name('interocitor');
     Route::post('/save-page',[ManagePagesController::class,'store'])->name('save-page');
     Route::post('/save-page-test',[ManagePagesController::class,'store_test'])->name('save-page-test');
@@ -92,9 +94,9 @@ Route::group(['prefix' => 'pages'], function(){
     // Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
     // Route::post('/save-privacy-policy', [ManagePagesController::class, 'store_privacy_policy'])->name('save-privacy-policy');
     Route::post('/update-text-template-pages', [ManagePagesController::class, 'update_text_template_pages'])->name('update-text-template-pages');
-    Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
-    Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
-    Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
+    // Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
+    // Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
+    // Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
     Route::get('/template-page-text', [ManagePagesController::class, 'template_page_text'])->name('template-page-text');
     Route::get('/template-featured', [ManagePagesController::class, 'template_featured'])->name('template-featured');
     Route::post('/save-template-page-text', [ManagePagesController::class, 'save_new_page'])->name('save-template-page-text');
@@ -104,6 +106,9 @@ Route::group(['prefix' => 'pages'], function(){
     Route::match(['GET','POST'],'/{page_slug}', [ManagePagesController::class, 'show_template_data'])->name('page.show-download-temp-page');
     Route::post('/save/update-video-template-data',[ManagePagesController::class,'update_video_template_data'])->name('update-video-template-data');
 });
+
+Route::get('/all-artists', [ManagePagesController::class, 'all_artists'])->name('all-artists');
+Route::get('/delete/{artist_id}', [ManagePagesController::class, 'deleteArtist'])->name('page.artist.delete');
 
 /* clear-cache */
 Route::get('/c', function() {

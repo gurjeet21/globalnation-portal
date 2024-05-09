@@ -9,16 +9,18 @@ use App\Models\ManagePages;
 use DB;
 class UserController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+		$currentPage = $request->query('page', 1);
+        $itemsPerPage = $request->query('itemsPerPage', 10);
     	$auth_user = \Auth::user()->role;
     	$auth_user_id = \Auth::user()->id;
     	if($auth_user == 'Super Admin'){
-    		$users = User::get();
+    		$users = User::paginate($itemsPerPage);
     	}else{
-    		$users = User::where('role','!=','Super Admin')->get();
+    		$users = User::where('role','!=','Super Admin')->paginate($itemsPerPage);
     	}
 
-    	return view('pages.users',compact('users'));
+    	return view('pages.users',compact('users','itemsPerPage'));
     }
 
     public function dashboard_count(){
@@ -157,24 +159,24 @@ class UserController extends Controller
     }
 
     /* Download Page function */
-    public function downloads()
-    {
-		$download = ManagePages::first();
-		$download->plateform_name = isset($download->plateform_name) ? json_decode($download->plateform_name, true) : [];
-		$download->plateform_file = isset($download->plateform_file) ? json_decode($download->plateform_file, true) : [];
-		$download->plateform_status = isset($download->plateform_status) ? json_decode($download->plateform_status, true) : [];
-        return view('pages.downloads',compact('download'));
-    }
+    // public function downloads()
+    // {
+	// 	$download = ManagePages::first();
+	// 	$download->plateform_name = isset($download->plateform_name) ? json_decode($download->plateform_name, true) : [];
+	// 	$download->plateform_file = isset($download->plateform_file) ? json_decode($download->plateform_file, true) : [];
+	// 	$download->plateform_status = isset($download->plateform_status) ? json_decode($download->plateform_status, true) : [];
+    //     return view('pages.downloads',compact('download'));
+    // }
 
     /* Download Page function */
-    public function downloads_test()
-    {
-		$download_test = ManagePages::find(2);
-		$download_test->plateform_name = isset($download_test->plateform_name) ? json_decode($download_test->plateform_name, true) : [];
-		$download_test->plateform_file = isset($download_test->plateform_file) ? json_decode($download_test->plateform_file, true) : [];
-		$download_test->plateform_status = isset($download_test->plateform_status) ? json_decode($download_test->plateform_status, true) : [];
-        return view('pages.downloads-test',compact('download_test'));
-    }
+    // public function downloads_test()
+    // {
+	// 	$download_test = ManagePages::find(2);
+	// 	$download_test->plateform_name = isset($download_test->plateform_name) ? json_decode($download_test->plateform_name, true) : [];
+	// 	$download_test->plateform_file = isset($download_test->plateform_file) ? json_decode($download_test->plateform_file, true) : [];
+	// 	$download_test->plateform_status = isset($download_test->plateform_status) ? json_decode($download_test->plateform_status, true) : [];
+    //     return view('pages.downloads-test',compact('download_test'));
+    // }
 
     /* Download Page function */
     public function interocitor()

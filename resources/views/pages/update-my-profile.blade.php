@@ -123,7 +123,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-auto bg-white px-4 py-3 text-sm tracking-wide text-black border-t dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800 justify-end flex gap-2.5">
+                    <div class="mt-auto bg-white px-4 py-3 text-sm tracking-wide text-black border-t dark:border-gray-700 dark:text-gray-400 justify-end flex gap-2.5">
                         <button type="button" class="text-black p-2.5 rounded border border-[#D1D5DB] dark:bg-white hover:bg-[#EEEEEE] text-sm flex gap-1.5 items- focus:outline-none">Back</button>
                         <button type="submit"
                             class="text-white py-[5px] px-[10px] focus:outline-none bg-[#297a99] border border-transparent rounded-lg active:bg-[#61d5d8] hover:bg-[#61d5d8]">Save Changes</button>
@@ -137,7 +137,7 @@
 $("#fileUploadInput").change(function(event){
     $("#filePreviewImage").attr('src',URL.createObjectURL(event.target.files[0]));
 });
-	
+
 $(document).on('click', '.iti__country', function () {
     var dial_code = $(this).attr('data-dial-code');
     $('#dial_code').val(dial_code);

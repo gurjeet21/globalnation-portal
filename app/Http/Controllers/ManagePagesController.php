@@ -375,107 +375,107 @@ class ManagePagesController extends Controller
     }
 
 
-    public function add_terms_service(Request $request)
-    {
-        $currentUrl = $request->path();
-        // Check if the current URL is '/terms-of-service'
-        if ($currentUrl === 'pages/terms-of-service') {
-            // Fetch the terms of service data based on the slug
-            $termsService = Pages::where('page_slug', 'terms-of-service')->first();
-        }
-        else {
-            // If URL is not '/terms-of-service', fetch all records (or handle as per your requirement)
-            $termsService = Pages::where('deleted_at', null)->get();
-        }
+    // public function add_terms_service(Request $request)
+    // {
+    //     $currentUrl = $request->path();
+    //     // Check if the current URL is '/terms-of-service'
+    //     if ($currentUrl === 'pages/terms-of-service') {
+    //         // Fetch the terms of service data based on the slug
+    //         $termsService = Pages::where('page_slug', 'terms-of-service')->first();
+    //     }
+    //     else {
+    //         // If URL is not '/terms-of-service', fetch all records (or handle as per your requirement)
+    //         $termsService = Pages::where('deleted_at', null)->get();
+    //     }
 
-        return view('pages.terms-of-service', compact('termsService'));
+    //     return view('pages.terms-of-service', compact('termsService'));
 
-    }
-
-
-    public function store_terms_service(Request $request)
-    {
-        $data = $request->validate([
-            'page_title' => ['required'],
-            'description' => ['required'],
-            'page_slug' => ['required'],
-            'status' => ['required'],
-            'is_preview' => ['required'],
-        ]);
-
-        $title = $data['page_title'];
-        $page_slug = $data['page_slug'];
-        $status = $data['status'];
-        $is_preview = $data['is_preview'];
-
-        // Fetch the privacy policy record based on the slug
-        $termsService = Pages::where('page_slug', $page_slug)->first();
-
-        $background_image = isset($termsService->background_image) ? $termsService->background_image : null;
-
-        // Upload background image if provided
-        if ($request->hasFile('background_image')) {
-            $file = $request->file('background_image');
-            $background_image = $file->getClientOriginalName();
-            $file->move(public_path('_uploads/bg'), $background_image);
-        }
-
-        if (!$termsService) {
-            // If no record exists, create a new one
-            $termsService = Pages::create([
-                'page_title' => $data['page_title'],
-                'page_slug' =>  $page_slug,
-                'description' => $data['description'],
-                'status' => 1,
-                'is_preview' => $is_preview,
-            ]);
-        }else if($termsService && $data['is_preview']== 1){
-            $termsServicePreview = Pages::where('page_slug', $page_slug)
-                          ->where('is_preview', $is_preview)
-                          ->first();
-            if (!$termsServicePreview) {
-                $termsServicePreview = Pages::create([
-                    'page_title' => $data['page_title'],
-                    'page_slug' =>  $page_slug,
-                    'description' => $data['description'],
-                    'status' => 1,
-                    'is_preview' => 1,
-                ]);
-            }else{
-                Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
-                ->update([
-                    'page_title' => $data['page_title'],
-                    'description' => $data['description'],
-                    'background_image' => $background_image,
-                ]);
-            }
-        } else {
-            // If a record exists, update it
-            Pages::where('page_slug', $page_slug)->update([
-                'page_title' => $data['page_title'],
-                'description' => $data['description'],
-                'background_image' => $background_image,
-            ]);
-        }
-
-        // You can return a response or redirect as needed
-        return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'termsService' => $termsService], 200);
-    }
+    // }
 
 
-    public function show_featured(Request $request)
-    {
-        // You can return a response or redirect as needed
-        $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', 0)->orderBy('id', 'ASC')->get();
-        $artists = Artists::all()->mapWithKeys(function ($artist) {
-            return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
-        });
-        if(count($artistFeatureds) == 0){
-            $artistFeatureds[] = (object)array('artist_id' => '', 'title' => '', 'video_url' => '', 'description' => '', 'status' => 1);
-        }
+    // public function store_terms_service(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'page_title' => ['required'],
+    //         'description' => ['required'],
+    //         'page_slug' => ['required'],
+    //         'status' => ['required'],
+    //         'is_preview' => ['required'],
+    //     ]);
 
-        return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
-    }
+    //     $title = $data['page_title'];
+    //     $page_slug = $data['page_slug'];
+    //     $status = $data['status'];
+    //     $is_preview = $data['is_preview'];
+
+    //     // Fetch the privacy policy record based on the slug
+    //     $termsService = Pages::where('page_slug', $page_slug)->first();
+
+    //     $background_image = isset($termsService->background_image) ? $termsService->background_image : null;
+
+    //     // Upload background image if provided
+    //     if ($request->hasFile('background_image')) {
+    //         $file = $request->file('background_image');
+    //         $background_image = $file->getClientOriginalName();
+    //         $file->move(public_path('_uploads/bg'), $background_image);
+    //     }
+
+    //     if (!$termsService) {
+    //         // If no record exists, create a new one
+    //         $termsService = Pages::create([
+    //             'page_title' => $data['page_title'],
+    //             'page_slug' =>  $page_slug,
+    //             'description' => $data['description'],
+    //             'status' => 1,
+    //             'is_preview' => $is_preview,
+    //         ]);
+    //     }else if($termsService && $data['is_preview']== 1){
+    //         $termsServicePreview = Pages::where('page_slug', $page_slug)
+    //                       ->where('is_preview', $is_preview)
+    //                       ->first();
+    //         if (!$termsServicePreview) {
+    //             $termsServicePreview = Pages::create([
+    //                 'page_title' => $data['page_title'],
+    //                 'page_slug' =>  $page_slug,
+    //                 'description' => $data['description'],
+    //                 'status' => 1,
+    //                 'is_preview' => 1,
+    //             ]);
+    //         }else{
+    //             Pages::where('page_slug', $page_slug)->where('is_preview', $is_preview)
+    //             ->update([
+    //                 'page_title' => $data['page_title'],
+    //                 'description' => $data['description'],
+    //                 'background_image' => $background_image,
+    //             ]);
+    //         }
+    //     } else {
+    //         // If a record exists, update it
+    //         Pages::where('page_slug', $page_slug)->update([
+    //             'page_title' => $data['page_title'],
+    //             'description' => $data['description'],
+    //             'background_image' => $background_image,
+    //         ]);
+    //     }
+
+    //     // You can return a response or redirect as needed
+    //     return response()->json(['status' => 'success', 'message' => 'Data saved successfully', 'termsService' => $termsService], 200);
+    // }
+
+
+    // public function show_featured(Request $request)
+    // {
+    //     // You can return a response or redirect as needed
+    //     $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', 0)->orderBy('id', 'ASC')->get();
+    //     $artists = Artists::all()->mapWithKeys(function ($artist) {
+    //         return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
+    //     });
+    //     if(count($artistFeatureds) == 0){
+    //         $artistFeatureds[] = (object)array('artist_id' => '', 'title' => '', 'video_url' => '', 'description' => '', 'status' => 1);
+    //     }
+
+    //     return view('pages.featured', ['artists' => $artists,'artistFeatureds' => $artistFeatureds]);
+    // }
 
     public function template_page_text(Request $request)
     {
@@ -536,8 +536,9 @@ class ManagePagesController extends Controller
 
         // Retrieve all dynamic pages from Pages model
         $pagesData = Pages::where('is_preview', 0)
-        ->whereNotNull('page_slug')
-        ->get()->toArray();
+            ->whereNotNull('page_slug')
+            ->get(['id', 'page_title', 'page_slug', 'created_at'])
+            ->toArray();
 
         foreach ($pagesData as &$paged) {
             $paged['custom_slug'] = 'pages'; 
@@ -545,8 +546,9 @@ class ManagePagesController extends Controller
 
         // Retrieve all dynamic pages from ArtistFeatureds model
         $artistFeaturedsData = ArtistFeatureds::where('is_preview', 0)
-        ->whereNotNull('page_slug')
-        ->get()->toArray();
+            ->whereNotNull('page_slug')
+            ->get(['id', 'page_title', 'page_slug', 'created_at'])
+            ->toArray();
 
         foreach ($artistFeaturedsData as &$artistpage) {
             $artistpage['custom_slug'] = 'artist'; 
@@ -583,7 +585,6 @@ class ManagePagesController extends Controller
 
 
         return view('pages.manage-pages', compact('pages'));
-
     }
 
     public function updatePage(Request $request, $page_slug){
@@ -656,7 +657,7 @@ class ManagePagesController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully'], 200);
     }
 
-    public function deleteDynamicPage(Request $request, $id, $table){
+    public function deleteDynamicPage(Request $request, $page_slug, $table){
         // Determine the model based on the provided table name
         switch ($table) {
             case 'manage_pages':
@@ -665,17 +666,15 @@ class ManagePagesController extends Controller
             case 'pages':
                 $model = Pages::class;
                 break;
+            case 'artist_featureds': // Corrected table name
+                $model = ArtistFeatureds::class;
+                break;
             default:
                 return redirect()->back()->with(['error_msg' => 'Invalid table name']);
         }
 
         // Delete the page from the appropriate model
-        $model::where('id', $id)->delete();
-        // Delete associated data from the preview table if necessary
-        if ($table === 'pages') {
-            Pages::where('is_preview', $id)->delete();
-        }
-
+        $model::where('page_slug', $page_slug)->delete();
         return redirect()->back()->with(['succ_msg' => 'Page successfully deleted']);
     }
 
@@ -878,5 +877,17 @@ class ManagePagesController extends Controller
         }
 
         return response()->json(['status' => 'success','message' => 'Record successfully Added'], 200);
+    }
+
+    public function all_artists(Request $request)
+    {
+        $allartists = Artists::all();
+        return view('pages.all-artists', compact('allartists'));
+    }
+
+    public function deleteArtist(Request $request, $artist_id)
+    {
+        Artists::where('id',  $artist_id)->delete();
+        return redirect()->back()->with(['succ_msg' => 'Page successfully deleted']);
     }
 }

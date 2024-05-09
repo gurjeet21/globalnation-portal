@@ -20,7 +20,7 @@
 
                 <div class="w-[43%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Slug</span>
+                        <span class="text-black">Page Slug <span class="show_slug"></span></span>
                         <input
                             class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                             placeholder="Slug"
@@ -262,6 +262,17 @@ $(document).ready(function () {
     });
 
     $('#download_description_editor').find('.ck-editor__editable').css('min-height', '300px');
+
+    $('.page_slug').keyup(function() {
+        var value = $(this).val();
+        var baseUrl = 'https://globalnation.tv/pages/';
+        var add_slash = '| '
+        if (value.trim() === '') {
+            $('.show_slug').text('');
+        } else {
+            $('.show_slug').text(add_slash + baseUrl + value);
+        }
+    });
 
 });
 

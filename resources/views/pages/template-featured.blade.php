@@ -10,7 +10,7 @@
             <div class="flex gap-4">
                 <div class="w-[30%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Add Artist</span>
+                        <span class="text-black">Add Artist<strong> | </strong> <a href="{{route('all-artists')}}" style="color:blue;">All Artists</a></span>
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                             placeholder="Artist" type="text"
@@ -56,7 +56,7 @@
                 </div>
                 <div class="w-[30%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Page Slug</span>
+                        <span class="text-black">Page Slug <span class="show_slug"></span></span>
                         <input
                             class="block page_slug w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                             placeholder="Page Slug" type="text"
@@ -236,7 +236,8 @@ $(document).ready(function () {
 
         let fd = new FormData(myform);
         var page_title = $('.page_title').val();
-        var page_slug = $('.page_slug').val();
+        var slug = $('.page_slug').val();
+        var page_slug = slug.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
         var disclaimer = [];
         $(".disc-dynamic-field").each(function(index){
@@ -355,6 +356,17 @@ $(document).ready(function () {
     });
 
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');
+
+    $('.page_slug').keyup(function() {
+        var value = $(this).val();
+        var baseUrl = 'https://globalnation.tv/pages/';
+        var add_slash = '| '
+        if (value.trim() === '') {
+            $('.show_slug').text('');
+        } else {
+            $('.show_slug').text(add_slash + baseUrl + value);
+        }
+    });
 
 });
 </script>
