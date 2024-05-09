@@ -154,6 +154,9 @@ body div.dt-container .dt-paging .dt-paging-button:hover {
 .breadcrumb-item a {
     color: #297a99;
 }
+.show_slug{
+    color:blue;
+}
 
 @media(min-width: 1025px){
 .select2-container{

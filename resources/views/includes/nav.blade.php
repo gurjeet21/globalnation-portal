@@ -78,55 +78,11 @@
 
                                     <li class="users">
 										<a href="{{route('manage.pages')}}"
-											class="<?php echo request()->routeIs('manage.pages') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
+											class="<?php echo request()->routeIs('manage.pages') || Str::contains(request()->url(), '/pages/') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
 											<i class="fa-solid fa-file text-lg"></i>
 											Manage pages
 										</a>
 									</li>
-
-									<!-- <li class="downloads">
-                                        <ul class="overflow-hidden text-sm font-medium">
-                                            <li class="relative page-main-menu text-[#297a99]">
-                                                <button
-                                                    id="togglePagesMenu"
-                                                    class="focus:outline-none focus:shadow-outline-black group flex gap-x-3 items-center p-2 text-sm leading-6 "
-                                                    @click="togglePagesMenu"
-                                                    aria-haspopup="true"
-                                                >
-                                                    <i class="fa-solid fa-file text-lg"></i>
-                                                    Pages
-                                                    <i id="submenuIcon" class="fa fa-caret-left"></i>
-                                                </button>
-                                                <template x-if="isPagesMenuOpen">
-                                                    <ul
-                                                    x-transition:enter="transition-all ease-in-out duration-300"
-                                                    x-transition:enter-start="opacity-25 max-h-0"
-                                                    x-transition:enter-end="opacity-100 max-h-xl"
-                                                    x-transition:leave="transition-all ease-in-out duration-300"
-                                                    x-transition:leave-start="opacity-100 max-h-xl"
-                                                    x-transition:leave-end="opacity-0 max-h-0"
-                                                    class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-[#297a99] dark:text-gray-400 dark:bg-[#297a99]"
-                                                    aria-label="submenu"
-                                                    >
-														<li class="manage-pages" style="margin-top:0;">
-                                                            <a href="{{route('manage.pages')}}"
-                                                                class="<?php// echo request()->routeIs('manage.pages') ? 'text-white ' : 'text-[#297a99]'; ?> <?php// echo (request()->routeIs('manage.pages') || request()->routeIs('manage.pages')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Manage pages
-                                                            </a>
-                                                        </li>
-                                                        <li class="mt-0" style="margin-top:0;">
-                                                            <a href="{{route('featured')}}"
-                                                                class="<?php// echo request()->routeIs('downloads') ? 'text-white ' : 'text-[#297a99]'; ?> <?php //echo (request()->routeIs('downloads') || request()->routeIs('downloads-test')) ? 'bg-[#297a99] text-[#61d5d8]' : 'text-[#297a99]'; ?>  hover:text-white hover:bg-[#297a99] group flex gap-2 items-center p-2 text-sm leading-6">
-                                                                <i class="fa-solid fa-circle text-[5px]"></i>
-                                                                Featured
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </template>
-                                            </li>
-                                        </ul>
-									</li> -->
 								<?php } ?>
 								</ul>
 							</li>

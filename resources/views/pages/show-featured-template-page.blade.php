@@ -243,7 +243,8 @@ $(document).ready(function () {
 
     $('#featured-submit-btn').on('click', function(e) {
         e.preventDefault();
-        var slug = $('.page_slug').val();
+        var page_slug = $('.page_slug').val();
+        var page_title = $('.page_title').val();
         let myform = document.getElementById("video-template-form");
         let fd = new FormData(myform);
         var disclaimer = [];
@@ -253,7 +254,8 @@ $(document).ready(function () {
             fd.append("disclaimer[]", content);
         });
         fd.append("status", 1);
-        fd.append("slug", slug);
+        fd.append("page_slug", page_slug);
+        fd.append("page_title", page_title);
         $.ajax({
             url: "{{ route('update-video-template-data') }}",
             type: "POST",
@@ -289,7 +291,8 @@ $(document).ready(function () {
 
     $('#template-preview-btn').on('click', function(e) {
         e.preventDefault();
-        var slug = $(this).data('path');
+        var page_slug = $('.page_slug').val();
+        var page_title = $('.page_title').val();
         let myform = document.getElementById("video-template-form");
         let fd = new FormData(myform);
         var disclaimer = [];
@@ -299,6 +302,8 @@ $(document).ready(function () {
             fd.append("disclaimer[]", content);
         });
         fd.append("status", 2);
+        fd.append("page_slug", page_slug);
+        fd.append("page_title", page_title);
         $.ajax({
             url: "{{ route('update-video-template-data') }}",
             type: "POST",
