@@ -14,10 +14,11 @@ class ManageApiController extends Controller
 {
 
     public function downloadContent(Request $request){
+       
         if($request->pagestatus == 2){
-            $download = ManagePages::find(3);
+            $download = ManagePages::where('page_slug', $request->pageslug)->where('status', 1)->first();
         }else{
-            $download = ManagePages::first();
+            $download = ManagePages::where('page_slug', $request->pageslug)->where('status', 2)->first();
         }
         $baseUrl = asset('_uploads/builds/');
         $download->plateform_name = json_decode($download->plateform_name, true);
@@ -44,14 +45,19 @@ class ManageApiController extends Controller
 
     public function featuredArtist(Request $request){
 
-        $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', 0)->get();
+        if($request->pagestatus == 1){
+            $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 0)->get();
+        }else{
+            $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 1)->get();
+        }
+
         $artists = Artists::all()->mapWithKeys(function ($artist) {
             return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
         });
         $result = [];
         $baseUrl = asset('_uploads/bg/');
         foreach($artistFeatureds as $featured){
-            $result[] = array('artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
+            $result[] = array('id' => $artists[$featured->id] ,'artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
         }
         return response()->json(['artists' => $result], 200);
     }

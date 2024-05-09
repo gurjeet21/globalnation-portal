@@ -529,16 +529,28 @@ class ManagePagesController extends Controller
         $managePagesData = ManagePages::where('status', 1)
         ->whereNotNull('page_slug')
         ->get()->toArray();
+        
+        foreach ($managePagesData as &$managepage) {
+            $managepage['custom_slug'] = 'download'; 
+        }     
 
         // Retrieve all dynamic pages from Pages model
         $pagesData = Pages::where('is_preview', 0)
         ->whereNotNull('page_slug')
         ->get()->toArray();
 
+        foreach ($pagesData as &$paged) {
+            $paged['custom_slug'] = 'pages'; 
+        }
+
         // Retrieve all dynamic pages from ArtistFeatureds model
         $artistFeaturedsData = ArtistFeatureds::where('is_preview', 0)
         ->whereNotNull('page_slug')
         ->get()->toArray();
+
+        foreach ($artistFeaturedsData as &$artistpage) {
+            $artistpage['custom_slug'] = 'artist'; 
+        }       
 
         // Merge the arrays and map the fields accordingly
         $pages = array_map(function($page) {
@@ -549,6 +561,7 @@ class ManagePagesController extends Controller
                     'table_name' => 'manage_pages', // Add the table name here
                     'page_title' => $page['page_title'],
                     'page_slug' => $page['page_slug'],
+                    'custom_slug' => $page['custom_slug'],
                     'created_at' => $page['created_at'],
                     // Add other fields as needed
                 ];
@@ -560,12 +573,14 @@ class ManagePagesController extends Controller
                     'table_name' => 'pages', // Add the table name here
                     'page_title' => $page['page_title'],
                     'page_slug' => $page['page_slug'],
+                    'custom_slug' => $page['custom_slug'],
                     'created_at' => $page['created_at'],
                     // Add other fields as needed
                 ];
             }
 
-        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));
+        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));       
+
 
         return view('pages.manage-pages', compact('pages'));
 
