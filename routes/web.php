@@ -61,6 +61,8 @@ Route::middleware(['auth', 'permission'])->group(function () {
         Route::get('/settings', [SettingController::class, 'index'])->name('setting');
         /* interocitormembers routes*/
         Route::get('/interocitormembers',[InterociterMemberController::class,'index'])->name('interocitormembers');
+        Route::get('/sort-data', [InterociterMemberController::class, 'sortData'])->name('sortData');
+
 
     //});
 });

@@ -14,14 +14,15 @@ class InterociterMemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        
+
+
         if (\Auth::user()->role == 'Admin' || \Auth::user()->role == 'Super Admin') {
-            $members = InterocitorMember::get();
-            
-            return view('pages.interocitor-members', compact('members'));
+            $currentPage = $request->query('page', 1);
+            $itemsPerPage = $request->query('itemsPerPage', 10); // Default to 10 items per page if not specified
+            $members = InterocitorMember::orderBy('last_time', 'desc')->paginate($itemsPerPage);
+            return view('pages.interocitor-members', compact('members', 'itemsPerPage'));
         } else {
             abort(404);
         }
@@ -92,4 +93,12 @@ class InterociterMemberController extends Controller
     {
         //
     }
+    public function sortData(Request $request)
+{
+    $sortBy = $request->input('sortBy');
+    $sortDirection = $request->input('sortDirection');
+    $itemsPerPage = $request->query('itemsPerPage', 10);
+    $members = InterocitorMember::with('devices')->orderBy($sortBy, $sortDirection)->get();
+    return response()->json($members);
+}
 }

@@ -133,7 +133,22 @@
 				</div>
 			</div>
 		</div>
-
+          <!-- Form to select items per page -->
+          <form method="GET" action="{{ route('user') }}" class="mt-4">
+              <label for="itemsPerPage">Items Per Page:</label>
+              <select name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
+                <option value="10" {{ $itemsPerPage == 10 ? 'selected' : '' }}>10</option>
+                <option value="25" {{ $itemsPerPage == 25 ? 'selected' : '' }}>25</option>
+                <option value="50" {{ $itemsPerPage == 50 ? 'selected' : '' }}>50</option>
+                <!-- Add more options as needed -->
+              </select>
+              <!-- Include current page in the form -->
+              @if(request()->has('page'))
+              <input type="hidden" name="page" value="{{ request('page') }}">
+              @endif
+            </form>
+            <!-- Pagination links -->
+            {{ $users->appends(['itemsPerPage' => $itemsPerPage])->links() }}
 	</main>
 
 	<!-- Overlay element -->

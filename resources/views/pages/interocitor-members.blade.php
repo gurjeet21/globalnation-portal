@@ -5,7 +5,10 @@
   <div class="flex align-center justify-between">
     <h2 class="text-black font-semibold text-xl">List of Interocitor Members</h2>
   </div>
-
+  <div id="loader" class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
+  <!-- Loader with rotating animation -->
+  <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 animate-spin"></div>
+</div>
   <div class="flex align-center justify-between mt-2">
     @if(Session::has('succ_msg'))
     <div class="w-full text-center p-4 mb-1 mt-2 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -29,11 +32,15 @@
           <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <th class="px-4 py-3">Member ID</th>
-              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Salutation</th>
               <th class="px-4 py-3">Email</th>
+              <th class="px-4 py-3">Moniker</th>
               <th class="px-4 py-3">Registered Devices</th>
               <th class="px-4 py-3">First Time</th>
-              <th class="px-4 py-3">Last Time</th>
+              <th class="px-4 py-3">Last Time
+              <a href="#" class="sort-arrow" data-sort="asc">&#9650;</a> <!-- Up arrow -->
+             <a href="#" class="sort-arrow" data-sort="desc">&#9660;</a> <!-- Down arrow -->
+              </th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -48,7 +55,10 @@
               <td class="px-4 py-3 text-sm">
                 {{$member->email ? $member->email : '-'}}
               </td>
-             
+              <td class="px-4 py-3 text-sm">
+                {{$member->moniker ? $member->moniker : '-'}}
+              </td>
+
               <td class="px-4 py-3 text-xs">
                 <select name="" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" style="min-width: 200px;">
                   @foreach($member->devices as $device)
@@ -77,8 +87,24 @@
 
       </div>
     </div>
-  </div>
 
+  </div>
+  <!-- Form to select items per page -->
+  <form method="GET" action="{{ route('interocitormembers') }}" class="mt-4">
+    <label for="itemsPerPage">Items Per Page:</label>
+    <select name="itemsPerPage" id="itemsPerPage" onchange="this.form.submit()">
+      <option value="10" {{ $itemsPerPage == 10 ? 'selected' : '' }}>10</option>
+      <option value="25" {{ $itemsPerPage == 25 ? 'selected' : '' }}>25</option>
+      <option value="50" {{ $itemsPerPage == 50 ? 'selected' : '' }}>50</option>
+      <!-- Add more options as needed -->
+    </select>
+    <!-- Include current page in the form -->
+    @if(request()->has('page'))
+    <input type="hidden" name="page" value="{{ request('page') }}">
+    @endif
+  </form>
+  <!-- Pagination links -->
+  {{ $members->appends(['itemsPerPage' => $itemsPerPage])->links() }}
 </main>
 
 <!-- Overlay element -->
@@ -118,23 +144,69 @@
 <!-- Javascript code -->
 <script>
   $(document).ready(function() {
-    var openButton = document.getElementById('openA');
-    var dialog = document.getElementById('dialog');
-    var closeButton = document.getElementById('closeA');
-    var overlay = document.getElementById('overlay');
+   
+    $('.sort-arrow').click(function(e) {
+      
+        e.preventDefault();
+        var sortDirection = $(this).data('sort');
+        var sortBy = 'last_time'; // Column to sort by
+        // Show loader
+        $('#loader').removeClass('hidden');
+        $('#loader').addClass('block');
+        // Make AJAX request to get sorted data
+        $.ajax({
+            url: '/sort-data',
+            type: 'GET',
+            data: {
+                sortBy: sortBy,
+                sortDirection: sortDirection
+            },
+            success: function(response) {
+              
+                // Update table body with sorted data
+                var tableBody = $('table tbody');
+                tableBody.empty(); // Clear existing content
 
-    // show the overlay and the dialog
-    openButton.addEventListener('click', function() {
-      dialog.classList.remove('hidden');
-      overlay.classList.remove('hidden');
-    });
-
-    // hide the overlay and the dialog
-    closeButton.addEventListener('click', function() {
-      dialog.classList.add('hidden');
-      overlay.classList.add('hidden');
+                // Append sorted data to table body
+                $.each(response, function(index, member) {
+                  
+                  var row = '<tr class="text-gray-700 dark:text-gray-400">' +
+                        '<td class="px-4 py-3 text-sm">' + (member.member_id ? member.member_id : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.member_name ? member.member_name : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.email ? member.email : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.moniker ? member.moniker : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-xs">' +
+                        '<select name="" class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" style="min-width: 200px;">' +
+                        (member.devices ? member.devices.map(device => '<option value="' + device.device_name + '">' + (device.device_name ? device.device_name.charAt(0).toUpperCase() + device.device_name.slice(1) : '') + '</option>').join('') : '') +
+                        '</select>' +
+                        '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.first_time ? member.first_time : '-') + '</td>' +
+                        '<td class="px-4 py-3 text-sm">' + (member.last_time ? member.last_time : '-') + '</td>' +
+                        '</tr>';
+                    tableBody.append(row);
+                });
+                $('#loader').removeClass('block');
+                $('#loader').addClass('hidden');
+            },
+            error: function(xhr) {
+                // Handle error
+            }
+        });
     });
   });
+  
 </script>
+<style>
+        /* Your CSS rules go here */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
+        .loader {
+            border-top-color: #3498db;
+            border-left-color: #3498db;
+            animation: spin 1.5s linear infinite;
+        }
+    </style>
 @endsection
