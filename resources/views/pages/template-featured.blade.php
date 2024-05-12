@@ -10,10 +10,10 @@
             <div class="flex gap-4">
                 <div class="w-[30%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Add Artist<strong> | </strong> <a href="{{route('all-artists')}}" style="color:blue;">All Artists</a></span>
+                        <span class="text-black">Add Video Type<strong> | </strong> <a href="{{route('video-types')}}" style="color:blue;">All Video Type</a></span>
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
-                            placeholder="Artist" type="text"
+                            placeholder="Video Type" type="text"
                             name="first_name"
                             value=""
                         />
@@ -71,9 +71,9 @@
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-1">
                     <div class="w-[30%]">
                         <label class="block text-sm">
-                            <span class="text-black">Select Artist</span>
+                            <span class="text-black">Add Type of Video</span>
                             <select name="artist_id[]" class="block artist_ids w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
-                                <option value="">--Please select the Artist --</option>
+                                <option value="">--Select Type of Video --</option>
                                 @foreach($artists as $artist)
                                     <option value="{{ $artist->id }}">{{ $artist->first_name }} {{ $artist->last_name }}</option>
                                 @endforeach

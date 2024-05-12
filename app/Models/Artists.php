@@ -13,8 +13,5 @@ class Artists extends Model
     protected $table = 'artists';
     protected $fillable = [
         'first_name',
-        'last_name',
-        'email',
-        'profile_image'
     ];
 }

@@ -35,25 +35,22 @@ class FeaturedPagesController extends Controller
 
 
     public function store_artist(Request $request){
-        // $data = $request->all();
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
-            //'last_name' => ['required', 'string', 'max:255'],
-            //'email' => 'required|email|unique:artists|max:255',
         ]);
 
-        $file_name = null;
-        if ($request->hasFile('artist_image')) {
-            $file = $request->file('artist_image');
-            $file_name = time().'_'.$file->getClientOriginalName();
-            $file->move(public_path('_uploads/artists'), $file_name);
-        }
+        // $file_name = null;
+        // if ($request->hasFile('artist_image')) {
+        //     $file = $request->file('artist_image');
+        //     $file_name = time().'_'.$file->getClientOriginalName();
+        //     $file->move(public_path('_uploads/artists'), $file_name);
+        // }
 
         $addArtists = Artists::create([
             'first_name' => $request->first_name,
-            'last_name' => isset($request->last_name) ? $request->last_name : null,
-            'email' => isset($request->email) ? $request->email : null,
-            'profile_image' => $file_name,
+            // 'last_name' => isset($request->last_name) ? $request->last_name : null,
+            // 'email' => isset($request->email) ? $request->email : null,
+            // 'profile_image' => $file_name,
         ]);
 
         return response()->json(['status' => 'success','message' => 'Artist added successfully'], 200);

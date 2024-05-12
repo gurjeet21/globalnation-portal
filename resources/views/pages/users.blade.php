@@ -47,13 +47,13 @@
                         <!-- <td class="px-4 py-3">
                         <div class="flex items-center text-sm">
                           <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-						  	<?php  if($user->img != ''){  ?>
+						  	<?php  //if($user->img != ''){  ?>
 								<img  id="filePreviewImage" class="object-cover w-full h-full rounded-full" src="{{asset('user_image')}}/{{$user->img}}" alt="">
-							<?php }else{ ?>
+							<?php //}else{ ?>
 								<div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
 									<svg class="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
 								</div>
-							<?php } ?>
+							<?php //} ?>
 
                             <div
                               class="absolute inset-0 rounded-full shadow-inner"

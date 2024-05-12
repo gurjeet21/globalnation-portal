@@ -526,22 +526,31 @@ class ManagePagesController extends Controller
     public function managePages(Request $request)
     {
         // Retrieve dynamic pages with status = 1 from ManagePages model
+        // $managePagesData = ManagePages::where('status', 1)
+        // ->whereNotNull('page_slug')
+        // ->get()->toArray();
         $managePagesData = ManagePages::where('status', 1)
-        ->whereNotNull('page_slug')
-        ->get()->toArray();
-        
+            ->whereNotNull('page_slug')
+            ->get(['id', 'page_title', 'page_slug', 'created_at'])
+            ->toArray();
+
         foreach ($managePagesData as &$managepage) {
-            $managepage['custom_slug'] = 'download'; 
-        }     
+            $managepage['custom_slug'] = 'download';
+        }
 
         // Retrieve all dynamic pages from Pages model
+        // $pagesData = Pages::where('is_preview', 0)
+        //     ->whereNotNull('page_slug')
+        //     ->get(['id', 'page_title', 'page_slug', 'created_at'])
+        //     ->toArray();
+
         $pagesData = Pages::where('is_preview', 0)
             ->whereNotNull('page_slug')
             ->get(['id', 'page_title', 'page_slug', 'created_at'])
             ->toArray();
 
         foreach ($pagesData as &$paged) {
-            $paged['custom_slug'] = 'pages'; 
+            $paged['custom_slug'] = 'pages';
         }
 
         // Retrieve all dynamic pages from ArtistFeatureds model
@@ -551,37 +560,64 @@ class ManagePagesController extends Controller
             ->toArray();
 
         foreach ($artistFeaturedsData as &$artistpage) {
-            $artistpage['custom_slug'] = 'artist'; 
-        }       
+            $artistpage['custom_slug'] = 'artist';
+        }
 
         // Merge the arrays and map the fields accordingly
-        $pages = array_map(function($page) {
-            // If the page is from ManagePages model, map the fields accordingly
-            if (isset($page['page_title'])) {
-                return [
-                    'id' => $page['id'],
-                    'table_name' => 'manage_pages', // Add the table name here
-                    'page_title' => $page['page_title'],
-                    'page_slug' => $page['page_slug'],
-                    'custom_slug' => $page['custom_slug'],
-                    'created_at' => $page['created_at'],
-                    // Add other fields as needed
-                ];
-            }
-            // If the page is from Pages model, map the fields accordingly
-            elseif (isset($page['page_title'])) {
-                return [
-                    'id' => $page['id'],
-                    'table_name' => 'pages', // Add the table name here
-                    'page_title' => $page['page_title'],
-                    'page_slug' => $page['page_slug'],
-                    'custom_slug' => $page['custom_slug'],
-                    'created_at' => $page['created_at'],
-                    // Add other fields as needed
-                ];
-            }
+        // $pages = array_map(function($page) {
+        //     // If the page is from ManagePages model, map the fields accordingly
+        //     if (isset($page['page_title'])) {
+        //         return [
+        //             'id' => $page['id'],
+        //             'table_name' => 'manage_pages', // Add the table name here
+        //             'page_title' => $page['page_title'],
+        //             'page_slug' => $page['page_slug'],
+        //             'custom_slug' => $page['custom_slug'],
+        //             'created_at' => $page['created_at'],
+        //             // Add other fields as needed
+        //         ];
+        //     }
+        //     // If the page is from Pages model, map the fields accordingly
+        //     elseif (isset($page['page_title'])) {
+        //         return [
+        //             'id' => $page['id'],
+        //             'table_name' => 'pages', // Add the table name here
+        //             'page_title' => $page['page_title'],
+        //             'page_slug' => $page['page_slug'],
+        //             'custom_slug' => $page['custom_slug'],
+        //             'created_at' => $page['created_at'],
+        //             // Add other fields as needed
+        //         ];
+        //     }
 
-        }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));       
+        // }, array_merge($managePagesData, $pagesData, $artistFeaturedsData));
+
+
+        $pages = array_map(function($page) {
+            // Map the fields accordingly
+            return [
+                'id' => $page['id'],
+                'table_name' => $page['table_name'], // Add the table name here
+                'page_title' => $page['page_title'],
+                'page_slug' => $page['page_slug'],
+                'custom_slug' => $page['custom_slug'],
+                'created_at' => $page['created_at'],
+                // Add other fields as needed
+            ];
+        }, array_merge(
+            array_map(function($page) {
+                $page['table_name'] = 'manage_pages'; // Add table name to the array
+                return $page;
+            }, $managePagesData),
+            array_map(function($page) {
+                $page['table_name'] = 'pages'; // Add table name to the array
+                return $page;
+            }, $pagesData),
+            array_map(function($page) {
+                $page['table_name'] = 'artist_featureds'; // Add table name to the array
+                return $page;
+            }, $artistFeaturedsData)
+        ));
 
 
         return view('pages.manage-pages', compact('pages'));
@@ -882,12 +918,28 @@ class ManagePagesController extends Controller
     public function all_artists(Request $request)
     {
         $allartists = Artists::all();
-        return view('pages.all-artists', compact('allartists'));
+        return view('pages.video-types', compact('allartists'));
     }
 
     public function deleteArtist(Request $request, $artist_id)
     {
         Artists::where('id',  $artist_id)->delete();
         return redirect()->back()->with(['succ_msg' => 'Page successfully deleted']);
+    }
+
+
+    public function update_video_type(Request $request,$video_type_id){
+    	if($request->isMethod('get')){
+    		$video_type = Artists::where('id',$video_type_id)->first();
+    		return view('pages.update-video-type',compact('video_type'));
+    	}else{
+            $request->validate([
+	            'name' => 'required',
+	        ]);
+            $update['first_name'] = $request->name;
+
+            Artists::where('id',$video_type_id)->update($update);
+		    return redirect()->back()->with('success', 'Updateded successfully!');
+    	}
     }
 }

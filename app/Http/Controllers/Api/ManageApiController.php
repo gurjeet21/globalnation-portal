@@ -14,7 +14,7 @@ class ManageApiController extends Controller
 {
 
     public function downloadContent(Request $request){
-       
+
         if($request->pagestatus == 2){
             $download = ManagePages::where('page_slug', $request->pageslug)->where('status', 1)->first();
         }else{
@@ -44,20 +44,21 @@ class ManageApiController extends Controller
     }
 
     public function featuredArtist(Request $request){
-
         if($request->pagestatus == 1){
-            $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 0)->get();
+            $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->get();
+
         }else{
             $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 1)->get();
         }
 
         $artists = Artists::all()->mapWithKeys(function ($artist) {
-            return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
+            return [$artist->id => $artist->first_name];
         });
+
         $result = [];
         $baseUrl = asset('_uploads/bg/');
         foreach($artistFeatureds as $featured){
-            $result[] = array('id' => $artists[$featured->id] ,'artist_name' => $artists[$featured->artist_id] , 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
+            $result[] = array('id' => $featured->id ,'artist_id' => $artists[$featured->artist_id] , 'page_title' => $featured->page_title, 'page_slug' => $featured->page_slug, 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
         }
         return response()->json(['artists' => $result], 200);
     }
@@ -65,7 +66,7 @@ class ManageApiController extends Controller
     public function featuredArtistPreview(Request $request){
         $artistFeatureds = ArtistFeatureds::where('deleted_at', null)->where('is_preview', '!=', 0)->orderBy('id', 'ASC')->get();
         $artists = Artists::all()->mapWithKeys(function ($artist) {
-            return [$artist->id => $artist->first_name . ' ' . $artist->last_name];
+            return [$artist->id => $artist->first_name];
         });
         $result = [];
         $baseUrl = asset('_uploads/bg/');
@@ -131,6 +132,51 @@ class ManageApiController extends Controller
         );
         return response()->json(['pages' => $result, 'status' => 'not found'], 200);
 
+    }
+
+
+    public function all_pages_data(Request $request){
+        $download_table = ManagePages::where('page_slug', $request->pageslug)->where('status', 1)->first();
+        $page_table = Pages::where('page_slug', $request->pageslug)->where('is_preview', 0)->first();
+        $video_table = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->get();
+        $artists = [];
+        $result = [];
+        if($download_table) {
+            $show_temp_data = $download_table;
+        } elseif($page_table) {
+            $baseUrl = asset('_uploads/bg/');
+            $result = [
+                'page_title' => $page_table->page_title,
+                'page_slug' => $page_table->page_slug,
+                'description' => $page_table->description,
+                'background_image' => !empty($page_table->background_image) ? $baseUrl.'/'.$page_table->background_image : ''
+            ];
+
+            return response()->json(['pages' => $result], 200);
+
+        } elseif($video_table) {
+            //$show_temp_data = $video_table;
+
+            if($request->pagestatus == 1){
+                $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->get();
+
+            }else{
+                $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 1)->get();
+            }
+
+            $artists = Artists::all()->mapWithKeys(function ($artist) {
+                return [$artist->id => $artist->first_name];
+            });
+
+            $result = [];
+            $baseUrl = asset('_uploads/bg/');
+            foreach($artistFeatureds as $featured){
+                $result[] = array('id' => $featured->id ,'artist_id' => $artists[$featured->artist_id] , 'page_title' => $featured->page_title, 'page_slug' => $featured->page_slug, 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
+            }
+            return response()->json(['artists' => $result], 200);
+        } else {
+            abort(404);
+        }
     }
 
 }

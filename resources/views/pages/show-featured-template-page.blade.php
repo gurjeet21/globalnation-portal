@@ -12,10 +12,10 @@
             <div class="flex gap-4">
                 <div class="w-[30%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Add Artist</span>
+                        <span class="text-black">Add Video Type</span>
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
-                            placeholder="Artist" type="text"
+                            placeholder="Video Type" type="text"
                             name="first_name"
                             value=""
                         />
@@ -79,9 +79,9 @@
                 <div class="flex mb-4 gap-4 dynamic-field items-center" id="dynamic-field-{{$mkey}}">
                     <div class="w-[30%]">
                         <label class="block text-sm">
-                            <span class="text-black">Select Artist</span>
+                            <span class="text-black">Add Type of Video</span>
                             <select name="artist_id[]" class="block artist_ids w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
-                                    <option value="">--Please select the Artist --</option>
+                                    <option value="">--Select Type of Video --</option>
                                     @foreach($artists as $key => $artist)
                                     <option value="{{$key}}" {{ (@$show_temp_datas->artist_id) ===  $key ? 'selected' : ''}}>{{$artist}}</option>
                                     @endforeach

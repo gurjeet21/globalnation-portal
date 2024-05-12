@@ -12,7 +12,7 @@
             <div class="flex gap-4">
                 <div class="w-[30%] bg-container">
                     <label class="block text-sm">
-                        <span class="text-black">Add Artist</span>
+                        <span class="text-black">Add Video Type</span>
                         <input
                             class="block w-full mt-1 text-sm bg-[#eeeeee] dark:border-gray-600 dark:bg-[#eeeeee] focus:outline-none form-input"
                             placeholder="Artist" type="text"
@@ -325,9 +325,9 @@ $(document).ready(function () {
         $(this).parent().parent().find('.plate_form_show').show();
     });
 
-    $(document).on('change', '.file-input', function () { 
+    $(document).on('change', '.file-input', function () {
         var fileName = this.files[0].name;
-       $('.bg-file-name').text(fileName);      
+       $('.bg-file-name').text(fileName);
     });
 
     $('#editor').find('.ck-editor__editable').css('min-height', '300px');

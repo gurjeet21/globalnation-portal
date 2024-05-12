@@ -91,12 +91,7 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save-template-video',[ManagePagesController::class,'save_template_video'])->name('save-template-video');
     Route::match(['GET','POST'],'/manage-featured/update/{id}', [FeaturedPagesController::class, 'update_featured'])->name('artist.featured.update');
     Route::get('/manage-featured/delete/{id}', [FeaturedPagesController::class, 'delete_featured'])->name('artist.featured.delete');
-    // Route::get('/privacy-policy', [ManagePagesController::class, 'add_privacy_policy'])->name('privacy-policy');
-    // Route::post('/save-privacy-policy', [ManagePagesController::class, 'store_privacy_policy'])->name('save-privacy-policy');
     Route::post('/update-text-template-pages', [ManagePagesController::class, 'update_text_template_pages'])->name('update-text-template-pages');
-    // Route::get('/terms-of-service', [ManagePagesController::class, 'add_terms_service'])->name('terms-of-service');
-    // Route::post('/save-terms-of-service', [ManagePagesController::class, 'store_terms_service'])->name('save-terms-of-service');
-    // Route::get('/featured', [ManagePagesController::class, 'show_featured'])->name('featured');
     Route::get('/template-page-text', [ManagePagesController::class, 'template_page_text'])->name('template-page-text');
     Route::get('/template-featured', [ManagePagesController::class, 'template_featured'])->name('template-featured');
     Route::post('/save-template-page-text', [ManagePagesController::class, 'save_new_page'])->name('save-template-page-text');
@@ -107,8 +102,10 @@ Route::group(['prefix' => 'pages'], function(){
     Route::post('/save/update-video-template-data',[ManagePagesController::class,'update_video_template_data'])->name('update-video-template-data');
 });
 
-Route::get('/all-artists', [ManagePagesController::class, 'all_artists'])->name('all-artists');
-Route::get('/delete/{artist_id}', [ManagePagesController::class, 'deleteArtist'])->name('page.artist.delete');
+Route::get('/video-types', [ManagePagesController::class, 'all_artists'])->name('video-types');
+Route::get('/delete/{video_type_id}', [ManagePagesController::class, 'deleteArtist'])->name('page.artist.delete');
+Route::match(['GET','POST'],'/update-video-type/{video_type_id}', [ManagePagesController::class, 'update_video_type'])->name('videotype.update');
+
 
 /* clear-cache */
 Route::get('/c', function() {
