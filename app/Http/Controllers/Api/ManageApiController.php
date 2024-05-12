@@ -138,44 +138,60 @@ class ManageApiController extends Controller
     public function all_pages_data(Request $request){
         $download_table = ManagePages::where('page_slug', $request->pageslug)->where('status', 1)->first();
         $page_table = Pages::where('page_slug', $request->pageslug)->where('is_preview', 0)->first();
-        $video_table = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->get();
+        $video_table = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->first();
         $artists = [];
         $result = [];
         if($download_table) {
-            $show_temp_data = $download_table;
+            if($request->pagestatus == 2){
+                $download = ManagePages::where('page_slug', $request->pageslug)->where('status', 1)->first();
+            }else{
+                $download = ManagePages::where('page_slug', $request->pageslug)->where('status', 2)->first();
+            }
+            $baseUrl = asset('_uploads/builds/');
+            $download->plateform_name = json_decode($download->plateform_name, true);
+            $download->plateform_file = json_decode($download->plateform_file, true);
+            $download->plateform_status = json_decode($download->plateform_status, true);
+            $download->background_image = !empty($download->background_image) ? $baseUrl.'/'.$download->background_image : '';
+            return response()->json(['download' => $download, 'page_temp' => 2, 'status' => 'success'], 200);
         } elseif($page_table) {
             $baseUrl = asset('_uploads/bg/');
-            $result = [
-                'page_title' => $page_table->page_title,
-                'page_slug' => $page_table->page_slug,
-                'description' => $page_table->description,
-                'background_image' => !empty($page_table->background_image) ? $baseUrl.'/'.$page_table->background_image : ''
-            ];
-
-            return response()->json(['pages' => $result], 200);
+           
+                $result = array(
+                    'page_title' => $page_table->page_title,
+                    'page_slug' => $page_table->page_slug,
+                    'description' => $page_table->description,
+                    'background_image' => !empty($page_table->background_image) ? $baseUrl.'/'.$page_table->background_image : ''
+                );
+                return response()->json(['pages' => $result, 'page_temp' => 1, 'status' => 'success'], 200);
+            
 
         } elseif($video_table) {
-            //$show_temp_data = $video_table;
-
             if($request->pagestatus == 1){
                 $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('is_preview', 0)->get();
-
+    
             }else{
                 $artistFeatureds = ArtistFeatureds::where('page_slug', $request->pageslug)->where('deleted_at', null)->where('is_preview', 1)->get();
             }
-
+    
             $artists = Artists::all()->mapWithKeys(function ($artist) {
                 return [$artist->id => $artist->first_name];
             });
-
+    
             $result = [];
             $baseUrl = asset('_uploads/bg/');
             foreach($artistFeatureds as $featured){
                 $result[] = array('id' => $featured->id ,'artist_id' => $artists[$featured->artist_id] , 'page_title' => $featured->page_title, 'page_slug' => $featured->page_slug, 'title' => $featured->title, 'video_url' => $featured->video_url, 'background_image' => !empty($featured->background_image) ? $baseUrl.'/'.$featured->background_image : '', 'description' => $featured->description );
             }
-            return response()->json(['artists' => $result], 200);
+            return response()->json(['artists' => $result, 'page_temp' => 3, 'status' => 'success'], 200);
+
         } else {
-            abort(404);
+            $result = array(
+                'page_title' => 'Not Found',
+                'page_slug' => 'not-found',
+                'description' => 'Page not found',
+                'background_image' => ''
+            );
+            return response()->json(['pages' => $result, 'page_temp' => 1, 'status' => 'not found'], 200);
         }
     }
 
