@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('artist_featureds', function (Blueprint $table) {
             $table->id();
             $table->integer('artist_id')->index();
+            $table->string('page_title');
+            $table->string('page_slug');
             $table->string('title');
-            $table->text('video_url')->nullable();      
+            $table->text('video_url')->nullable();
             $table->longText('description')->nullable();
             $table->tinyInteger('status')->default('1')->comment('1: Active ,2 :Inactive');
             $table->integer('is_preview')->default(null);
