@@ -3,7 +3,7 @@
 				<!-- Sidebar component, swap this element with another sidebar if you like -->
 				<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-menu-bg-color px-6 pb-4">
 					<div class="flex items-center m-auto pt-3 pb-3">
-						<img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV.svg')}}" alt="GlobalNation">
+						<img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV_TV.svg')}}" alt="GlobalNation">
 					</div>
 					<nav class="flex flex-1 flex-col mt-3">
 						<ul role="list" class="flex flex-1 flex-col gap-y-7 menu-list">
@@ -77,7 +77,7 @@
 																Interocitor Members
                                                             </a>
                                                         </li>
-														
+
                                                     </ul>
                                                 </template>
                                             </li>
@@ -115,7 +115,7 @@
 			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-menu-bg-color px-6 pb-4" style="
 			">
 				<div class="flex items-center m-auto pt-8 pb-3">
-                <img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV.svg')}}" alt="GlobalNation">
+                <img class="h-27 w-full" src="{{asset('assets/img/Logo_GNTV_TV.svg')}}" alt="GlobalNation">
 				</div>
 				<nav class="flex flex-1 flex-col">
 					<ul role="list" class="flex flex-1 flex-col gap-y-7">

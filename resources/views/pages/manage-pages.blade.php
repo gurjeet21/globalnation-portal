@@ -56,7 +56,7 @@
                                     {{$page['page_slug'] ? $page['page_slug'] : '-'}}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    <a target="_blank" href="https://globalnation.tv/{{$page['custom_slug']}}/{{$page['page_slug']}}">https://globalnation.tv/{{$page['custom_slug']}}/{{$page['page_slug']}}</a>
+                                    <a target="_blank" href="https://globalnation.tv/{{$page['page_slug']}}">https://globalnation.tv/{{$page['page_slug']}}</a>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{$page['created_at'] ? $page['created_at'] : '-'}}
