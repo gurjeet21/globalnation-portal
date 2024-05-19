@@ -91,6 +91,13 @@
 											Manage pages
 										</a>
 									</li>
+									<li class="navigation">
+										<a href="{{route('navigation.index')}}"
+											class="<?php echo request()->routeIs('navigation.index') ? 'bg-[#297a99] text-white' : 'text-[#297a99]'; ?> hover:text-white hover:bg-[#297a99] group flex gap-x-3 items-center p-2 text-sm leading-6">
+											<i class="fa-solid fa-list-check"></i>
+											Manu Management
+										</a>
+									</li>
 								<?php } ?>
 								</ul>
 							</li>

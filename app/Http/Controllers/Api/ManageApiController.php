@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ManagePages;
 use App\Models\Artists;
 use App\Models\ArtistFeatureds;
+use App\Models\MenuManagement;
 use App\Models\Pages;
 
 class ManageApiController extends Controller
@@ -193,6 +194,16 @@ class ManageApiController extends Controller
             );
             return response()->json(['pages' => $result, 'page_temp' => 1, 'status' => 'not found'], 200);
         }
+    }
+
+    public function getMenuData(Request $request){
+        $menuType = $request->query('menu_type', 'navbar'); // Default to 'navbar' if not specified
+        $navigationItems = MenuManagement::with('children')
+            ->whereNull('parent_id')
+            ->where('menu_type',$menuType)
+            ->orderBy('sort_order')
+            ->get();
+            return response()->json(['navigationItems' => $navigationItems], 200);
     }
 
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\FeaturedPagesController;
 use App\Http\Controllers\InterociterMemberController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\ManuManagmentController;
 use App\Http\Controllers\TwoFactorController;
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +63,15 @@ Route::middleware(['auth', 'permission'])->group(function () {
         /* interocitormembers routes*/
         Route::get('/interocitormembers',[InterociterMemberController::class,'index'])->name('interocitormembers');
         Route::get('/sort-data', [InterociterMemberController::class, 'sortData'])->name('sortData');
+        /* Menu managment routes */
 
+        Route::get('navigation', [ManuManagmentController::class, 'index'])->name('navigation.index');
+        Route::get('navigation/create', [ManuManagmentController::class, 'create'])->name('navigation.create');
+        Route::post('navigation', [ManuManagmentController::class, 'store'])->name('navigation.store');
+        Route::get('navigation/{navigationItem}/edit', [ManuManagmentController::class, 'edit'])->name('navigation.edit');
+        Route::put('navigation/{navigationItem}', [ManuManagmentController::class, 'update'])->name('navigation.update');
+        Route::get('navigation/{navigationItem}', [ManuManagmentController::class, 'destroy'])->name('navigation.destroy');
+        Route::delete('navigation/{navigationItem}', [ManuManagmentController::class, 'destroy'])->name('navigation.delete');
 
     //});
 });
